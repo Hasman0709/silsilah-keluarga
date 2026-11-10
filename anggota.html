@@ -7,17 +7,39 @@
 <input id="ayah" placeholder="Nama ayah"><input id="ibu" placeholder="Nama ibu"><input id="pasangan" placeholder="Nama pasangan"><label><b>Foto profil (opsional)</b></label><input id="foto" type="file" accept="image/*"><small>Foto JPG/PNG maksimal 2 MB.</small><div id="pratinjau"></div><textarea id="catatan" placeholder="Catatan tambahan"></textarea><button type="submit" id="tombolSimpan">Simpan Anggota</button><button type="button" class="secondary" id="batalEdit" hidden>Batal Edit</button></form><p id="status"></p></section>
 <section class="card"><h3>Daftar Anggota Keluarga</h3><input id="cari" placeholder="Cari nama anggota..."><div id="daftar">Memuat data...</div></section></div>
 <script type="module">
-import {db,storage} from "./js/firebase.js";
+import {db} from "./js/firebase.js";
 import {collection,addDoc,getDocs,deleteDoc,doc,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
-import {ref,uploadBytes,getDownloadURL,deleteObject} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-storage.js";
+
 const $=id=>document.getElementById(id),form=$("formAnggota"),daftar=$("daftar"),status=$("status");let semua=[],idEdit=null,fotoLama="",fotoBaru=null;
 function resetForm(){form.reset();idEdit=null;fotoLama="";fotoBaru=null;$("judulForm").textContent="Tambah Anggota Baru";$("tombolSimpan").textContent="Simpan Anggota";$("batalEdit").hidden=true;$("pratinjau").innerHTML=""}
 $("foto").onchange=e=>{fotoBaru=e.target.files[0]||null;$("pratinjau").innerHTML="";if(!fotoBaru)return;if(!fotoBaru.type.startsWith("image/")||fotoBaru.size>2*1024*1024){alert("Pilih file gambar maksimal 2 MB.");fotoBaru=null;e.target.value="";return}let im=document.createElement("img");im.src=URL.createObjectURL(fotoBaru);im.style="width:100px;height:100px;object-fit:cover";$("pratinjau").append(im)};
+function kompresFoto(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=()=>reject(new Error("Foto tidak dapat dibaca."));
+  reader.onload=()=>{
+   const img=new Image();
+   img.onerror=()=>reject(new Error("File foto tidak valid."));
+   img.onload=()=>{
+    const max=600, scale=Math.min(1,max/Math.max(img.width,img.height));
+    const canvas=document.createElement("canvas");
+    canvas.width=Math.round(img.width*scale); canvas.height=Math.round(img.height*scale);
+    canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+    let kualitas=.72, hasil=canvas.toDataURL("image/jpeg",kualitas);
+    while(hasil.length>650000 && kualitas>.35){kualitas-=.08;hasil=canvas.toDataURL("image/jpeg",kualitas)}
+    if(hasil.length>750000) reject(new Error("Foto masih terlalu besar. Pilih foto yang lebih kecil."));
+    else resolve(hasil);
+   };
+   img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+ });
+}
 async function muat(){daftar.textContent="Memuat data...";try{let r=await getDocs(collection(db,"anggota"));semua=r.docs.map(x=>({id:x.id,...x.data()}));render(semua)}catch(e){daftar.textContent="Gagal memuat data. Periksa koneksi dan aturan Firestore.";console.error(e)}}
 function render(rows){daftar.innerHTML="";if(!rows.length){daftar.textContent="Belum ada data anggota.";return}rows.forEach(a=>{let box=document.createElement("div");box.className="member";let im=document.createElement("img");im.alt="Foto anggota";im.src=a.fotoUrl||"";let info=document.createElement("div");info.className="member-info";let h=document.createElement("h4");h.textContent=a.nama||"-";let p=document.createElement("p");p.textContent=`${a.jenisKelamin||"-"} | ${a.statusHidup||"-"}`;let k=document.createElement("p");k.textContent=`Ayah: ${a.ayah||"-"} · Ibu: ${a.ibu||"-"} · Pasangan: ${a.pasangan||"-"}`;info.append(h,p,k);if(a.catatan){let c=document.createElement("p");c.textContent="Catatan: "+a.catatan;info.append(c)}let act=document.createElement("div");act.className="actions";let ed=document.createElement("button");ed.textContent="Edit";ed.onclick=()=>edit(a);let del=document.createElement("button");del.textContent="Hapus";del.className="delete";del.onclick=()=>hapus(a);act.append(ed,del);info.append(act);box.append(im,info);daftar.append(box)})}
 function edit(a){idEdit=a.id;fotoLama=a.fotoUrl||"";fotoBaru=null;["nama","jenisKelamin","statusHidup","ayah","ibu","pasangan","catatan"].forEach(k=>$(k).value=a[k]|| (k==="statusHidup"?"Hidup":""));$("foto").value="";$("pratinjau").innerHTML="";if(fotoLama){let im=document.createElement("img");im.src=fotoLama;im.style="width:100px;height:100px;object-fit:cover";$("pratinjau").append(im)}$("judulForm").textContent="Edit Data Anggota";$("tombolSimpan").textContent="Simpan Perubahan";$("batalEdit").hidden=false;window.scrollTo({top:0,behavior:"smooth"})}
 $("batalEdit").onclick=resetForm;
-async function hapus(a){if(!confirm(`Hapus data ${a.nama||"anggota ini"}?`))return;try{await deleteDoc(doc(db,"anggota",a.id));if(a.fotoPath)try{await deleteObject(ref(storage,a.fotoPath))}catch(e){console.warn(e)}status.textContent="Data anggota berhasil dihapus.";await muat()}catch(e){status.textContent="Gagal menghapus data.";console.error(e)}}
-form.onsubmit=async e=>{e.preventDefault();let btn=$("tombolSimpan");btn.disabled=true;btn.textContent="Menyimpan...";try{let fotoUrl=fotoLama,fotoPath=idEdit?(semua.find(x=>x.id===idEdit)?.fotoPath||""):"";if(fotoBaru){fotoPath=`foto-anggota/${Date.now()}-${fotoBaru.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;let target=ref(storage,fotoPath);await uploadBytes(target,fotoBaru);fotoUrl=await getDownloadURL(target)}let data={nama:$("nama").value.trim(),jenisKelamin:$("jenisKelamin").value,statusHidup:$("statusHidup").value,ayah:$("ayah").value.trim(),ibu:$("ibu").value.trim(),pasangan:$("pasangan").value.trim(),catatan:$("catatan").value.trim(),fotoUrl,fotoPath,diperbaruiPada:serverTimestamp()};if(idEdit){await updateDoc(doc(db,"anggota",idEdit),data);status.textContent="Perubahan anggota berhasil disimpan."}else{data.dibuatPada=serverTimestamp();await addDoc(collection(db,"anggota"),data);status.textContent="Anggota berhasil ditambahkan."}resetForm();await muat()}catch(e){status.textContent="Gagal menyimpan. Untuk foto, pastikan Firebase Storage aktif dan aturannya mengizinkan unggahan.";console.error(e)}finally{btn.disabled=false;if(!idEdit)btn.textContent="Simpan Anggota"}};
+async function hapus(a){if(!confirm(`Hapus data ${a.nama||"anggota ini"}?`))return;try{await deleteDoc(doc(db,"anggota",a.id));status.textContent="Data anggota berhasil dihapus.";await muat()}catch(e){status.textContent="Gagal menghapus data.";console.error(e)}}
+form.onsubmit=async e=>{e.preventDefault();let btn=$("tombolSimpan");btn.disabled=true;btn.textContent="Menyimpan...";try{let fotoUrl=fotoLama;if(fotoBaru){fotoUrl=await kompresFoto(fotoBaru)}let data={nama:$("nama").value.trim(),jenisKelamin:$("jenisKelamin").value,statusHidup:$("statusHidup").value,ayah:$("ayah").value.trim(),ibu:$("ibu").value.trim(),pasangan:$("pasangan").value.trim(),catatan:$("catatan").value.trim(),fotoUrl,diperbaruiPada:serverTimestamp()};if(idEdit){await updateDoc(doc(db,"anggota",idEdit),data);status.textContent="Perubahan anggota berhasil disimpan."}else{data.dibuatPada=serverTimestamp();await addDoc(collection(db,"anggota"),data);status.textContent="Anggota berhasil ditambahkan."}resetForm();await muat()}catch(e){status.textContent="Gagal menyimpan. Periksa koneksi internet dan aturan Firestore. Foto disimpan langsung di Firestore setelah dikompres.";console.error(e)}finally{btn.disabled=false;if(!idEdit)btn.textContent="Simpan Anggota"}};
 $("cari").oninput=()=>{let q=$("cari").value.toLowerCase();render(semua.filter(a=>(a.nama||"").toLowerCase().includes(q)))};muat();
 </script></body></html>
