@@ -149,6 +149,30 @@ nav a:hover {
     margin-bottom: 15px;
 }
 
+.thumbnail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 15px 0 20px;
+}
+
+.thumbnail-grid img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.tidak-ada-foto {
+    grid-column: 1 / -1;
+    color: #68756d;
+    font-size: 13px;
+    padding: 12px;
+}
+
 .tombol {
     display: inline-block;
     background: #145c3b;
@@ -182,6 +206,14 @@ footer {
         font-size: 12px;
         padding: 10px;
     }
+
+    .thumbnail-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .thumbnail-grid img {
+        height: 85px;
+    }
 }
 </style></head><body><header>
     <div class="logo">BY</div>
@@ -207,52 +239,100 @@ footer {
         dan mempererat persaudaraan seluruh keluarga besar
         Bani Yasroji dari generasi ke generasi.
     </p>
-</section>
+</section><h2 class="judul">Menu Keluarga</h2><section class="menu-grid"><a class="menu" href="silsilah.html">
+    <div class="ikon">🌳</div>
+    <h3>Pohon Silsilah</h3>
+    <p>Melihat hubungan keluarga dari generasi ke generasi.</p>
+</a>
 
-<h2 class="judul">Menu Keluarga</h2>
+<a class="menu" href="anggota.html">
+    <div class="ikon">👨‍👩‍👧‍👦</div>
+    <h3>Anggota Keluarga</h3>
+    <p>Melihat daftar dan profil anggota keluarga.</p>
+</a>
 
-<section class="menu-grid">
+<a class="menu" href="galeri.html">
+    <div class="ikon">🖼️</div>
+    <h3>Galeri Foto</h3>
+    <p>Melihat dokumentasi dan kenangan keluarga.</p>
+</a>
 
-    <a class="menu" href="silsilah.html">
-        <div class="ikon">🌳</div>
-        <h3>Pohon Silsilah</h3>
-        <p>Melihat hubungan keluarga dari generasi ke generasi.</p>
-    </a>
+<a class="menu" href="login.html">
+    <div class="ikon">🔐</div>
+    <h3>Admin</h3>
+    <p>Login untuk mengelola data dan dokumentasi keluarga.</p>
+</a>
 
-    <a class="menu" href="anggota.html">
-        <div class="ikon">👨‍👩‍👧‍👦</div>
-        <h3>Anggota Keluarga</h3>
-        <p>Melihat daftar dan profil anggota keluarga.</p>
-    </a>
-
-    <a class="menu" href="galeri.html">
-        <div class="ikon">🖼️</div>
-        <h3>Galeri Foto</h3>
-        <p>Melihat dokumentasi dan kenangan keluarga.</p>
-    </a>
-
-    <a class="menu" href="login.html">
-        <div class="ikon">🔐</div>
-        <h3>Admin</h3>
-        <p>Login untuk mengelola data dan dokumentasi keluarga.</p>
-    </a>
-
-</section>
-
-<h2 class="judul">Galeri Keluarga</h2>
-
-<section class="galeri-info">
+</section><h2 class="judul">Galeri Keluarga</h2><section class="galeri-info">
     <p>
         Kumpulan foto kegiatan, pertemuan, dan kenangan
         keluarga besar Bani Yasroji dapat dilihat melalui
         halaman galeri.
-    </p>
-    <a href="galeri.html" class="tombol">Buka Galeri Foto</a>
-</section>
+    </p><div class="thumbnail-grid" id="thumbnailGaleri">
+    <div class="tidak-ada-foto">Memuat foto...</div>
+</div>
 
-</main><footer>
+<a href="galeri.html" class="tombol">Buka Galeri Foto</a>
+
+</section></main><footer>
     <strong>KELUARGA BESAR BANI YASROJI</strong><br>
     Menjaga Silsilah, Mempererat Silaturahmi<br>
     &copy; 2026 Bani Yasroji
-</footer></body>
+</footer><script type="module">
+import { db } from "./js/firebase.js";
+
+import {
+    collection,
+    getDocs,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+const tempatFoto = document.getElementById("thumbnailGaleri");
+
+async function tampilkanThumbnail() {
+    try {
+        const q = query(
+            collection(db, "galeri"),
+            orderBy("dibuatPada", "desc")
+        );
+
+        const hasil = await getDocs(q);
+
+        tempatFoto.innerHTML = "";
+
+        if (hasil.empty) {
+            tempatFoto.innerHTML =
+                '<div class="tidak-ada-foto">Belum ada foto keluarga.</div>';
+            return;
+        }
+
+        hasil.forEach((dokumen) => {
+            const foto = dokumen.data();
+
+            if (!foto.fotoUrl) return;
+
+            const gambar = document.createElement("img");
+            gambar.src = foto.fotoUrl;
+            gambar.alt = foto.judul || "Foto keluarga Bani Yasroji";
+            gambar.loading = "lazy";
+            gambar.draggable = false;
+
+            tempatFoto.appendChild(gambar);
+        });
+
+        if (!tempatFoto.children.length) {
+            tempatFoto.innerHTML =
+                '<div class="tidak-ada-foto">Belum ada foto keluarga.</div>';
+        }
+
+    } catch (error) {
+        tempatFoto.innerHTML =
+            '<div class="tidak-ada-foto">Foto belum dapat dimuat.</div>';
+        console.error("Gagal memuat thumbnail:", error);
+    }
+}
+
+tampilkanThumbnail();
+</script></body>
 </html>
