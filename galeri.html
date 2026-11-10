@@ -1,245 +1,113 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Galeri Keluarga</title>
-
-<style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f1f7f3;
-    color: #26352b;
-}
-
-header {
-    background: #176b45;
-    color: white;
-    text-align: center;
-    padding: 22px 15px;
-}
-
-header h2 {
-    margin: 5px;
-}
-
-.kembali {
-    color: white;
-    text-decoration: none;
-}
-
-.container {
-    max-width: 700px;
-    margin: auto;
-    padding: 18px;
-}
-
-.kotak {
-    background: white;
-    padding: 18px;
-    border-radius: 15px;
-    box-shadow: 0 3px 12px #0001;
-}
-
-h3 {
-    color: #176b45;
-}
-
-input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin: 8px 0;
-}
-
-.galeri {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.foto {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px #0001;
-}
-
-.foto img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    display: block;
-}
-
-.keterangan {
-    padding: 10px;
-}
-
-.keterangan input {
-    font-size: 12px;
-}
-
-.tombol-hapus {
-    width: 100%;
-    background: #c0392b;
-    color: white;
-    border: none;
-    padding: 9px;
-    border-radius: 7px;
-    margin-top: 5px;
-}
-
-.kosong {
-    text-align: center;
-    color: #888;
-    padding: 25px 5px;
-    grid-column: 1 / -1;
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    color: #888;
-    font-size: 12px;
-}
-
-@media (max-width: 350px) {
-    .galeri {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Galeri Keluarga Bani Yasroji</title>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:Arial,sans-serif;margin:0;background:#f3f5f3;color:#222}
+    header{background:#176b3a;color:white;text-align:center;padding:22px 14px}
+    header h2{margin:0 0 8px}
+    header p{margin:0}
+    main{max-width:900px;margin:auto;padding:16px}
+    .filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+    .filter button{flex:1;min-width:120px;padding:12px;border:0;border-radius:8px;background:#ddd;font-weight:bold}
+    .filter button.aktif{background:#176b3a;color:white}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+    .kartu{background:white;border-radius:10px;overflow:hidden;box-shadow:0 2px 6px #0001}
+    .kartu img{width:100%;height:155px;object-fit:cover;display:block}
+    .isi{padding:10px}
+    .isi h3{font-size:16px;margin:0 0 7px}
+    .isi p{font-size:13px;color:#555;margin:0;line-height:1.5}
+    #pesan{text-align:center;padding:20px;color:#555}
+  </style>
 </head>
+<body><header>
+  <h2>Galeri Keluarga Bani Yasroji</h2>
+  <p>Dokumentasi dan kenangan keluarga</p>
+</header><main>
+  <div class="filter">
+    <button class="aktif" data-kategori="Semua">Semua Foto</button>
+    <button data-kategori="Galeri Foto">Galeri Foto</button>
+    <button data-kategori="Galeri Keluarga">Galeri Keluarga</button>
+  </div>  <div id="pesan">Memuat galeri...</div>
+  <div class="grid" id="galeri"></div>
+</main><script type="module">
+import { db } from "./js/firebase.js";
+import {
+  collection, getDocs, query, orderBy
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-<body>
-
-<header>
-    <h2>📸 Galeri Keluarga</h2>
-    <p>Kenangan dan dokumentasi keluarga</p>
-
-    <a href="index.html" class="kembali">
-        ← Kembali ke Beranda
-    </a>
-</header>
-
-<div class="container">
-
-<div class="kotak">
-
-    <h3>Tambah Foto Keluarga</h3>
-
-    <label>Pilih Foto</label>
-
-    <input type="file"
-    id="pilihFoto"
-    accept="image/*"
-    multiple>
-
-    <p style="font-size:12px;color:#888">
-        Maksimal 2 MB per foto.
-    </p>
-
-</div>
-
-<div class="galeri" id="galeri">
-
-    <div class="kosong">
-        📷 Belum ada foto keluarga.
-        <br><br>
-        Silakan pilih foto dari HP.
-    </div>
-
-</div>
-
-</div>
-
-<footer>
-© 2026 Silsilah Keluarga
-</footer>
-
-<script>
-
-const pilihFoto = document.getElementById("pilihFoto");
 const galeri = document.getElementById("galeri");
+const pesan = document.getElementById("pesan");
+let semuaFoto = [];
+let kategoriAktif = "Semua";
 
-pilihFoto.addEventListener("change", function() {
+async function muatGaleri(){
+  try{
+    const q = query(
+      collection(db,"galeri"),
+      orderBy("dibuatPada","desc")
+    );
 
-    const files = Array.from(this.files);
+    const hasil = await getDocs(q);
+    semuaFoto = hasil.docs.map(item => item.data());
+    tampilkanFoto();
+  }catch(error){
+    pesan.textContent = "Gagal memuat galeri: " + error.message;
+  }
+}
 
-    files.forEach(file => {
+function tampilkanFoto(){
+  galeri.innerHTML = "";
 
-        if (!file.type.startsWith("image/")) {
-            return;
-        }
+  const daftar = kategoriAktif === "Semua"
+    ? semuaFoto
+    : semuaFoto.filter(foto => foto.kategori === kategoriAktif);
 
-        if (file.size > 2 * 1024 * 1024) {
-            alert("Foto " + file.name + " melebihi 2 MB.");
-            return;
-        }
+  if(daftar.length === 0){
+    pesan.textContent = "Belum ada foto pada kategori ini.";
+    return;
+  }
 
-        const url = URL.createObjectURL(file);
+  pesan.textContent = "";
 
-        if (galeri.querySelector(".kosong")) {
-            galeri.innerHTML = "";
-        }
+  daftar.forEach(foto => {
+    const kartu = document.createElement("article");
+    kartu.className = "kartu";
 
-        const kotak = document.createElement("div");
-        kotak.className = "foto";
+    const gambar = document.createElement("img");
+    gambar.src = foto.fotoUrl || "";
+    gambar.alt = foto.judul || "Foto keluarga";
+    gambar.loading = "lazy";
 
-        const gambar = document.createElement("img");
-        gambar.src = url;
+    const isi = document.createElement("div");
+    isi.className = "isi";
 
-        const keterangan = document.createElement("div");
-        keterangan.className = "keterangan";
+    const judul = document.createElement("h3");
+    judul.textContent = foto.judul || "Tanpa judul";
 
-        const namaFile = document.createElement("div");
-        namaFile.textContent = file.name;
-        namaFile.style.fontSize = "12px";
-        namaFile.style.color = "#777";
+    const keterangan = document.createElement("p");
+    keterangan.textContent = foto.keterangan || "";
 
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Foto apa ini? Ceritakan di sini...";
+    isi.append(judul,keterangan);
+    kartu.append(gambar,isi);
+    galeri.appendChild(kartu);
+  });
+}
 
-        const hapus = document.createElement("button");
-        hapus.className = "tombol-hapus";
-        hapus.textContent = "Hapus Foto";
+document.querySelectorAll(".filter button").forEach(tombol => {
+  tombol.addEventListener("click", () => {
+    document.querySelectorAll(".filter button").forEach(b =>
+      b.classList.remove("aktif")
+    );
 
-        hapus.onclick = function() {
-            URL.revokeObjectURL(url);
-            kotak.remove();
-
-            if (galeri.children.length === 0) {
-                galeri.innerHTML =
-                '<div class="kosong">📷 Belum ada foto keluarga.</div>';
-            }
-        };
-
-        keterangan.appendChild(namaFile);
-        keterangan.appendChild(input);
-        keterangan.appendChild(hapus);
-
-        kotak.appendChild(gambar);
-        kotak.appendChild(keterangan);
-
-        galeri.appendChild(kotak);
-
-    });
-
-    this.value = "";
-
+    tombol.classList.add("aktif");
+    kategoriAktif = tombol.dataset.kategori;
+    tampilkanFoto();
+  });
 });
 
-</script>
-
-</body>
+muatGaleri();
+</script></body>
 </html>
