@@ -1,150 +1,446 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silsilah Keluarga</title>
-
-<style>
+<title>Silsilah Keluarga Bani Yasroji</title><style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f3f7f4;
-    color: #26352b;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7f5;
+  color: #26352c;
 }
 
 header {
-    background: #176b45;
-    color: white;
-    padding: 25px 18px;
-    text-align: center;
-    border-radius: 0 0 25px 25px;
+  background: #176b45;
+  color: white;
+  text-align: center;
+  padding: 28px 15px;
+}
+
+.logo {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: white;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #176b45;
+  font-size: 32px;
 }
 
 header h1 {
-    margin: 5px 0;
-    font-size: 25px;
+  font-size: 21px;
+  margin: 5px 0;
 }
 
 header p {
-    margin: 8px 0 0;
-    font-size: 14px;
+  font-size: 13px;
+  margin: 5px 0;
 }
 
-.container {
-    padding: 18px;
-    max-width: 600px;
-    margin: auto;
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: white;
+  box-shadow: 0 2px 5px #00000012;
 }
 
-.welcome {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px #0000000d;
+nav a {
+  text-decoration: none;
+  color: #176b45;
+  padding: 14px 12px;
+  font-size: 13px;
+  font-weight: bold;
 }
 
-.welcome h2 {
-    color: #176b45;
-    margin-top: 0;
+nav a:hover {
+  background: #e8f5ed;
 }
 
-.menu {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+.sambutan {
+  text-align: center;
+  padding: 25px 15px 15px;
 }
 
-.menu a {
-    background: white;
-    text-decoration: none;
-    color: #26352b;
-    padding: 22px 10px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 3px 12px #0000000d;
+.sambutan h2 {
+  color: #176b45;
+  font-size: 20px;
 }
 
-.menu .icon {
-    font-size: 32px;
-    display: block;
-    margin-bottom: 10px;
+.sambutan p {
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.menu strong {
-    font-size: 14px;
+.menu-cepat {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 15px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.menu-kartu {
+  background: white;
+  border-radius: 12px;
+  padding: 18px 10px;
+  text-align: center;
+  box-shadow: 0 2px 7px #00000010;
+}
+
+.menu-kartu .ikon {
+  font-size: 30px;
+}
+
+.menu-kartu h3 {
+  font-size: 14px;
+  color: #176b45;
+}
+
+.menu-kartu a {
+  display: inline-block;
+  background: #176b45;
+  color: white;
+  padding: 8px 14px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.bagian-anggota {
+  padding: 20px 15px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.bagian-anggota h2 {
+  color: #176b45;
+  text-align: center;
+}
+
+.pencarian {
+  display: flex;
+  gap: 7px;
+  margin: 18px 0;
+}
+
+.pencarian input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.pencarian button {
+  border: none;
+  border-radius: 8px;
+  background: #176b45;
+  color: white;
+  padding: 10px 15px;
+}
+
+.daftar-anggota {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kartu-anggota {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 2px 7px #00000010;
+}
+
+.kartu-anggota img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.kartu-anggota h3 {
+  font-size: 14px;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+
+.kartu-anggota button {
+  background: #176b45;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 12px;
+}
+
+#pesan {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+  grid-column: 1 / -1;
+}
+
+.profil {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0009;
+  z-index: 10;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.isi-profil {
+  background: white;
+  max-width: 420px;
+  margin: 35px auto;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.isi-profil img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.detail {
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.tutup {
+  background: #b83232;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 7px;
 }
 
 footer {
-    text-align: center;
-    padding: 25px 10px;
-    color: #777;
-    font-size: 12px;
+  background: #176b45;
+  color: white;
+  text-align: center;
+  padding: 18px;
+  margin-top: 25px;
+  font-size: 12px;
 }
-</style>
-</head>
 
-<body>
-
-<header>
-    <h1>🌳 SILSILAH KELUARGA</h1>
-    <p>Mengenal asal-usul dan menjaga hubungan keluarga</p>
-</header>
-
-<div class="container">
-
-    <div class="welcome">
-        <h2>Selamat Datang</h2>
-        <p>
-            Mari mengenal keluarga kita,
-            menyimpan kenangan, dan menjaga
-            hubungan antar-generasi.
-        </p>
-    </div>
-
-    <div class="menu">
-
-        <a href="silsilah.html">
-            <span class="icon">🌳</span>
-            <strong>Pohon Keluarga</strong>
-        </a>
-
-        <a href="anggota.html">
-            <span class="icon">👨‍👩‍👧‍👦</span>
-            <strong>Anggota Keluarga</strong>
-        </a>
-
-        <a href="usulan.html">
-            <span class="icon">➕</span>
-            <strong>Tambah Anggota</strong>
-        </a>
-
-        <a href="galeri.html">
-            <span class="icon">📸</span>
-            <strong>Galeri Keluarga</strong>
-        </a>
-
-        <a href="sejarah.html">
-            <span class="icon">📖</span>
-            <strong>Sejarah Keluarga</strong>
-        </a>
-
-        <a href="login.html">
-            <span class="icon">🔐</span>
-            <strong>Login Admin</strong>
-        </a>
-
-    </div>
+@media (min-width: 650px) {
+  .daftar-anggota {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+</style></head><body><header>
+  <div class="logo">♥</div>
+  <h1>SILSILAH KELUARGA</h1>
+  <p>BANI YASROJI</p>
+  <p>Mengenal keluarga, menjaga silaturahmi</p>
+</header><nav>
+  <a href="index.html">Beranda</a>
+  <a href="silsilah.html">Pohon Silsilah</a>
+  <a href="#anggota">Anggota Keluarga</a>
+</nav><section class="sambutan">
+  <h2>Selamat Datang</h2>
+  <p>
+    Selamat datang di website Silsilah Keluarga Bani Yasroji.
+    Mari mengenal keluarga dan menjaga hubungan silaturahmi
+    antar generasi.
+  </p>
+</section><section class="menu-cepat">  <div class="menu-kartu">
+    <div class="ikon">🌳</div>
+    <h3>Pohon Silsilah</h3>
+    <a href="silsilah.html">Lihat Silsilah</a>
+  </div>  <div class="menu-kartu">
+    <div class="ikon">👨‍👩‍👧‍👦</div>
+    <h3>Anggota Keluarga</h3>
+    <a href="#anggota">Lihat Anggota</a>
+  </div></section><section class="bagian-anggota" id="anggota">  <h2>DAFTAR ANGGOTA KELUARGA</h2>  <div class="pencarian">
+    <input
+      type="search"
+      id="cari"
+      placeholder="Cari nama anggota keluarga..."
+    >
+    <button id="tombolCari">Cari</button>
+  </div>  <div class="daftar-anggota" id="daftarAnggota">
+    <div id="pesan">Memuat anggota keluarga...</div>
+  </div></section><div class="profil" id="profil">
+  <div class="isi-profil">
+    <img id="fotoProfil" src="" alt="Foto anggota">
+    <h2 id="namaProfil"></h2><div class="detail">
+  <p><b>Jenis kelamin:</b> <span id="jenisProfil"></span></p>
+  <p><b>Status:</b> <span id="statusProfil"></span></p>
+  <p><b>Ayah:</b> <span id="ayahProfil"></span></p>
+  <p><b>Ibu:</b> <span id="ibuProfil"></span></p>
+  <p><b>Pasangan:</b> <span id="pasanganProfil"></span></p>
+  <p><b>Catatan:</b> <span id="catatanProfil"></span></p>
 </div>
 
-<footer>
-    © 2026 Silsilah Keluarga
-</footer>
+<button class="tutup" id="tutupProfil">Tutup Profil</button>
 
-</body>
+  </div>
+</div><footer>
+  <p>© Silsilah Keluarga Bani Yasroji</p>
+  <p>Menjaga silaturahmi sepanjang generasi</p>
+</footer><script type="module">
+import { db } from "./js/firebase.js";
+
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+const daftar = document.getElementById("daftarAnggota");
+const inputCari = document.getElementById("cari");
+
+let semuaAnggota = [];
+
+const fotoKosong = "data:image/svg+xml," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#eeeeee"/><circle cx="50" cy="35" r="18" fill="#aaaaaa"/><path d="M15 100 Q18 60 50 60 Q82 60 85 100" fill="#aaaaaa"/></svg>'
+  );
+
+function nilai(data) {
+  return data || "-";
+}
+
+function tampilkanAnggota(data) {
+  daftar.innerHTML = "";
+
+  if (data.length === 0) {
+    daftar.innerHTML =
+      '<div id="pesan">Anggota keluarga tidak ditemukan.</div>';
+    return;
+  }
+
+  data.forEach(orang => {
+    const kartu = document.createElement("div");
+    kartu.className = "kartu-anggota";
+
+    const foto = document.createElement("img");
+    foto.src = orang.fotoUrl || fotoKosong;
+    foto.alt = "Foto " + orang.nama;
+
+    foto.onerror = () => {
+      foto.src = fotoKosong;
+    };
+
+    const nama = document.createElement("h3");
+    nama.textContent = orang.nama || "Tanpa nama";
+
+    const tombol = document.createElement("button");
+    tombol.textContent = "Lihat Profil";
+
+    tombol.addEventListener("click", () => {
+      bukaProfil(orang);
+    });
+
+    kartu.appendChild(foto);
+    kartu.appendChild(nama);
+    kartu.appendChild(tombol);
+
+    daftar.appendChild(kartu);
+  });
+}
+
+function bukaProfil(orang) {
+  document.getElementById("fotoProfil").src =
+    orang.fotoUrl || fotoKosong;
+
+  document.getElementById("namaProfil").textContent =
+    orang.nama || "-";
+
+  document.getElementById("jenisProfil").textContent =
+    nilai(orang.jenisKelamin);
+
+  document.getElementById("statusProfil").textContent =
+    nilai(orang.statusHidup);
+
+  document.getElementById("ayahProfil").textContent =
+    nilai(orang.ayah);
+
+  document.getElementById("ibuProfil").textContent =
+    nilai(orang.ibu);
+
+  document.getElementById("pasanganProfil").textContent =
+    nilai(orang.pasangan);
+
+  document.getElementById("catatanProfil").textContent =
+    nilai(orang.catatan);
+
+  document.getElementById("profil").style.display = "block";
+}
+
+document.getElementById("tutupProfil")
+  .addEventListener("click", () => {
+    document.getElementById("profil").style.display = "none";
+  });
+
+document.getElementById("profil")
+  .addEventListener("click", e => {
+    if (e.target.id === "profil") {
+      e.target.style.display = "none";
+    }
+  });
+
+function cariAnggota() {
+  const kata = inputCari.value.trim().toLowerCase();
+
+  const hasil = semuaAnggota.filter(orang =>
+    String(orang.nama || "").toLowerCase().includes(kata)
+  );
+
+  tampilkanAnggota(hasil);
+}
+
+document.getElementById("tombolCari")
+  .addEventListener("click", cariAnggota);
+
+inputCari.addEventListener("input", cariAnggota);
+
+async function muatAnggota() {
+  try {
+    const hasil = await getDocs(collection(db, "anggota"));
+
+    semuaAnggota = hasil.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    semuaAnggota.sort((a, b) =>
+      String(a.nama || "").localeCompare(
+        String(b.nama || ""),
+        "id"
+      )
+    );
+
+    tampilkanAnggota(semuaAnggota);
+
+  } catch (error) {
+    console.error(error);
+
+    daftar.innerHTML =
+      '<div id="pesan">Gagal memuat anggota keluarga. Periksa koneksi dan izin Firebase.</div>';
+  }
+}
+
+muatAnggota();
+</script></body>
 </html>
