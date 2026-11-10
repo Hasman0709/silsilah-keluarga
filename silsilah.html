@@ -1,428 +1,592 @@
 <!DOCTYPE html><html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pohon Silsilah Keluarga Besar Bani Yasroji</title><style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#eaf5e5;color:#174b27}
-
-/* JUDUL BARU */
-header{
-  background:linear-gradient(135deg,#064e2b,#087b43,#15945a);
-  color:white;
-  text-align:center;
-  padding:30px 15px 25px;
-  position:relative;
-  overflow:hidden;
-}
-header:before{
-  content:"";
-  position:absolute;
-  width:180px;
-  height:180px;
-  border:1px solid #ffffff25;
-  border-radius:50%;
-  top:-100px;
-  right:-35px;
-}
-header:after{
-  content:"";
-  position:absolute;
-  width:140px;
-  height:140px;
-  border:1px solid #ffffff25;
-  border-radius:50%;
-  bottom:-100px;
-  left:-35px;
-}
-.header-icon{
-  font-size:38px;
-  margin-bottom:10px;
-}
-header h1{
-  margin:0;
-  font-size:25px;
-  font-weight:800;
-  letter-spacing:2px;
-  line-height:1.4;
-}
-header p{
-  margin:8px 0 15px;
-  font-size:15px;
-  letter-spacing:2px;
-  font-weight:bold;
-  color:#d7f5df;
-}
-header a{
-  display:inline-block;
-  color:white;
-  text-decoration:none;
-  font-size:13px;
-  background:#ffffff20;
-  border:1px solid #ffffff65;
-  padding:9px 18px;
-  border-radius:25px;
-  position:relative;
-  z-index:1;
-}
-header a:hover{background:#ffffff35}
-
-.legend{
-  text-align:center;
-  background:white;
-  border-radius:10px;
-  margin:12px auto;
-  padding:12px;
-  max-width:700px;
-  font-size:13px
-}
-.toolbar{text-align:center;padding:8px}
-.toolbar button{
-  border:0;
-  border-radius:8px;
-  padding:10px 15px;
-  background:#087b35;
-  color:white;
-  font-weight:bold
-}
-.hint{
-  text-align:center;
-  font-size:12px;
-  color:#536b57;
-  padding:8px
-}
-.area{overflow:auto;padding:20px 12px 50px}
-.tree{
-  width:max-content;
-  min-width:100%;
-  display:flex;
-  justify-content:center;
-  gap:25px;
-  margin:auto
-}
-.branch,.childBranch,.grandBranch{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  position:relative
-}
-.couple{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  position:relative;
-  z-index:2
-}
-.card{
-  width:145px;
-  min-height:140px;
-  background:white;
-  border:3px solid #178044;
-  border-radius:15px;
-  padding:9px 7px;
-  text-align:center;
-  box-shadow:0 3px 9px #0002;
-  overflow-wrap:anywhere
-}
-.card.female{border-color:#cc6b9d}
-.card img,.avatar{
-  width:68px;
-  height:68px;
-  object-fit:cover;
-  border-radius:50%;
-  display:block;
-  margin:0 auto 7px;
-  background:#e5f1e5
-}
-.avatar{
-  display:grid;
-  place-items:center;
-  font-size:32px
-}
-.name{font-weight:bold;font-size:14px}
-.rank{
-  font-size:12px;
-  color:#a16a13;
-  font-weight:bold;
-  margin-top:5px;
-  min-height:14px
-}
-.status{
-  font-size:11px;
-  color:#69756a;
-  margin-top:5px
-}
-.heart{font-size:23px;color:#d52b42}
-.line{width:2px;height:23px;background:#54735a}
-.children,.grandchildren{
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  gap:18px;
-  border-top:2px solid #54735a;
-  padding-top:22px
-}
-.childBranch:before,.grandBranch:before{
-  content:"";
-  position:absolute;
-  top:-24px;
-  height:24px;
-  width:2px;
-  background:#54735a
-}
-.grandchildren{gap:12px;padding-top:19px}
-.grandBranch:before{top:-21px;height:21px}
-.grandBranch .card{
-  width:132px;
-  min-height:130px
-}
-.grandBranch .card img,.grandBranch .avatar{
-  width:60px;
-  height:60px
-}
-.message{
-  background:white;
-  border-radius:10px;
-  padding:12px;
-  margin:12px auto;
-  text-align:center;
-  max-width:650px
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pohon Silsilah Keluarga</title><style>
+* {
+  box-sizing: border-box;
 }
 
-@media(max-width:600px){
-  header h1{font-size:21px;letter-spacing:1px}
-  header p{font-size:13px}
-  .header-icon{font-size:33px}
-  .card{width:132px}
-  .children{gap:12px}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f6f4;
+  color: #222;
+}
+
+header {
+  background: #176b45;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+header p {
+  margin: 5px 0 0;
+  font-size: 13px;
+}
+
+.info {
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+}
+
+#cariNama {
+  width: 65%;
+  max-width: 300px;
+  padding: 11px;
+  border: 1px solid #aaa;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+.info button {
+  padding: 11px 16px;
+  border: none;
+  border-radius: 7px;
+  background: #176b45;
+  color: white;
+  font-weight: bold;
+}
+
+#hasilCari {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+.area {
+  width: 100%;
+  height: calc(100vh - 165px);
+  overflow: auto;
+  background: #fff;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+}
+
+.pohon {
+  display: inline-block;
+  min-width: 100%;
+  padding: 25px;
+  transform-origin: top left;
+}
+
+.keluarga {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: max-content;
+  position: relative;
+}
+
+.orangtua {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border: 2px solid #176b45;
+  border-radius: 12px;
+  background: #e8f5ed;
+  min-width: 180px;
+  position: relative;
+  z-index: 1;
+}
+
+.anak-anak {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-left: 35px;
+  padding-left: 25px;
+  border-left: 2px solid #83ad91;
+  position: relative;
+}
+
+.anak-anak:empty {
+  display: none;
+}
+
+.unit-anak {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.unit-anak::before {
+  content: "";
+  position: absolute;
+  left: -27px;
+  top: 50%;
+  width: 27px;
+  border-top: 2px solid #83ad91;
+}
+
+.unit-anak > .keluarga {
+  align-items: center;
+}
+
+.kartu {
+  width: 145px;
+  min-height: 75px;
+  border: 1px solid #bbb;
+  border-radius: 9px;
+  background: white;
+  padding: 7px;
+  text-align: center;
+  box-shadow: 0 2px 5px #00000012;
+  flex-shrink: 0;
+}
+
+.kartu.laki {
+  border-top: 4px solid #2684c7;
+}
+
+.kartu.perempuan {
+  border-top: 4px solid #df719e;
+}
+
+.kartu img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 4px;
+  background: #eee;
+}
+
+.nama {
+  font-size: 12px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.label {
+  font-size: 10px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.hubungan {
+  font-size: 10px;
+  color: #176b45;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.jantung {
+  color: #d83255;
+  font-size: 18px;
+  padding: 0 2px;
+}
+
+.kartu.ditemukan {
+  background: #fff2a8;
+  border: 3px solid #e59b00;
+}
+
+.pesan {
+  padding: 20px;
+  text-align: center;
+  color: #777;
 }
 </style></head><body><header>
-  <div class="header-icon">🌳</div>
-  <h1>POHON SILSILAH</h1>
-  <p>KELUARGA BESAR BANI YASROJI</p>
-  <a href="index.html">← Kembali ke Beranda</a>
-</header><div class="legend">
-  ❤️ Suami dan istri &nbsp; | &nbsp; Garis menghubungkan orang tua dengan anak<br>
-  <small>Anak pertama, Menantu pertama, Cucu pertama, dan keterangan urutan lainnya tampil di bawah nama.</small>
-</div><div class="toolbar">
-  <button id="reload">↻ Muat ulang</button>
-</div><div class="hint">
-  Geser ke kiri atau kanan untuk melihat seluruh pohon keluarga.
-</div><div id="message" class="message">
-  Memuat data keluarga...
-</div><div class="area">
-  <div id="tree" class="tree"></div>
+  <h2>POHON SILSILAH KELUARGA</h2>
+  <p>Keluarga Bani Yasroji</p>
+</header><div class="info">
+  <input
+    type="search"
+    id="cariNama"
+    placeholder="Cari nama anggota keluarga..."
+  >
+  <button id="tombolCari">Cari</button>  <div id="hasilCari"></div>  <p>Jepit dua jari untuk memperbesar atau memperkecil pohon silsilah.</p>
+</div><div class="area" id="area">
+  <div class="pohon" id="pohon">
+    <div class="pesan">Memuat data silsilah...</div>
+  </div>
 </div><script type="module">
-import {db} from "./js/firebase.js";
-import {collection,getDocs} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+import { db } from "./js/firebase.js";
 
-const tree=document.getElementById("tree"),
-message=document.getElementById("message");
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-const norm=v=>(v||"").trim().toLocaleLowerCase("id");
+const pohon = document.getElementById("pohon");
+const area = document.getElementById("area");
 
-function byName(data,n){
-  return data.find(x=>norm(x.nama)===norm(n));
+let semuaAnggota = [];
+let zoomLevel = 1;
+let jarakAwal = 0;
+let zoomAwal = 1;
+
+function teks(nilai) {
+  return String(nilai || "").trim();
 }
 
-function card(p){
-  const c=document.createElement("div");
-  c.className="card "+(norm(p.jenisKelamin)==="perempuan"?"female":"");
+function cariPasangan(orang) {
+  if (!orang || !orang.pasangan) return null;
 
-  if(p.fotoUrl){
-    const i=document.createElement("img");
-    i.src=p.fotoUrl;
-    i.alt="Foto "+(p.nama||"anggota");
-    i.onerror=()=>i.replaceWith(avatar(p));
-    c.append(i);
-  }else{
-    c.append(avatar(p));
-  }
-
-  const n=document.createElement("div");
-  n.className="name";
-  n.textContent=p.nama||"Tanpa nama";
-
-  const r=document.createElement("div");
-  r.className="rank";
-  r.textContent=p.urutan||"";
-
-  const s=document.createElement("div");
-  s.className="status";
-  s.textContent=p.statusHidup||"";
-
-  c.append(n,r,s);
-  return c;
+  return semuaAnggota.find(a =>
+    teks(a.nama).toLowerCase() === teks(orang.pasangan).toLowerCase()
+  ) || null;
 }
 
-function avatar(p){
-  const a=document.createElement("div");
-  a.className="avatar";
-  a.textContent=norm(p.jenisKelamin)==="perempuan"?"👩":"👨";
-  return a;
-}
+function pasanganSama(a, b) {
+  if (!a || !b) return false;
 
-function couple(p,data,used){
-  const row=document.createElement("div");
-  row.className="couple";
-  row.append(card(p));
-
-  const mate=byName(data,p.pasangan);
-
-  if(mate&&mate.id!==p.id&&!used.has(mate.id)){
-    const h=document.createElement("span");
-    h.className="heart";
-    h.textContent="❤️";
-    row.append(h,card(mate));
-    used.add(mate.id);
-  }
-
-  return row;
-}
-
-function kids(p,data){
-  return data.filter(x=>
-    norm(x.ayah)===norm(p.nama)||
-    norm(x.ibu)===norm(p.nama)
+  return (
+    teks(a.pasangan).toLowerCase() === teks(b.nama).toLowerCase() ||
+    teks(b.pasangan).toLowerCase() === teks(a.nama).toLowerCase()
   );
 }
 
-function render(data){
-  tree.innerHTML="";
+function cocokOrangtua(anak, ayah, ibu) {
+  if (!anak || !ayah || !ibu) return false;
 
-  if(!data.length){
-    message.textContent="Belum ada data anggota.";
-    return;
+  const namaAyah = teks(anak.ayah).toLowerCase();
+  const namaIbu = teks(anak.ibu).toLowerCase();
+
+  const nama1 = teks(ayah.nama).toLowerCase();
+  const nama2 = teks(ibu.nama).toLowerCase();
+
+  return (
+    (namaAyah === nama1 && namaIbu === nama2) ||
+    (namaAyah === nama2 && namaIbu === nama1)
+  );
+}
+
+function angkaUrutan(nilai) {
+  const kata = teks(nilai).toLowerCase();
+
+  const daftar = [
+    "pertama", "kedua", "ketiga", "keempat",
+    "kelima", "keenam", "ketujuh", "kedelapan",
+    "kesembilan", "kesepuluh"
+  ];
+
+  for (let i = 0; i < daftar.length; i++) {
+    if (kata.includes(daftar[i])) return i + 1;
   }
 
-  const roots=data.filter(x=>!x.ayah&&!x.ibu);
+  const angka = kata.match(/\d+/);
+  return angka ? Number(angka[0]) : 999;
+}
 
-  if(!roots.length){
-    message.textContent="Belum ditemukan generasi paling atas. Kosongkan kolom ayah dan ibu pada data Kakek/Nenek tertua.";
-    return;
-  }
+function urutkanAnak(data) {
+  return data.sort((a, b) => {
+    const beda = angkaUrutan(a.urutan) - angkaUrutan(b.urutan);
 
-  message.textContent="Data keluarga berhasil dimuat.";
+    if (beda !== 0) return beda;
 
-  const used=new Set();
-  const rootRow=document.createElement("div");
-  rootRow.style="display:flex;gap:28px;align-items:flex-start";
+    return teks(a.nama).localeCompare(teks(b.nama), "id");
+  });
+}
 
-  roots.forEach(root=>{
-    if(used.has(root.id))return;
+function buatKartu(orang, label) {
+  const kartu = document.createElement("div");
 
-    const b=document.createElement("div");
-    b.className="branch";
-    b.append(couple(root,data,used));
+  const jenis = teks(orang.jenisKelamin).toLowerCase();
 
-    const childList=kids(root,data);
+  kartu.className = "kartu " +
+    (jenis.includes("perempuan") || jenis.includes("wanita")
+      ? "perempuan"
+      : "laki");
 
-    if(childList.length){
-      const line=document.createElement("div");
-      line.className="line";
-      b.append(line);
+  const gambar = document.createElement("img");
 
-      const wrap=document.createElement("div");
-      wrap.className="children";
+  gambar.src = teks(orang.fotoUrl) || "data:image/svg+xml," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="100%" height="100%" fill="#eeeeee"/><circle cx="40" cy="29" r="14" fill="#aaaaaa"/><path d="M12 78 Q15 48 40 48 Q65 48 68 78" fill="#aaaaaa"/></svg>'
+    );
 
-      childList.forEach(ch=>{
-        if(used.has(ch.id))return;
+  gambar.alt = "Foto anggota";
 
-        const cb=document.createElement("div");
-        cb.className="childBranch";
-        cb.append(couple(ch,data,used));
-        used.add(ch.id);
+  gambar.onerror = () => {
+    gambar.style.display = "none";
+  };
 
-        const grandList=kids(ch,data);
+  const nama = document.createElement("div");
+  nama.className = "nama";
+  nama.textContent = teks(orang.nama);
 
-        if(grandList.length){
-          const ln=document.createElement("div");
-          ln.className="line";
-          cb.append(ln);
+  const keterangan = document.createElement("div");
+  keterangan.className = "label";
+  keterangan.textContent = teks(orang.statusHidup);
 
-          const gw=document.createElement("div");
-          gw.className="grandchildren";
+  const hubungan = document.createElement("div");
+  hubungan.className = "hubungan";
+  hubungan.textContent = label || "";
 
-          grandList.forEach(gc=>{
-            if(used.has(gc.id))return;
+  kartu.appendChild(gambar);
+  kartu.appendChild(hubungan);
+  kartu.appendChild(nama);
+  kartu.appendChild(keterangan);
 
-            const gb=document.createElement("div");
-            gb.className="grandBranch";
-            gb.append(couple(gc,data,used));
-            used.add(gc.id);
+  return kartu;
+}
 
-            const greatList=kids(gc,data);
+function buatKeluarga(ayah, ibu, generasi, sudahTampil) {
+  const keluarga = document.createElement("div");
+  keluarga.className = "keluarga";
 
-            if(greatList.length){
-              const gl=document.createElement("div");
-              gl.className="line";
-              gb.append(gl);
+  const kotakOrangtua = document.createElement("div");
+  kotakOrangtua.className = "orangtua";
 
-              const greatWrap=document.createElement("div");
-              greatWrap.className="grandchildren";
+  kotakOrangtua.appendChild(
+    buatKartu(ayah, generasi === 1 ? "Kakek" : "Ayah")
+  );
 
-              greatList.forEach(great=>{
-                if(used.has(great.id))return;
+  const hati = document.createElement("span");
+  hati.className = "jantung";
+  hati.textContent = "♥";
+  kotakOrangtua.appendChild(hati);
 
-                const item=document.createElement("div");
-                item.className="grandBranch";
-                item.append(couple(great,data,used));
-                used.add(great.id);
-                greatWrap.append(item);
-              });
+  kotakOrangtua.appendChild(
+    buatKartu(ibu, generasi === 1 ? "Nenek" : "Ibu")
+  );
 
-              gb.append(greatWrap);
-            }
+  keluarga.appendChild(kotakOrangtua);
 
-            gw.append(gb);
-          });
+  if (generasi >= 6) return keluarga;
 
-          cb.append(gw);
-        }
+  const anak = urutkanAnak(
+    semuaAnggota.filter(a =>
+      cocokOrangtua(a, ayah, ibu) &&
+      !sudahTampil.has(a.id)
+    )
+  );
 
-        wrap.append(cb);
-      });
+  if (anak.length === 0) return keluarga;
 
-      b.append(wrap);
+  const daftarAnak = document.createElement("div");
+  daftarAnak.className = "anak-anak";
+
+  anak.forEach((orang, index) => {
+    if (sudahTampil.has(orang.id)) return;
+
+    sudahTampil.add(orang.id);
+
+    const pasangan = cariPasangan(orang);
+
+    let pasanganValid = pasangan &&
+      pasangan.id !== orang.id &&
+      pasanganSama(orang, pasangan);
+
+    if (pasanganValid && sudahTampil.has(pasangan.id)) {
+      pasanganValid = false;
     }
 
-    rootRow.append(b);
-    used.add(root.id);
+    if (pasanganValid) {
+      sudahTampil.add(pasangan.id);
+    }
+
+    const unit = document.createElement("div");
+    unit.className = "unit-anak";
+
+    const keluargaAnak = document.createElement("div");
+    keluargaAnak.className = "keluarga";
+
+    const kotak = document.createElement("div");
+    kotak.className = "orangtua";
+
+    kotak.appendChild(
+      buatKartu(
+        orang,
+        teks(orang.urutan) || `Anak ke-${index + 1}`
+      )
+    );
+
+    if (pasanganValid) {
+      const hatiAnak = document.createElement("span");
+      hatiAnak.className = "jantung";
+      hatiAnak.textContent = "♥";
+      kotak.appendChild(hatiAnak);
+
+      kotak.appendChild(
+        buatKartu(pasangan, "Pasangan")
+      );
+    }
+
+    keluargaAnak.appendChild(kotak);
+
+    if (pasanganValid) {
+      const cabang = buatKeluarga(
+        orang,
+        pasangan,
+        generasi + 1,
+        sudahTampil
+      );
+
+      const anakCabang = cabang.querySelector(".anak-anak");
+
+      if (anakCabang) {
+        keluargaAnak.appendChild(anakCabang);
+      }
+    }
+
+    unit.appendChild(keluargaAnak);
+    daftarAnak.appendChild(unit);
   });
 
-  tree.append(rootRow);
+  keluarga.appendChild(daftarAnak);
 
-  const unplaced=data.filter(x=>!used.has(x.id));
+  return keluarga;
+}
 
-  if(unplaced.length){
-    const box=document.createElement("div");
-    box.className="message";
-    box.textContent="Anggota belum tersambung. Periksa apakah nama ayah dan ibu ditulis sama persis dengan nama anggota.";
+async function tampilkanSilsilah() {
+  try {
+    const hasil = await getDocs(collection(db, "anggota"));
 
-    const row=document.createElement("div");
-    row.style="display:flex;gap:10px";
+    semuaAnggota = hasil.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
 
-    unplaced.forEach(x=>row.append(card(x)));
+    pohon.innerHTML = "";
 
-    box.append(row);
-    tree.append(box);
+    const sudahTampil = new Set();
+
+    const akar = semuaAnggota.filter(a =>
+      Number(a.generasi) === 1 &&
+      !teks(a.ayah) &&
+      !teks(a.ibu) &&
+      !teks(a.urutan).toLowerCase().startsWith("menantu")
+    );
+
+    if (akar.length === 0) {
+      pohon.innerHTML =
+        '<div class="pesan">Data kakek dan nenek belum ditemukan. Pastikan generasi kakek dan nenek diisi 1.</div>';
+      return;
+    }
+
+    akar.forEach(orang => {
+      if (sudahTampil.has(orang.id)) return;
+
+      const pasangan = cariPasangan(orang);
+
+      if (!pasangan || !pasanganSama(orang, pasangan)) return;
+      if (sudahTampil.has(pasangan.id)) return;
+
+      sudahTampil.add(orang.id);
+      sudahTampil.add(pasangan.id);
+
+      const keluarga = buatKeluarga(
+        orang,
+        pasangan,
+        1,
+        sudahTampil
+      );
+
+      pohon.appendChild(keluarga);
+    });
+
+    if (pohon.children.length === 0) {
+      pohon.innerHTML =
+        '<div class="pesan">Pasangan kakek dan nenek belum terhubung. Periksa kolom pasangan pada data anggota.</div>';
+    }
+
+  } catch (error) {
+    console.error(error);
+
+    pohon.innerHTML =
+      '<div class="pesan">Gagal memuat silsilah. Periksa koneksi internet dan pengaturan Firebase.</div>';
   }
 }
 
-async function load(){
-  message.textContent="Memuat data keluarga...";
+/* FITUR PENCARIAN */
 
-  try{
-    const snap=await getDocs(collection(db,"anggota"));
-    render(snap.docs.map(d=>({id:d.id,...d.data()})));
-  }catch(e){
-    console.error(e);
-    message.textContent="Gagal memuat data. Periksa koneksi dan aturan Firestore.";
+function cariAnggotaKeluarga() {
+  const input = document.getElementById("cariNama");
+  const hasil = document.getElementById("hasilCari");
+  const kata = input.value.trim().toLowerCase();
+
+  document.querySelectorAll(".kartu").forEach(kartu => {
+    kartu.classList.remove("ditemukan");
+  });
+
+  if (!kata) {
+    hasil.textContent = "Masukkan nama anggota keluarga.";
+    return;
   }
+
+  const kartuDitemukan = [...document.querySelectorAll(".kartu")]
+    .find(kartu => {
+      const nama = kartu.querySelector(".nama");
+
+      return nama &&
+        nama.textContent.toLowerCase().includes(kata);
+    });
+
+  if (!kartuDitemukan) {
+    hasil.textContent = "Nama tidak ditemukan dalam pohon silsilah.";
+    return;
+  }
+
+  kartuDitemukan.classList.add("ditemukan");
+
+  hasil.textContent = "Anggota keluarga ditemukan.";
+
+  kartuDitemukan.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "center"
+  });
 }
 
-document.getElementById("reload").onclick=load;
-load();
+document.getElementById("tombolCari")
+  .addEventListener("click", cariAnggotaKeluarga);
+
+document.getElementById("cariNama")
+  .addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      cariAnggotaKeluarga();
+    }
+  });
+
+/* ZOOM DENGAN JEPIT DUA JARI */
+
+area.addEventListener("touchstart", function(e) {
+  if (e.touches.length === 2) {
+    jarakAwal = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+
+    zoomAwal = zoomLevel;
+  }
+}, { passive: true });
+
+area.addEventListener("touchmove", function(e) {
+  if (e.touches.length === 2 && jarakAwal > 0) {
+    e.preventDefault();
+
+    const jarakSekarang = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+
+    zoomLevel = Math.max(
+      0.25,
+      Math.min(2.5, zoomAwal * jarakSekarang / jarakAwal)
+    );
+
+    pohon.style.transform = `scale(${zoomLevel})`;
+  }
+}, { passive: false });
+
+area.addEventListener("touchend", function(e) {
+  if (e.touches.length < 2) {
+    jarakAwal = 0;
+  }
+});
+
+tampilkanSilsilah();
+
 </script></body>
 </html>
