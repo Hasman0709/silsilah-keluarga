@@ -1,334 +1,331 @@
 <!DOCTYPE html><html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silsilah Keluarga Besar Bani Yasroji</title><style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silsilah Keluarga Besar Bani Yasroji</title><style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f7f5;
-    color: #26352d;
-}
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f7f5;
+        color: #263238;
+    }
 
-header {
-    background: #145c3b;
-    color: white;
-    padding: 25px 15px;
-    text-align: center;
-}
+    header {
+        background: #075e45;
+        color: white;
+        padding: 20px 15px 0;
+        text-align: center;
+    }
 
-.logo {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    background: white;
-    color: #145c3b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    font-weight: bold;
-    margin: 0 auto 12px;
-}
+    .header-logo {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 10px;
+        border-radius: 50%;
+        background: white;
+        color: #075e45;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        font-weight: bold;
+    }
 
-header h1 {
-    font-size: 21px;
-    margin-bottom: 9px;
-    letter-spacing: 1px;
-}
-
-.nama-keluarga {
-    font-size: 27px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    margin-top: 4px;
-    text-shadow: 1px 2px 3px #00000055;
-}
-
-nav {
-    background: #10482f;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5px;
-    padding: 10px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    padding: 11px 13px;
-    font-size: 13px;
-    border-radius: 5px;
-}
-
-nav a:hover {
-    background: #28734e;
-}
-
-.container {
-    width: 92%;
-    max-width: 1000px;
-    margin: 25px auto;
-}
-
-.sambutan {
-    background: white;
-    padding: 25px 20px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 2px 8px #00000010;
-}
-
-.sambutan h2 {
-    color: #145c3b;
-    margin-bottom: 12px;
-}
-
-.sambutan p {
-    line-height: 1.7;
-    font-size: 14px;
-}
-
-.judul {
-    color: #145c3b;
-    margin: 30px 0 15px;
-    font-size: 20px;
-}
-
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 13px;
-}
-
-.menu {
-    background: white;
-    padding: 22px 12px;
-    border-radius: 10px;
-    text-align: center;
-    text-decoration: none;
-    color: #26352d;
-    box-shadow: 0 2px 8px #00000010;
-    transition: 0.2s;
-}
-
-.menu:hover {
-    transform: translateY(-3px);
-    background: #eaf5ee;
-}
-
-.menu .ikon {
-    font-size: 35px;
-    margin-bottom: 12px;
-}
-
-.menu h3 {
-    font-size: 15px;
-    color: #145c3b;
-    margin-bottom: 7px;
-}
-
-.menu p {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #68756d;
-}
-
-.galeri-info {
-    background: white;
-    padding: 22px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 8px #00000010;
-}
-
-.galeri-info p {
-    font-size: 14px;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-
-/* Thumbnail galeri halaman utama */
-.thumbnail-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    width: 56.25%;
-    margin: 15px auto 0;
-}
-
-.thumbnail-grid img {
-    width: 100%;
-    height: 51px;
-    object-fit: cover;
-    border-radius: 5px;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-.tidak-ada-foto {
-    grid-column: 1 / -1;
-    color: #68756d;
-    font-size: 13px;
-    padding: 12px;
-}
-
-footer {
-    background: #10482f;
-    color: white;
-    text-align: center;
-    padding: 22px 12px;
-    margin-top: 40px;
-    font-size: 12px;
-    line-height: 1.8;
-}
-
-@media (max-width: 480px) {
-    header h1 {
+    .judul-utama {
         font-size: 17px;
+        font-weight: bold;
+        letter-spacing: 1px;
     }
 
     .nama-keluarga {
-        font-size: 25px;
+        display: block;
+        margin-top: 5px;
+        font-size: 27px;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 16px 5px;
+        margin-top: 12px;
     }
 
     nav a {
-        font-size: 12px;
-        padding: 10px;
+        color: white;
+        text-decoration: none;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 6px;
+    }
+
+    nav a:hover {
+        background: rgba(255,255,255,0.18);
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px 15px;
+    }
+
+    .selamat-datang {
+        background: white;
+        padding: 25px 20px;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 22px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .selamat-datang h2 {
+        color: #075e45;
+        margin-bottom: 10px;
+    }
+
+    .selamat-datang p {
+        line-height: 1.6;
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-bottom: 25px;
+    }
+
+    .menu-card {
+        background: white;
+        padding: 20px 12px;
+        text-align: center;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #263238;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        transition: 0.2s;
+    }
+
+    .menu-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .menu-icon {
+        font-size: 30px;
+        margin-bottom: 9px;
+    }
+
+    .menu-card h3 {
+        color: #075e45;
+        font-size: 16px;
+    }
+
+    .galeri-section {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .galeri-section h2 {
+        color: #075e45;
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    .galeri-section p {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
     }
 
     .thumbnail-grid {
-        grid-template-columns: repeat(3, 1fr);
         width: 56.25%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        pointer-events: none;
+        user-select: none;
     }
 
     .thumbnail-grid img {
-        height: 48px;
+        width: 100%;
+        height: 51px;
+        object-fit: cover;
+        border-radius: 5px;
+        display: block;
+        pointer-events: none;
+        -webkit-user-drag: none;
     }
-}
-</style></head><body><header>
-    <div class="logo">BY</div>
-    <h1>SILSILAH KELUARGA BESAR</h1>
-    <div class="nama-keluarga">"BANI YASROJI"</div>
-</header><nav>
+
+    .pesan-kosong {
+        color: #777;
+        font-size: 13px;
+    }
+
+    footer {
+        margin-top: 25px;
+        padding: 20px 10px;
+        background: #075e45;
+        color: white;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+        .nama-keluarga {
+            font-size: 25px;
+        }
+
+        nav {
+            gap: 2px;
+        }
+
+        nav a {
+            font-size: 12px;
+            padding: 9px 7px;
+        }
+
+        .thumbnail-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .thumbnail-grid img {
+            height: 48px;
+        }
+
+        .menu-card h3 {
+            font-size: 14px;
+        }
+    }
+</style>
+
+</head><body><header>
+    <div class="header-logo">BY</div><div class="judul-utama">SILSILAH KELUARGA BESAR</div>
+<span class="nama-keluarga">BANI YASROJI</span>
+
+<nav>
     <a href="index.html">Beranda</a>
     <a href="silsilah.html">Pohon Silsilah</a>
     <a href="anggota.html">Anggota Keluarga</a>
     <a href="galeri.html">Galeri Foto</a>
-    <a href="login.html">Admin</a>
-</nav><main class="container"><section class="sambutan">
+</nav>
+
+</header><main class="container"><section class="selamat-datang">
     <h2>Selamat Datang</h2>
     <p>
-        Selamat datang di website keluarga besar Bani Yasroji.
-        Website ini dibuat sebagai sarana untuk mengenal asal-usul
-        keluarga, melihat hubungan kekerabatan, mengenal anggota
-        keluarga, serta menyimpan kenangan dan dokumentasi keluarga.
+        Selamat datang di website Silsilah Keluarga Besar Bani Yasroji.
+        Website ini menjadi sarana untuk mengenal keluarga,
+        melihat hubungan kekerabatan, dan menjaga tali silaturahmi.
     </p>
-    <br>
+</section>
+
+<section class="menu-grid">
+
+    <a href="silsilah.html" class="menu-card">
+        <div class="menu-icon">🌳</div>
+        <h3>Pohon Silsilah</h3>
+    </a>
+
+    <a href="anggota.html" class="menu-card">
+        <div class="menu-icon">👨‍👩‍👧‍👦</div>
+        <h3>Anggota Keluarga</h3>
+    </a>
+
+    <a href="galeri.html" class="menu-card">
+        <div class="menu-icon">📷</div>
+        <h3>Galeri Foto</h3>
+    </a>
+
+    <a href="login.html" class="menu-card">
+        <div class="menu-icon">🔐</div>
+        <h3>Admin</h3>
+    </a>
+
+</section>
+
+<section class="galeri-section">
+    <h2>Thumbnail Galeri Keluarga</h2>
+
     <p>
-        Semoga website ini menjadi penghubung silaturahmi
-        dan mempererat persaudaraan seluruh keluarga besar
-        Bani Yasroji dari generasi ke generasi.
+        Kumpulan foto kegiatan, pertemuan, dan kenangan keluarga besar
+        Bani Yasroji dapat dilihat melalui halaman galeri foto.
     </p>
-</section><h2 class="judul">Menu Keluarga</h2><section class="menu-grid"><a class="menu" href="silsilah.html">
-    <div class="ikon">🌳</div>
-    <h3>Pohon Silsilah</h3>
-    <p>Melihat hubungan keluarga dari generasi ke generasi.</p>
-</a>
 
-<a class="menu" href="anggota.html">
-    <div class="ikon">👨‍👩‍👧‍👦</div>
-    <h3>Anggota Keluarga</h3>
-    <p>Melihat daftar dan profil anggota keluarga.</p>
-</a>
+    <div class="thumbnail-grid" id="thumbnailGaleri">
+        <span class="pesan-kosong">Memuat foto...</span>
+    </div>
+</section>
 
-<a class="menu" href="galeri.html">
-    <div class="ikon">🖼️</div>
-    <h3>Galeri Foto</h3>
-    <p>Melihat dokumentasi dan kenangan keluarga.</p>
-</a>
-
-<a class="menu" href="login.html">
-    <div class="ikon">🔐</div>
-    <h3>Admin</h3>
-    <p>Login untuk mengelola data dan dokumentasi keluarga.</p>
-</a>
-
-</section><h2 class="judul">Galeri Keluarga</h2><section class="galeri-info">
-    <p>
-        Kumpulan foto kegiatan, pertemuan, dan kenangan
-        keluarga besar Bani Yasroji dapat dilihat melalui
-        halaman galeri.
-    </p><div class="thumbnail-grid" id="thumbnailGaleri">
-    <div class="tidak-ada-foto">Memuat foto...</div>
-</div>
-
-</section></main><footer>
-    <strong>KELUARGA BESAR BANI YASROJI</strong><br>
-    Menjaga Silsilah, Mempererat Silaturahmi<br>
-    &copy; 2026 Bani Yasroji
+</main><footer>
+    &copy; 2026 Keluarga Besar Bani Yasroji
 </footer><script type="module">
-import { db } from "./js/firebase.js";
+    import { db } from "./js/firebase.js";
+    import {
+        collection,
+        getDocs,
+        query,
+        orderBy
+    } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-import {
-    collection,
-    getDocs,
-    query,
-    orderBy
-} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+    const thumbnailGaleri = document.getElementById("thumbnailGaleri");
 
-const tempatFoto = document.getElementById("thumbnailGaleri");
+    async function tampilkanThumbnail() {
+        try {
+            const galeriRef = collection(db, "galeri");
+            const galeriQuery = query(
+                galeriRef,
+                orderBy("dibuatPada", "desc")
+            );
 
-async function tampilkanThumbnail() {
-    try {
-        const q = query(
-            collection(db, "galeri"),
-            orderBy("dibuatPada", "desc")
-        );
+            const snapshot = await getDocs(galeriQuery);
 
-        const hasil = await getDocs(q);
+            thumbnailGaleri.innerHTML = "";
 
-        tempatFoto.innerHTML = "";
+            if (snapshot.empty) {
+                thumbnailGaleri.innerHTML =
+                    '<span class="pesan-kosong">Belum ada foto galeri.</span>';
+                return;
+            }
 
-        if (hasil.empty) {
-            tempatFoto.innerHTML =
-                '<div class="tidak-ada-foto">Belum ada foto keluarga.</div>';
-            return;
+            snapshot.forEach((dokumen) => {
+                const data = dokumen.data();
+
+                if (data.fotoUrl) {
+                    const gambar = document.createElement("img");
+
+                    gambar.src = data.fotoUrl;
+                    gambar.alt = data.judul || "Foto keluarga";
+                    gambar.loading = "lazy";
+                    gambar.draggable = false;
+
+                    thumbnailGaleri.appendChild(gambar);
+                }
+            });
+
+            if (thumbnailGaleri.children.length === 0) {
+                thumbnailGaleri.innerHTML =
+                    '<span class="pesan-kosong">Belum ada foto galeri.</span>';
+            }
+
+        } catch (error) {
+            console.error("Gagal memuat galeri:", error);
+
+            thumbnailGaleri.innerHTML =
+                '<span class="pesan-kosong">Foto galeri belum dapat dimuat.</span>';
         }
-
-        hasil.forEach((dokumen) => {
-            const foto = dokumen.data();
-
-            if (!foto.fotoUrl) return;
-
-            const gambar = document.createElement("img");
-            gambar.src = foto.fotoUrl;
-            gambar.alt = foto.judul || "Foto keluarga Bani Yasroji";
-            gambar.loading = "lazy";
-            gambar.draggable = false;
-
-            tempatFoto.appendChild(gambar);
-        });
-
-        if (!tempatFoto.children.length) {
-            tempatFoto.innerHTML =
-                '<div class="tidak-ada-foto">Belum ada foto keluarga.</div>';
-        }
-
-    } catch (error) {
-        tempatFoto.innerHTML =
-            '<div class="tidak-ada-foto">Foto belum dapat dimuat.</div>';
-        console.error("Gagal memuat thumbnail:", error);
     }
-}
 
-tampilkanThumbnail();
+    tampilkanThumbnail();
 </script></body>
 </html>
