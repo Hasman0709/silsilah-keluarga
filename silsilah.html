@@ -31,7 +31,6 @@ header h2 {
 .toolbar {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 8px;
   padding: 10px;
   background: white;
@@ -43,10 +42,10 @@ header h2 {
 .toolbar button {
   background: #176b45;
   color: white;
-  border: 0;
+  border: none;
   border-radius: 7px;
   padding: 10px 17px;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
 }
 
@@ -60,31 +59,29 @@ header h2 {
   width: 100%;
   height: calc(100vh - 145px);
   overflow: auto;
-  background: #f3f6f4;
+  padding: 25px;
   touch-action: pan-x pan-y;
 }
 
 #ruang {
   width: max-content;
   min-width: 100%;
-  padding: 35px;
+  display: flex;
+  justify-content: center;
 }
 
 #pohon {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 35px;
-  transform-origin: top center;
   width: max-content;
-  margin: auto;
+  transform-origin: top center;
 }
 
-.unit {
+.keluarga {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: max-content;
   position: relative;
+  padding-top: 0;
 }
 
 .orangtua {
@@ -98,7 +95,7 @@ header h2 {
 
 .kartu {
   width: 125px;
-  min-height: 115px;
+  min-height: 110px;
   padding: 9px 6px;
   background: white;
   border: 2px solid #258457;
@@ -135,9 +132,9 @@ header h2 {
 
 .anak-anak {
   display: flex;
-  justify-content: center;
   align-items: flex-start;
-  gap: 20px;
+  justify-content: center;
+  gap: 22px;
   position: relative;
   padding-top: 48px;
   margin-top: 0;
@@ -161,15 +158,11 @@ header h2 {
   border-top: 2px solid #80a98e;
 }
 
-.anak-anak:has(> .unit:only-child)::after {
-  display: none;
-}
-
-.anak-anak > .unit {
+.anak-anak > .keluarga {
   position: relative;
 }
 
-.anak-anak > .unit::before {
+.anak-anak > .keluarga::before {
   content: "";
   position: absolute;
   top: -24px;
@@ -177,24 +170,24 @@ header h2 {
   border-left: 2px solid #80a98e;
 }
 
-.kosong {
+.pesan {
   text-align: center;
-  padding: 30px;
+  padding: 25px;
   color: #777;
 }
 
 @media(max-width:600px) {
-  #ruang {
-    padding: 25px;
+  .area {
+    padding: 15px;
   }
 
   .kartu {
     width: 110px;
-    min-height: 108px;
+    min-height: 105px;
   }
 
   .anak-anak {
-    gap: 12px;
+    gap: 14px;
   }
 }
 </style>
@@ -208,9 +201,9 @@ header h2 {
 </header>
 
 <div class="toolbar">
-  <button type="button" onclick="zoom(-0.1)">−</button>
+  <button type="button" onclick="ubahZoom(-0.1)">−</button>
   <button type="button" onclick="resetZoom()">Reset</button>
-  <button type="button" onclick="zoom(0.1)">+</button>
+  <button type="button" onclick="ubahZoom(0.1)">+</button>
   <button type="button" onclick="location.reload()">⟳</button>
 </div>
 
@@ -237,8 +230,17 @@ const status = document.getElementById("status");
 let anggota = [];
 let zoomLevel = 1;
 
-function zoom(nilai) {
-  zoomLevel = Math.max(0.3, Math.min(2, zoomLevel + nilai));
+const GENERASI = {
+  1: "Kakek / Nenek",
+  2: "Anak",
+  3: "Cucu",
+  4: "Cicit",
+  5: "Canggah",
+  6: "Wareng"
+};
+
+function ubahZoom(nilai) {
+  zoomLevel = Math.max(0.25, Math.min(2, zoomLevel + nilai));
   pohon.style.transform = `scale(${zoomLevel})`;
 }
 
@@ -252,38 +254,98 @@ function normal(teks) {
 }
 
 function cariNama(nama) {
+  if (!nama) return null;
+
   return anggota.find(a =>
     normal(a.nama) === normal(nama)
   ) || null;
 }
 
+// Mencari pasangan dari kedua arah.
 function cariPasangan(orang) {
-
   if (!orang) return null;
 
-  // Cari berdasarkan kolom pasangan.
-  let pasangan = cariNama(orang.pasangan);
-
-  if (pasangan && normal(pasangan.nama) !== normal(orang.nama)) {
-    return pasangan;
-  }
-
-  // Periksa juga hubungan pasangan dari arah sebaliknya.
   return anggota.find(a =>
     normal(a.nama) !== normal(orang.nama) &&
-    normal(a.pasangan) === normal(orang.nama)
+    (
+      normal(a.nama) === normal(orang.pasangan) ||
+      normal(a.pasangan) === normal(orang.nama)
+    )
   ) || null;
 }
 
-function buatKartu(orang, label) {
+// Memastikan ayah dan ibu cocok dengan pasangan orang tua.
+function cocokOrangtua(anak, ayah, ibu) {
+
+  if (!anak.ayah || !anak.ibu || !ayah || !ibu) {
+    return false;
+  }
+
+  const namaAyah = normal(anak.ayah);
+  const namaIbu = normal(anak.ibu);
+
+  return (
+    namaAyah === normal(ayah.nama) &&
+    namaIbu === normal(ibu.nama)
+  ) || (
+    namaAyah === normal(ibu.nama) &&
+    namaIbu === normal(ayah.nama)
+  );
+}
+
+// Mengurutkan anak berdasarkan urutan dalam kelompok orang tua.
+function angkaUrutan(teks) {
+
+  const kata = [
+    "pertama",
+    "kedua",
+    "ketiga",
+    "keempat",
+    "kelima",
+    "keenam",
+    "ketujuh",
+    "kedelapan",
+    "kesembilan",
+    "kesepuluh"
+  ];
+
+  const nilai = normal(teks);
+
+  for (let i = 0; i < kata.length; i++) {
+    if (nilai.includes(kata[i])) return i + 1;
+  }
+
+  const cocok = nilai.match(/\d+/);
+
+  return cocok ? Number(cocok[0]) : 999;
+}
+
+function urutkanAnak(data) {
+
+  return [...data].sort((a, b) => {
+
+    const urutanA = angkaUrutan(a.urutan);
+    const urutanB = angkaUrutan(b.urutan);
+
+    if (urutanA !== urutanB) {
+      return urutanA - urutanB;
+    }
+
+    return (a.nama || "").localeCompare(b.nama || "");
+  });
+}
+
+function buatKartu(orang, generasi) {
 
   const kartu = document.createElement("div");
   kartu.className = "kartu";
 
   if (orang.fotoUrl) {
+
     const foto = document.createElement("img");
     foto.src = orang.fotoUrl;
     foto.alt = "Foto " + orang.nama;
+
     kartu.appendChild(foto);
   }
 
@@ -291,91 +353,27 @@ function buatKartu(orang, label) {
   nama.className = "nama";
   nama.textContent = orang.nama || "Tanpa nama";
 
-  const keterangan = document.createElement("div");
-  keterangan.className = "label";
-  keterangan.textContent = label || "";
+  const label = document.createElement("div");
+  label.className = "label";
+  label.textContent =
+    orang.urutan || GENERASI[generasi] || "";
 
-  kartu.append(nama, keterangan);
+  kartu.append(nama, label);
 
   return kartu;
 }
 
-function labelOrang(orang, generasi) {
+// Membuat satu keluarga dan seluruh keturunannya.
+function buatKeluarga(ayah, ibu, generasi, sudahTampil) {
 
-  if (orang.urutan) return orang.urutan;
-
-  const label = {
-    1: "Kakek / Nenek",
-    2: "Anak",
-    3: "Cucu",
-    4: "Cicit",
-    5: "Canggah",
-    6: "Wareng"
-  };
-
-  return label[generasi] || "";
-}
-
-function cocokOrangtua(anak, ayah, ibu) {
-
-  const namaAyah = normal(anak.ayah);
-  const namaIbu = normal(anak.ibu);
-
-  const nama1 = normal(ayah?.nama);
-  const nama2 = normal(ibu?.nama);
-
-  if (!namaAyah && !namaIbu) return false;
-
-  // Nama ayah dan ibu harus cocok dengan pasangan orang tua.
-  return (
-    namaAyah === nama1 &&
-    namaIbu === nama2
-  ) || (
-    namaAyah === nama2 &&
-    namaIbu === nama1
-  );
-}
-
-function buatUnit(orang, generasi, sudahTampil, jalur) {
-
-  if (!orang || sudahTampil.has(normal(orang.nama))) {
-    return null;
-  }
-
-  const unit = document.createElement("div");
-  unit.className = "unit";
-
-  let pasangan = cariPasangan(orang);
-
-  // Jangan memasangkan anggota yang sudah dipakai.
-  if (
-    pasangan &&
-    (
-      sudahTampil.has(normal(pasangan.nama)) ||
-      Number(pasangan.generasi) !== generasi
-    )
-  ) {
-    pasangan = null;
-  }
-
-  let ayah = orang;
-  let ibu = pasangan;
-
-  // Anak/keturunan ditampilkan di kiri dan menantu di kanan.
-  if (
-    normal(orang.urutan).startsWith("menantu") &&
-    pasangan &&
-    !normal(pasangan.urutan).startsWith("menantu")
-  ) {
-    ayah = pasangan;
-    ibu = orang;
-  }
+  const keluarga = document.createElement("div");
+  keluarga.className = "keluarga";
 
   const kotakOrangtua = document.createElement("div");
   kotakOrangtua.className = "orangtua";
 
   kotakOrangtua.appendChild(
-    buatKartu(ayah, labelOrang(ayah, generasi))
+    buatKartu(ayah, generasi)
   );
 
   sudahTampil.add(normal(ayah.nama));
@@ -389,62 +387,88 @@ function buatUnit(orang, generasi, sudahTampil, jalur) {
     kotakOrangtua.appendChild(love);
 
     kotakOrangtua.appendChild(
-      buatKartu(ibu, labelOrang(ibu, generasi))
+      buatKartu(ibu, generasi)
     );
 
     sudahTampil.add(normal(ibu.nama));
   }
 
-  unit.appendChild(kotakOrangtua);
+  keluarga.appendChild(kotakOrangtua);
 
-  // Cari anak berdasarkan nama ayah dan ibu.
-  if (generasi < 6) {
-
-    const anak = anggota.filter(a =>
-      Number(a.generasi) === generasi + 1 &&
-      cocokOrangtua(a, ayah, ibu) &&
-      !sudahTampil.has(normal(a.nama))
-    );
-
-    if (anak.length > 0) {
-
-      const wadahAnak = document.createElement("div");
-      wadahAnak.className = "anak-anak";
-
-      anak.sort((a, b) =>
-        (a.urutan || "").localeCompare(b.urutan || "")
-      );
-
-      anak.forEach(dataAnak => {
-
-        if (sudahTampil.has(normal(dataAnak.nama))) return;
-
-        const unitAnak = buatUnit(
-          dataAnak,
-          generasi + 1,
-          sudahTampil,
-          jalur
-        );
-
-        if (unitAnak) {
-          wadahAnak.appendChild(unitAnak);
-        }
-      });
-
-      if (wadahAnak.children.length > 0) {
-        unit.appendChild(wadahAnak);
-      }
-    }
+  // Generasi terakhir tidak perlu mencari keturunan lagi.
+  if (generasi >= 6) {
+    return keluarga;
   }
 
-  return unit;
+  // Cari anak berdasarkan nama ayah dan ibu.
+  const anak = anggota.filter(a =>
+
+    Number(a.generasi) === generasi + 1 &&
+
+    cocokOrangtua(a, ayah, ibu) &&
+
+    !sudahTampil.has(normal(a.nama))
+
+  );
+
+  const anakTerurut = urutkanAnak(anak);
+
+  if (anakTerurut.length === 0) {
+    return keluarga;
+  }
+
+  const wadahAnak = document.createElement("div");
+  wadahAnak.className = "anak-anak";
+
+  anakTerurut.forEach(dataAnak => {
+
+    if (sudahTampil.has(normal(dataAnak.nama))) {
+      return;
+    }
+
+    // Cari pasangan anak.
+    let pasangan = cariPasangan(dataAnak);
+
+    // Pasangan hanya ditampilkan jika tercatat di generasi yang sama.
+    if (
+      pasangan &&
+      Number(pasangan.generasi) !== generasi + 1
+    ) {
+      pasangan = null;
+    }
+
+    // Jangan tampilkan pasangan yang sudah dipakai.
+    if (
+      pasangan &&
+      sudahTampil.has(normal(pasangan.nama))
+    ) {
+      pasangan = null;
+    }
+
+    const unitAnak = buatKeluarga(
+      dataAnak,
+      pasangan,
+      generasi + 1,
+      sudahTampil
+    );
+
+    wadahAnak.appendChild(unitAnak);
+  });
+
+  if (wadahAnak.children.length > 0) {
+    keluarga.appendChild(wadahAnak);
+  }
+
+  return keluarga;
 }
 
 async function tampilkanSilsilah() {
 
   try {
 
-    const hasil = await getDocs(collection(db, "anggota"));
+    const hasil = await getDocs(
+      collection(db, "anggota")
+    );
 
     anggota = hasil.docs.map(d => ({
       id: d.id,
@@ -460,71 +484,69 @@ async function tampilkanSilsilah() {
 
     const sudahTampil = new Set();
 
-    // Akar pohon adalah anggota generasi 1.
-    const akar = anggota.filter(a =>
+    // Mencari kakek dan nenek sebagai akar pohon.
+    const kakek = anggota.filter(a =>
       Number(a.generasi) === 1 &&
       !a.ayah &&
       !a.ibu &&
       !normal(a.urutan).startsWith("menantu")
     );
 
-    akar.forEach(orang => {
+    if (kakek.length === 0) {
 
-      if (sudahTampil.has(normal(orang.nama))) return;
+      status.textContent =
+        "Data generasi 1 belum ditemukan. Periksa data Kakek dan Nenek.";
 
-      const unit = buatUnit(
+      return;
+    }
+
+    // Setiap pasangan generasi 1 menjadi akar keluarga.
+    kakek.forEach(orang => {
+
+      if (sudahTampil.has(normal(orang.nama))) {
+        return;
+      }
+
+      let pasangan = cariPasangan(orang);
+
+      if (
+        pasangan &&
+        Number(pasangan.generasi) !== 1
+      ) {
+        pasangan = null;
+      }
+
+      if (
+        pasangan &&
+        sudahTampil.has(normal(pasangan.nama))
+      ) {
+        pasangan = null;
+      }
+
+      const unit = buatKeluarga(
         orang,
+        pasangan,
         1,
-        sudahTampil,
-        []
+        sudahTampil
       );
 
-      if (unit) {
-        pohon.appendChild(unit);
-      }
+      pohon.appendChild(unit);
     });
 
-    // Anggota yang belum terhubung ke orang tua ditampilkan terpisah.
     const belumTerhubung = anggota.filter(a =>
       !sudahTampil.has(normal(a.nama))
     );
 
-    if (belumTerhubung.length > 0) {
-
-      const bagian = document.createElement("div");
-      bagian.style.marginTop = "40px";
-      bagian.style.textAlign = "center";
-
-      const judul = document.createElement("h3");
-      judul.textContent = "Anggota belum terhubung";
-
-      bagian.appendChild(judul);
-
-      belumTerhubung.forEach(a => {
-
-        const kartu = buatKartu(
-          a,
-          "Generasi " + (a.generasi || "belum diisi")
-        );
-
-        kartu.style.display = "inline-block";
-        kartu.style.margin = "8px";
-
-        bagian.appendChild(kartu);
-      });
-
-      pohon.appendChild(bagian);
-    }
-
     status.textContent =
-      "Jumlah anggota keluarga: " + anggota.length;
+      "Jumlah anggota: " + anggota.length +
+      " | Belum terhubung: " + belumTerhubung.length;
 
   } catch (error) {
 
     console.error(error);
 
     status.textContent =
-      "Gagal memuat data. Periksa koneksi Firebase.";
+      "Gagal memuat data. Periksa koneksi dan Firebase.";
 
   }
 }
