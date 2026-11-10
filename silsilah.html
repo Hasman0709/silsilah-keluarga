@@ -43,8 +43,8 @@ header h2 {
 }
 
 .pohon {
-  min-width: 100%;
   width: max-content;
+  min-width: 100%;
   padding: 15px;
 }
 
@@ -52,8 +52,7 @@ header h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 35px;
-  position: relative;
+  margin-bottom: 15px;
 }
 
 .judul-generasi {
@@ -70,14 +69,14 @@ header h2 {
   justify-content: center;
   align-items: flex-start;
   flex-wrap: nowrap;
-  gap: 22px;
+  gap: 18px;
 }
 
 .keluarga {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
   padding: 8px;
   background: #e4f1e8;
   border: 1px solid #b5d5bf;
@@ -85,7 +84,7 @@ header h2 {
 }
 
 .kartu {
-  width: 135px;
+  width: 130px;
   min-height: 105px;
   background: white;
   border: 2px solid #258457;
@@ -150,11 +149,11 @@ button {
   }
 
   .daftar-keluarga {
-    gap: 12px;
+    gap: 10px;
   }
 
   .kartu {
-    width: 120px;
+    width: 115px;
   }
 
   .keluarga {
@@ -202,12 +201,15 @@ function normal(teks) {
   return (teks || "").trim().toLowerCase();
 }
 
-function cariPasangan(orang) {
-  if (!orang.pasangan) return null;
-
+function cariNama(nama) {
   return anggota.find(a =>
-    normal(a.nama) === normal(orang.pasangan)
+    normal(a.nama) === normal(nama)
   ) || null;
+}
+
+function cariPasangan(orang) {
+  if (!orang || !orang.pasangan) return null;
+  return cariNama(orang.pasangan);
 }
 
 function buatKartu(orang, label) {
@@ -304,20 +306,37 @@ function labelAnggota(orang, generasi) {
 
 function buatKeluarga(orang, generasi, sudahTampil) {
 
+  let utama = orang;
+  let pasangan = cariPasangan(orang);
+
+  // Pastikan anak/cucu/cicit berada di kiri.
+  const orangAdalahMenantu =
+    normal(orang.urutan).startsWith("menantu");
+
+  if (
+    orangAdalahMenantu &&
+    pasangan &&
+    !normal(pasangan.urutan).startsWith("menantu")
+  ) {
+    utama = pasangan;
+    pasangan = orang;
+  }
+
   const keluarga = document.createElement("div");
   keluarga.className = "keluarga";
 
-  keluarga.appendChild(
-    buatKartu(orang, labelAnggota(orang, generasi))
-  );
+  if (!sudahTampil.has(normal(utama.nama))) {
 
-  sudahTampil.add(normal(orang.nama));
+    keluarga.appendChild(
+      buatKartu(utama, labelAnggota(utama, generasi))
+    );
 
-  const pasangan = cariPasangan(orang);
+    sudahTampil.add(normal(utama.nama));
+  }
 
   if (
     pasangan &&
-    normal(pasangan.nama) !== normal(orang.nama) &&
+    normal(pasangan.nama) !== normal(utama.nama) &&
     Number(pasangan.generasi) === generasi &&
     !sudahTampil.has(normal(pasangan.nama))
   ) {
@@ -358,7 +377,6 @@ async function tampilkanSilsilah() {
     }
 
     const sudahTampil = new Set();
-
     let jumlahGenerasi = 0;
 
     for (let g = 1; g <= 6; g++) {
@@ -404,7 +422,8 @@ async function tampilkanSilsilah() {
     }
 
     const belum = anggota.filter(a =>
-      !a.generasi || Number(a.generasi) < 1 ||
+      !a.generasi ||
+      Number(a.generasi) < 1 ||
       Number(a.generasi) > 6
     );
 
