@@ -1,45 +1,327 @@
 <!DOCTYPE html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Data Anggota - Bani Yasroji</title>
-<style>*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f7f3;color:#333}header{background:#18794e;color:white;padding:20px}header h2{margin:0 0 8px}.back{color:white}.container{max-width:850px;margin:auto;padding:16px}.card{background:white;padding:18px;border-radius:15px;margin-bottom:18px;box-shadow:0 3px 12px #0001}h3{color:#18794e;margin-top:0}input,select,textarea,button{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:9px;font-size:15px}button{background:#18794e;color:white;border:0;font-weight:bold}.secondary{background:#64748b}.delete{background:#c0392b}.member{display:flex;gap:12px;border:1px solid #e3eae5;border-radius:12px;padding:12px;margin:12px 0}.member img{width:72px;height:72px;object-fit:cover;border-radius:10px}.member-info{flex:1;min-width:0}.member-info h4{margin:2px 0 7px;color:#18794e}.member-info p{font-size:14px;overflow-wrap:anywhere}.actions{display:flex;gap:8px}.actions button{flex:1}#status{color:#18794e;font-weight:bold;white-space:pre-wrap}small{color:#666}</style></head>
-<body><header><h2>Data Anggota Keluarga</h2><div>Bani Yasroji</div><a class="back" href="admin.html">← Kembali ke Dashboard</a></header>
-<div class="container"><section class="card"><h3 id="judulForm">Tambah Anggota Baru</h3><form id="formAnggota">
-<input id="nama" placeholder="Nama lengkap" required><select id="jenisKelamin" required><option value="">Pilih jenis kelamin</option><option>Laki-laki</option><option>Perempuan</option></select><select id="statusHidup"><option>Hidup</option><option>Meninggal</option></select>
-<input id="ayah" placeholder="Nama ayah"><input id="ibu" placeholder="Nama ibu"><input id="pasangan" placeholder="Nama pasangan"><label><b>Foto profil (opsional)</b></label><input id="foto" type="file" accept="image/*"><small>Foto JPG/PNG maksimal 2 MB.</small><div id="pratinjau"></div><textarea id="catatan" placeholder="Catatan tambahan"></textarea><button type="submit" id="tombolSimpan">Simpan Anggota</button><button type="button" class="secondary" id="batalEdit" hidden>Batal Edit</button></form><p id="status"></p></section>
-<section class="card"><h3>Daftar Anggota Keluarga</h3><input id="cari" placeholder="Cari nama anggota..."><div id="daftar">Memuat data...</div></section></div>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anggota Keluarga Bani Yasroji</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#edf7e9;color:#24452e}
+header{background:#08652d;color:white;text-align:center;padding:22px}
+header h2{margin:0}
+.container{max-width:850px;margin:auto;padding:15px}
+.card{background:white;padding:18px;border-radius:15px;margin-bottom:18px;box-shadow:0 3px 12px #0001}
+input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:8px;font-size:16px}
+button{border:0;padding:12px 17px;border-radius:8px;background:#087b35;color:white;font-weight:bold;margin:5px 3px}
+.hapus{background:#c62828}
+.batal{background:#777}
+.item{display:flex;gap:12px;align-items:center;border-bottom:1px solid #ddd;padding:12px 0}
+.item img{width:65px;height:65px;object-fit:cover;border-radius:50%;background:#e8f5e9}
+.item-info{flex:1;min-width:0}
+small{color:#666}
+#status{color:#087b35;font-weight:bold}
+</style>
+</head>
+<body>
+
+<header>
+<h2>🌳 Data Anggota Keluarga</h2>
+<p>Bani Yasroji</p>
+<a href="admin.html" style="color:white">← Kembali ke Dashboard</a>
+</header>
+
+<div class="container">
+
+<section class="card">
+<h3 id="judul">Tambah Anggota Baru</h3>
+
+<form id="form">
+<input id="nama" placeholder="Nama lengkap" required>
+
+<select id="jenisKelamin" required>
+<option value="">Pilih jenis kelamin</option>
+<option value="Laki-laki">Laki-laki</option>
+<option value="Perempuan">Perempuan</option>
+</select>
+
+<select id="statusHidup">
+<option value="Hidup">Hidup</option>
+<option value="Meninggal">Meninggal</option>
+</select>
+
+<input id="ayah" placeholder="Nama ayah">
+<input id="ibu" placeholder="Nama ibu">
+<input id="pasangan" placeholder="Nama pasangan">
+
+<label>Foto profil:</label>
+<input id="foto" type="file" accept="image/*">
+<div id="preview"></div>
+
+<textarea id="catatan" placeholder="Catatan tambahan"></textarea>
+
+<button id="simpan" type="submit">Simpan Anggota</button>
+<button id="batal" type="button" class="batal" hidden>Batal Edit</button>
+</form>
+
+<p id="status"></p>
+</section>
+
+<section class="card">
+<h3>Daftar Anggota Keluarga</h3>
+<input id="cari" placeholder="Cari nama anggota...">
+<div id="daftar">Memuat data...</div>
+</section>
+
+</div>
+
 <script type="module">
 import {db} from "./js/firebase.js";
-import {collection,addDoc,getDocs,deleteDoc,doc,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-const $=id=>document.getElementById(id),form=$("formAnggota"),daftar=$("daftar"),status=$("status");let semua=[],idEdit=null,fotoLama="",fotoBaru=null;
-function resetForm(){form.reset();idEdit=null;fotoLama="";fotoBaru=null;$("judulForm").textContent="Tambah Anggota Baru";$("tombolSimpan").textContent="Simpan Anggota";$("batalEdit").hidden=true;$("pratinjau").innerHTML=""}
-$("foto").onchange=e=>{fotoBaru=e.target.files[0]||null;$("pratinjau").innerHTML="";if(!fotoBaru)return;if(!fotoBaru.type.startsWith("image/")||fotoBaru.size>2*1024*1024){alert("Pilih file gambar maksimal 2 MB.");fotoBaru=null;e.target.value="";return}let im=document.createElement("img");im.src=URL.createObjectURL(fotoBaru);im.style="width:100px;height:100px;object-fit:cover";$("pratinjau").append(im)};
+import {
+collection,addDoc,getDocs,deleteDoc,
+doc,updateDoc,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+const $=id=>document.getElementById(id);
+
+let semua=[];
+let idEdit=null;
+let fotoLama="";
+let fotoBaru=null;
+
+const form=$("form");
+
 function kompresFoto(file){
- return new Promise((resolve,reject)=>{
-  const reader=new FileReader();
-  reader.onerror=()=>reject(new Error("Foto tidak dapat dibaca."));
-  reader.onload=()=>{
-   const img=new Image();
-   img.onerror=()=>reject(new Error("File foto tidak valid."));
-   img.onload=()=>{
-    const max=600, scale=Math.min(1,max/Math.max(img.width,img.height));
-    const canvas=document.createElement("canvas");
-    canvas.width=Math.round(img.width*scale); canvas.height=Math.round(img.height*scale);
-    canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
-    let kualitas=.72, hasil=canvas.toDataURL("image/jpeg",kualitas);
-    while(hasil.length>650000 && kualitas>.35){kualitas-=.08;hasil=canvas.toDataURL("image/jpeg",kualitas)}
-    if(hasil.length>750000) reject(new Error("Foto masih terlalu besar. Pilih foto yang lebih kecil."));
-    else resolve(hasil);
-   };
-   img.src=reader.result;
-  };
-  reader.readAsDataURL(file);
- });
+return new Promise((resolve,reject)=>{
+const reader=new FileReader();
+
+reader.onerror=reject;
+
+reader.onload=()=>{
+const img=new Image();
+
+img.onload=()=>{
+const canvas=document.createElement("canvas");
+const max=400;
+
+let w=img.width;
+let h=img.height;
+
+if(w>h && w>max){
+h=h*max/w;
+w=max;
+}else if(h>max){
+w=w*max/h;
+h=max;
 }
-async function muat(){daftar.textContent="Memuat data...";try{let r=await getDocs(collection(db,"anggota"));semua=r.docs.map(x=>({id:x.id,...x.data()}));render(semua)}catch(e){daftar.textContent="Gagal memuat data. Periksa koneksi dan aturan Firestore.";console.error(e)}}
-function render(rows){daftar.innerHTML="";if(!rows.length){daftar.textContent="Belum ada data anggota.";return}rows.forEach(a=>{let box=document.createElement("div");box.className="member";let im=document.createElement("img");im.alt="Foto anggota";im.src=a.fotoUrl||"";let info=document.createElement("div");info.className="member-info";let h=document.createElement("h4");h.textContent=a.nama||"-";let p=document.createElement("p");p.textContent=`${a.jenisKelamin||"-"} | ${a.statusHidup||"-"}`;let k=document.createElement("p");k.textContent=`Ayah: ${a.ayah||"-"} · Ibu: ${a.ibu||"-"} · Pasangan: ${a.pasangan||"-"}`;info.append(h,p,k);if(a.catatan){let c=document.createElement("p");c.textContent="Catatan: "+a.catatan;info.append(c)}let act=document.createElement("div");act.className="actions";let ed=document.createElement("button");ed.textContent="Edit";ed.onclick=()=>edit(a);let del=document.createElement("button");del.textContent="Hapus";del.className="delete";del.onclick=()=>hapus(a);act.append(ed,del);info.append(act);box.append(im,info);daftar.append(box)})}
-function edit(a){idEdit=a.id;fotoLama=a.fotoUrl||"";fotoBaru=null;["nama","jenisKelamin","statusHidup","ayah","ibu","pasangan","catatan"].forEach(k=>$(k).value=a[k]|| (k==="statusHidup"?"Hidup":""));$("foto").value="";$("pratinjau").innerHTML="";if(fotoLama){let im=document.createElement("img");im.src=fotoLama;im.style="width:100px;height:100px;object-fit:cover";$("pratinjau").append(im)}$("judulForm").textContent="Edit Data Anggota";$("tombolSimpan").textContent="Simpan Perubahan";$("batalEdit").hidden=false;window.scrollTo({top:0,behavior:"smooth"})}
-$("batalEdit").onclick=resetForm;
-async function hapus(a){if(!confirm(`Hapus data ${a.nama||"anggota ini"}?`))return;try{await deleteDoc(doc(db,"anggota",a.id));status.textContent="Data anggota berhasil dihapus.";await muat()}catch(e){status.textContent="Gagal menghapus data.";console.error(e)}}
-form.onsubmit=async e=>{e.preventDefault();let btn=$("tombolSimpan");btn.disabled=true;btn.textContent="Menyimpan...";try{let fotoUrl=fotoLama;if(fotoBaru){fotoUrl=await kompresFoto(fotoBaru)}let data={nama:$("nama").value.trim(),jenisKelamin:$("jenisKelamin").value,statusHidup:$("statusHidup").value,ayah:$("ayah").value.trim(),ibu:$("ibu").value.trim(),pasangan:$("pasangan").value.trim(),catatan:$("catatan").value.trim(),fotoUrl,diperbaruiPada:serverTimestamp()};if(idEdit){await updateDoc(doc(db,"anggota",idEdit),data);status.textContent="Perubahan anggota berhasil disimpan."}else{data.dibuatPada=serverTimestamp();await addDoc(collection(db,"anggota"),data);status.textContent="Anggota berhasil ditambahkan."}resetForm();await muat()}catch(e){status.textContent="Gagal menyimpan. Periksa koneksi internet dan aturan Firestore. Foto disimpan langsung di Firestore setelah dikompres.";console.error(e)}finally{btn.disabled=false;if(!idEdit)btn.textContent="Simpan Anggota"}};
-$("cari").oninput=()=>{let q=$("cari").value.toLowerCase();render(semua.filter(a=>(a.nama||"").toLowerCase().includes(q)))};muat();
-</script></body></html>
+
+canvas.width=w;
+canvas.height=h;
+
+canvas.getContext("2d").drawImage(img,0,0,w,h);
+
+resolve(canvas.toDataURL("image/jpeg",0.65));
+};
+
+img.onerror=reject;
+img.src=reader.result;
+};
+
+reader.readAsDataURL(file);
+});
+}
+
+$("foto").onchange=e=>{
+fotoBaru=e.target.files[0]||null;
+$("preview").innerHTML="";
+
+if(!fotoBaru)return;
+
+if(!fotoBaru.type.startsWith("image/")){
+alert("Pilih file gambar.");
+fotoBaru=null;
+return;
+}
+
+const im=document.createElement("img");
+im.src=URL.createObjectURL(fotoBaru);
+im.style="width:100px;height:100px;object-fit:cover;border-radius:50%";
+$("preview").append(im);
+};
+
+async function muat(){
+$("daftar").textContent="Memuat data...";
+
+try{
+const hasil=await getDocs(collection(db,"anggota"));
+
+semua=hasil.docs.map(d=>({
+id:d.id,...d.data()
+}));
+
+render(semua);
+
+}catch(e){
+console.error(e);
+$("daftar").textContent="Gagal memuat data anggota.";
+}
+}
+
+function render(data){
+$("daftar").innerHTML="";
+
+if(!data.length){
+$("daftar").textContent="Belum ada anggota.";
+return;
+}
+
+data.forEach(a=>{
+const box=document.createElement("div");
+box.className="item";
+
+const im=document.createElement("img");
+im.src=a.fotoUrl||"";
+im.alt="Foto anggota";
+
+if(!a.fotoUrl){
+im.style.display="none";
+}
+
+const info=document.createElement("div");
+info.className="item-info";
+
+const nama=document.createElement("b");
+nama.textContent=a.nama||"Tanpa nama";
+
+const detail=document.createElement("small");
+detail.style.display="block";
+detail.textContent=
+(a.jenisKelamin||"")+" • "+(a.statusHidup||"");
+
+info.append(nama,detail);
+
+const edit=document.createElement("button");
+edit.textContent="Edit";
+edit.onclick=()=>mulaiEdit(a);
+
+const hapus=document.createElement("button");
+hapus.textContent="Hapus";
+hapus.className="hapus";
+hapus.onclick=()=>hapusAnggota(a);
+
+box.append(im,info,edit, hapus);
+$("daftar").append(box);
+});
+}
+
+function mulaiEdit(a){
+idEdit=a.id;
+fotoLama=a.fotoUrl||"";
+fotoBaru=null;
+
+["nama","jenisKelamin","statusHidup",
+"ayah","ibu","pasangan","catatan"].forEach(k=>{
+$(k).value=a[k]||"";
+});
+
+$("preview").innerHTML="";
+
+if(fotoLama){
+const im=document.createElement("img");
+im.src=fotoLama;
+im.style="width:100px;height:100px;object-fit:cover;border-radius:50%";
+$("preview").append(im);
+}
+
+$("judul").textContent="Edit Anggota";
+$("simpan").textContent="Simpan Perubahan";
+$("batal").hidden=false;
+
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function resetForm(){
+form.reset();
+idEdit=null;
+fotoLama="";
+fotoBaru=null;
+
+$("preview").innerHTML="";
+$("judul").textContent="Tambah Anggota Baru";
+$("simpan").textContent="Simpan Anggota";
+$("batal").hidden=true;
+}
+
+$("batal").onclick=resetForm;
+
+async function hapusAnggota(a){
+if(!confirm("Hapus data "+a.nama+"?"))return;
+
+try{
+await deleteDoc(doc(db,"anggota",a.id));
+$("status").textContent="Data berhasil dihapus.";
+await muat();
+}catch(e){
+console.error(e);
+alert("Gagal menghapus data.");
+}
+}
+
+form.onsubmit=async e=>{
+e.preventDefault();
+
+const btn=$("simpan");
+btn.disabled=true;
+btn.textContent="Menyimpan...";
+
+try{
+let fotoUrl=fotoLama;
+
+if(fotoBaru){
+fotoUrl=await kompresFoto(fotoBaru);
+}
+
+const data={
+nama:$("nama").value.trim(),
+jenisKelamin:$("jenisKelamin").value,
+statusHidup:$("statusHidup").value,
+ayah:$("ayah").value.trim(),
+ibu:$("ibu").value.trim(),
+pasangan:$("pasangan").value.trim(),
+catatan:$("catatan").value.trim(),
+fotoUrl,
+diperbaruiPada:serverTimestamp()
+};
+
+if(idEdit){
+await updateDoc(doc(db,"anggota",idEdit),data);
+$("status").textContent="Data berhasil diperbarui.";
+}else{
+data.dibuatPada=serverTimestamp();
+await addDoc(collection(db,"anggota"),data);
+$("status").textContent="Anggota berhasil ditambahkan.";
+}
+
+resetForm();
+await muat();
+
+}catch(e){
+console.error(e);
+$("status").textContent="Gagal menyimpan. Periksa koneksi dan ukuran foto.";
+}finally{
+btn.disabled=false;
+}
+};
+
+$("cari").oninput=()=>{
+const q=$("cari").value.toLowerCase();
+
+render(semua.filter(a=>
+(a.nama||"").toLowerCase().includes(q)
+));
+};
+
+muat();
+</script>
+</body>
+</html>
