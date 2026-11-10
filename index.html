@@ -18,30 +18,31 @@ header {
   background: #176b45;
   color: white;
   text-align: center;
-  padding: 28px 15px;
+  padding: 30px 15px;
 }
 
-.logo {
+header .logo {
   width: 75px;
   height: 75px;
   border-radius: 50%;
   background: white;
-  margin: 0 auto 12px;
+  color: #176b45;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #176b45;
-  font-size: 32px;
+  font-size: 30px;
+  font-weight: bold;
+  margin: auto auto 12px;
 }
 
 header h1 {
   font-size: 21px;
-  margin: 5px 0;
+  margin: 0;
 }
 
 header p {
   font-size: 13px;
-  margin: 5px 0;
+  margin-bottom: 0;
 }
 
 nav {
@@ -50,12 +51,15 @@ nav {
   flex-wrap: wrap;
   background: white;
   box-shadow: 0 2px 5px #00000012;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 nav a {
-  text-decoration: none;
   color: #176b45;
-  padding: 14px 12px;
+  text-decoration: none;
+  padding: 15px 12px;
   font-size: 13px;
   font-weight: bold;
 }
@@ -64,95 +68,71 @@ nav a:hover {
   background: #e8f5ed;
 }
 
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 18px;
+}
+
 .sambutan {
-  text-align: center;
-  padding: 25px 15px 15px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 7px #0000000c;
 }
 
 .sambutan h2 {
   color: #176b45;
-  font-size: 20px;
+  margin-top: 0;
 }
 
 .sambutan p {
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-.menu-cepat {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  padding: 15px;
-  max-width: 700px;
-  margin: auto;
+.judul {
+  color: #176b45;
+  margin: 25px 0 15px;
 }
 
 .menu-kartu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.menu-item {
   background: white;
+  padding: 20px 10px;
+  text-align: center;
   border-radius: 12px;
-  padding: 18px 10px;
-  text-align: center;
-  box-shadow: 0 2px 7px #00000010;
-}
-
-.menu-kartu .ikon {
-  font-size: 30px;
-}
-
-.menu-kartu h3 {
-  font-size: 14px;
-  color: #176b45;
-}
-
-.menu-kartu a {
-  display: inline-block;
-  background: #176b45;
-  color: white;
-  padding: 8px 14px;
   text-decoration: none;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-.bagian-anggota {
-  padding: 20px 15px;
-  max-width: 900px;
-  margin: auto;
-}
-
-.bagian-anggota h2 {
   color: #176b45;
-  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 7px #0000000c;
 }
 
-.pencarian {
-  display: flex;
-  gap: 7px;
-  margin: 18px 0;
+.menu-item span {
+  display: block;
+  font-size: 30px;
+  margin-bottom: 8px;
 }
 
-.pencarian input {
-  flex: 1;
-  min-width: 0;
-  padding: 12px;
+#pencarian {
+  width: 100%;
+  padding: 13px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 14px;
-}
-
-.pencarian button {
-  border: none;
-  border-radius: 8px;
-  background: #176b45;
-  color: white;
-  padding: 10px 15px;
+  font-size: 15px;
+  margin-bottom: 15px;
 }
 
 .daftar-anggota {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 13px;
 }
 
 .kartu-anggota {
@@ -160,7 +140,7 @@ nav a:hover {
   border-radius: 12px;
   padding: 12px;
   text-align: center;
-  box-shadow: 0 2px 7px #00000010;
+  box-shadow: 0 2px 7px #0000000c;
 }
 
 .kartu-anggota img {
@@ -173,24 +153,33 @@ nav a:hover {
 
 .kartu-anggota h3 {
   font-size: 14px;
-  margin: 8px 0;
+  margin: 9px 0 5px;
   overflow-wrap: anywhere;
 }
 
-.kartu-anggota button {
+.kartu-anggota p {
+  font-size: 12px;
+  color: #777;
+  margin: 5px 0 10px;
+}
+
+.tombol {
+  display: inline-block;
   background: #176b45;
   color: white;
   border: none;
-  border-radius: 6px;
   padding: 9px 12px;
+  border-radius: 7px;
   font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-#pesan {
+#status {
   text-align: center;
   padding: 20px;
   color: #777;
-  grid-column: 1 / -1;
+  font-size: 14px;
 }
 
 .profil {
@@ -198,108 +187,115 @@ nav a:hover {
   position: fixed;
   inset: 0;
   background: #0009;
-  z-index: 10;
-  padding: 20px;
-  overflow-y: auto;
+  z-index: 20;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
 }
 
-.isi-profil {
+.profil-box {
   background: white;
-  max-width: 420px;
-  margin: 35px auto;
-  padding: 20px;
-  border-radius: 12px;
+  border-radius: 14px;
+  padding: 22px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 85vh;
+  overflow-y: auto;
   text-align: center;
 }
 
-.isi-profil img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+.profil-box img {
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.profil-box h2 {
+  color: #176b45;
+  overflow-wrap: anywhere;
 }
 
 .detail {
   text-align: left;
+  background: #f4f7f5;
+  padding: 12px;
+  border-radius: 8px;
+  line-height: 1.9;
   font-size: 14px;
-  line-height: 1.8;
   overflow-wrap: anywhere;
 }
 
-.tutup {
-  background: #b83232;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 7px;
-}
-
 footer {
+  margin-top: 35px;
+  padding: 20px;
   background: #176b45;
   color: white;
   text-align: center;
-  padding: 18px;
-  margin-top: 25px;
   font-size: 12px;
 }
 
-@media (min-width: 650px) {
-  .daftar-anggota {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+@media(max-width: 380px) {
+  nav a {
+    padding: 13px 8px;
+    font-size: 12px;
   }
 }
 </style></head><body><header>
-  <div class="logo">♥</div>
+  <div class="logo">BY</div>
   <h1>SILSILAH KELUARGA</h1>
   <p>BANI YASROJI</p>
-  <p>Mengenal keluarga, menjaga silaturahmi</p>
 </header><nav>
-  <a href="index.html">Beranda</a>
+  <a href="#beranda">Beranda</a>
   <a href="silsilah.html">Pohon Silsilah</a>
   <a href="#anggota">Anggota Keluarga</a>
-</nav><section class="sambutan">
-  <h2>Selamat Datang</h2>
-  <p>
+</nav><main class="container"><section id="beranda" class="sambutan">
+  <h2>Selamat Datang</h2>  <p>
     Selamat datang di website Silsilah Keluarga Bani Yasroji.
-    Mari mengenal keluarga dan menjaga hubungan silaturahmi
-    antar generasi.
+    Website ini dibuat sebagai sarana mengenal,
+    mengetahui hubungan kekerabatan, dan menjaga
+    tali silaturahmi antaranggota keluarga.
   </p>
-</section><section class="menu-cepat">  <div class="menu-kartu">
-    <div class="ikon">🌳</div>
-    <h3>Pohon Silsilah</h3>
-    <a href="silsilah.html">Lihat Silsilah</a>
-  </div>  <div class="menu-kartu">
-    <div class="ikon">👨‍👩‍👧‍👦</div>
-    <h3>Anggota Keluarga</h3>
-    <a href="#anggota">Lihat Anggota</a>
-  </div></section><section class="bagian-anggota" id="anggota">  <h2>DAFTAR ANGGOTA KELUARGA</h2>  <div class="pencarian">
-    <input
-      type="search"
-      id="cari"
-      placeholder="Cari nama anggota keluarga..."
-    >
-    <button id="tombolCari">Cari</button>
-  </div>  <div class="daftar-anggota" id="daftarAnggota">
-    <div id="pesan">Memuat anggota keluarga...</div>
-  </div></section><div class="profil" id="profil">
-  <div class="isi-profil">
-    <img id="fotoProfil" src="" alt="Foto anggota">
-    <h2 id="namaProfil"></h2><div class="detail">
-  <p><b>Jenis kelamin:</b> <span id="jenisProfil"></span></p>
-  <p><b>Status:</b> <span id="statusProfil"></span></p>
-  <p><b>Ayah:</b> <span id="ayahProfil"></span></p>
-  <p><b>Ibu:</b> <span id="ibuProfil"></span></p>
-  <p><b>Pasangan:</b> <span id="pasanganProfil"></span></p>
-  <p><b>Catatan:</b> <span id="catatanProfil"></span></p>
+</section><h2 class="judul">Menu Utama</h2><div class="menu-kartu">  <a href="silsilah.html" class="menu-item">
+    <span>🌳</span>
+    Pohon Silsilah
+  </a>  <a href="#anggota" class="menu-item">
+    <span>👨‍👩‍👧‍👦</span>
+    Anggota Keluarga
+  </a></div><section id="anggota">  <h2 class="judul">Daftar Anggota Keluarga</h2><input
+type="search"
+id="pencarian"
+placeholder="Cari nama anggota keluarga..."
+
+«»
+
+  <div id="status">Memuat data anggota keluarga...</div>  <div class="daftar-anggota" id="daftarAnggota"></div></section></main><div class="profil" id="profil">
+  <div class="profil-box"><img id="fotoProfil" src="" alt="Foto anggota">
+
+<h2 id="namaProfil"></h2>
+
+<div class="detail">
+  <div><b>Jenis kelamin:</b> <span id="jenisProfil"></span></div>
+  <div><b>Status:</b> <span id="statusProfil"></span></div>
+  <div><b>Ayah:</b> <span id="ayahProfil"></span></div>
+  <div><b>Ibu:</b> <span id="ibuProfil"></span></div>
+  <div><b>Pasangan:</b> <span id="pasanganProfil"></span></div>
+  <div><b>Catatan:</b> <span id="catatanProfil"></span></div>
 </div>
 
-<button class="tutup" id="tutupProfil">Tutup Profil</button>
+<br>
+
+<button class="tombol" id="tutupProfil">
+  Tutup Profil
+</button>
 
   </div>
 </div><footer>
-  <p>© Silsilah Keluarga Bani Yasroji</p>
-  <p>Menjaga silaturahmi sepanjang generasi</p>
+  <p>© 2026 Silsilah Keluarga Bani Yasroji</p>
+  <p>Menjaga Silsilah, Mempererat Silaturahmi</p>
 </footer><script type="module">
+
 import { db } from "./js/firebase.js";
 
 import {
@@ -308,44 +304,53 @@ import {
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
 const daftar = document.getElementById("daftarAnggota");
-const inputCari = document.getElementById("cari");
+const status = document.getElementById("status");
+const pencarian = document.getElementById("pencarian");
 
-let semuaAnggota = [];
+let anggota = [];
 
-const fotoKosong = "data:image/svg+xml," +
+const fotoKosong =
+  "data:image/svg+xml," +
   encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#eeeeee"/><circle cx="50" cy="35" r="18" fill="#aaaaaa"/><path d="M15 100 Q18 60 50 60 Q82 60 85 100" fill="#aaaaaa"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#eeeeee"/><circle cx="50" cy="36" r="18" fill="#aaaaaa"/><path d="M12 100 Q15 65 50 65 Q85 65 88 100" fill="#aaaaaa"/></svg>'
   );
 
-function nilai(data) {
-  return data || "-";
+function aman(nilai) {
+  return String(nilai || "").trim() || "-";
 }
 
 function tampilkanAnggota(data) {
+
   daftar.innerHTML = "";
 
   if (data.length === 0) {
-    daftar.innerHTML =
-      '<div id="pesan">Anggota keluarga tidak ditemukan.</div>';
+    status.textContent = "Anggota keluarga tidak ditemukan.";
     return;
   }
 
+  status.textContent = "";
+
   data.forEach(orang => {
+
     const kartu = document.createElement("div");
     kartu.className = "kartu-anggota";
 
     const foto = document.createElement("img");
     foto.src = orang.fotoUrl || fotoKosong;
-    foto.alt = "Foto " + orang.nama;
+    foto.alt = "Foto anggota";
 
     foto.onerror = () => {
       foto.src = fotoKosong;
     };
 
     const nama = document.createElement("h3");
-    nama.textContent = orang.nama || "Tanpa nama";
+    nama.textContent = aman(orang.nama);
+
+    const jenis = document.createElement("p");
+    jenis.textContent = aman(orang.jenisKelamin);
 
     const tombol = document.createElement("button");
+    tombol.className = "tombol";
     tombol.textContent = "Lihat Profil";
 
     tombol.addEventListener("click", () => {
@@ -354,6 +359,7 @@ function tampilkanAnggota(data) {
 
     kartu.appendChild(foto);
     kartu.appendChild(nama);
+    kartu.appendChild(jenis);
     kartu.appendChild(tombol);
 
     daftar.appendChild(kartu);
@@ -361,31 +367,32 @@ function tampilkanAnggota(data) {
 }
 
 function bukaProfil(orang) {
+
   document.getElementById("fotoProfil").src =
     orang.fotoUrl || fotoKosong;
 
   document.getElementById("namaProfil").textContent =
-    orang.nama || "-";
+    aman(orang.nama);
 
   document.getElementById("jenisProfil").textContent =
-    nilai(orang.jenisKelamin);
+    aman(orang.jenisKelamin);
 
   document.getElementById("statusProfil").textContent =
-    nilai(orang.statusHidup);
+    aman(orang.statusHidup);
 
   document.getElementById("ayahProfil").textContent =
-    nilai(orang.ayah);
+    aman(orang.ayah);
 
   document.getElementById("ibuProfil").textContent =
-    nilai(orang.ibu);
+    aman(orang.ibu);
 
   document.getElementById("pasanganProfil").textContent =
-    nilai(orang.pasangan);
+    aman(orang.pasangan);
 
   document.getElementById("catatanProfil").textContent =
-    nilai(orang.catatan);
+    aman(orang.catatan);
 
-  document.getElementById("profil").style.display = "block";
+  document.getElementById("profil").style.display = "flex";
 }
 
 document.getElementById("tutupProfil")
@@ -396,51 +403,48 @@ document.getElementById("tutupProfil")
 document.getElementById("profil")
   .addEventListener("click", e => {
     if (e.target.id === "profil") {
-      e.target.style.display = "none";
+      e.currentTarget.style.display = "none";
     }
   });
 
-function cariAnggota() {
-  const kata = inputCari.value.trim().toLowerCase();
+pencarian.addEventListener("input", () => {
 
-  const hasil = semuaAnggota.filter(orang =>
-    String(orang.nama || "").toLowerCase().includes(kata)
+  const kata = pencarian.value.trim().toLowerCase();
+
+  const hasil = anggota.filter(orang =>
+    aman(orang.nama).toLowerCase().includes(kata)
   );
 
   tampilkanAnggota(hasil);
-}
-
-document.getElementById("tombolCari")
-  .addEventListener("click", cariAnggota);
-
-inputCari.addEventListener("input", cariAnggota);
+});
 
 async function muatAnggota() {
+
   try {
+
     const hasil = await getDocs(collection(db, "anggota"));
 
-    semuaAnggota = hasil.docs.map(doc => ({
+    anggota = hasil.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     }));
 
-    semuaAnggota.sort((a, b) =>
-      String(a.nama || "").localeCompare(
-        String(b.nama || ""),
-        "id"
-      )
+    anggota.sort((a, b) =>
+      aman(a.nama).localeCompare(aman(b.nama), "id")
     );
 
-    tampilkanAnggota(semuaAnggota);
+    tampilkanAnggota(anggota);
 
   } catch (error) {
+
     console.error(error);
 
-    daftar.innerHTML =
-      '<div id="pesan">Gagal memuat anggota keluarga. Periksa koneksi dan izin Firebase.</div>';
+    status.textContent =
+      "Data belum dapat ditampilkan. Periksa izin membaca database Firebase.";
   }
 }
 
 muatAnggota();
+
 </script></body>
 </html>
