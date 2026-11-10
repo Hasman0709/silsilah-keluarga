@@ -7,6 +7,11 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 65px;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -21,7 +26,7 @@ header {
   padding: 30px 15px;
 }
 
-header .logo {
+.logo {
   width: 75px;
   height: 75px;
   border-radius: 50%;
@@ -32,7 +37,7 @@ header .logo {
   justify-content: center;
   font-size: 30px;
   font-weight: bold;
-  margin: auto auto 12px;
+  margin: 0 auto 12px;
 }
 
 header h1 {
@@ -64,6 +69,7 @@ nav a {
   font-weight: bold;
 }
 
+nav a:active,
 nav a:hover {
   background: #e8f5ed;
 }
@@ -82,8 +88,12 @@ nav a:hover {
   box-shadow: 0 2px 7px #0000000c;
 }
 
-.sambutan h2 {
+.sambutan h2,
+.judul {
   color: #176b45;
+}
+
+.sambutan h2 {
   margin-top: 0;
 }
 
@@ -93,7 +103,6 @@ nav a:hover {
 }
 
 .judul {
-  color: #176b45;
   margin: 25px 0 15px;
 }
 
@@ -112,6 +121,7 @@ nav a:hover {
   color: #176b45;
   font-weight: bold;
   box-shadow: 0 2px 7px #0000000c;
+  cursor: pointer;
 }
 
 .menu-item span {
@@ -168,10 +178,9 @@ nav a:hover {
   background: #176b45;
   color: white;
   border: none;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-radius: 7px;
   font-size: 12px;
-  text-decoration: none;
   cursor: pointer;
 }
 
@@ -249,7 +258,7 @@ footer {
 </header><nav>
   <a href="#beranda">Beranda</a>
   <a href="silsilah.html">Pohon Silsilah</a>
-  <a href="#anggota">Anggota Keluarga</a>
+  <a href="#anggota" id="menuAnggota">Anggota Keluarga</a>
 </nav><main class="container"><section id="beranda" class="sambutan">
   <h2>Selamat Datang</h2>  <p>
     Selamat datang di website Silsilah Keluarga Bani Yasroji.
@@ -417,6 +426,26 @@ pencarian.addEventListener("input", () => {
 
   tampilkanAnggota(hasil);
 });
+
+/* MENU ANGGOTA KELUARGA */
+
+function bukaDaftarAnggota(e) {
+  e.preventDefault();
+
+  document.getElementById("anggota").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+document.getElementById("menuAnggota")
+  .addEventListener("click", bukaDaftarAnggota);
+
+document.querySelectorAll('a[href="#anggota"]').forEach(menu => {
+  menu.addEventListener("click", bukaDaftarAnggota);
+});
+
+/* MEMUAT DATA FIREBASE */
 
 async function muatAnggota() {
 
