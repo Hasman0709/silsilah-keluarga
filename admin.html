@@ -1,166 +1,307 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Admin - Bani Yasroji</title>
-
-<style>
+<title>Dashboard Admin Bani Yasroji</title><style>
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background: #f1f7f3;
-    color: #333;
+    background: #f3f6f4;
+    color: #26352d;
 }
 
 header {
-    background: #168344;
+    background: #145c3b;
     color: white;
-    padding: 22px 18px;
+    padding: 22px 16px;
 }
 
-header h2 {
-    margin: 0 0 7px;
+.header-inner {
+    max-width: 950px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-header p {
-    margin: 0;
-    font-size: 14px;
+.logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    color: #145c3b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.identitas {
+    flex: 1;
+}
+
+.identitas h1 {
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+
+.identitas p {
+    font-size: 12px;
+}
+
+.keluar {
+    background: #ffffff;
+    color: #145c3b;
+    border: none;
+    padding: 11px 14px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .container {
-    padding: 18px;
-    max-width: 700px;
-    margin: auto;
+    width: 92%;
+    max-width: 950px;
+    margin: 25px auto;
 }
 
-.sambutan {
+.welcome {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #00000010;
+    margin-bottom: 22px;
+}
+
+.welcome h2 {
+    color: #145c3b;
+    font-size: 21px;
+    margin-bottom: 9px;
+}
+
+.welcome p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #68756d;
+}
+
+.judul {
+    color: #145c3b;
+    font-size: 19px;
+    margin-bottom: 14px;
+}
+
+.statistik {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 13px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
     background: white;
     padding: 20px;
-    border-radius: 13px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 10px #0000000d;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #00000010;
 }
 
-.sambutan h3 {
-    color: #168344;
-    margin-top: 0;
+.stat-card .angka {
+    font-size: 29px;
+    font-weight: bold;
+    color: #145c3b;
+    margin-bottom: 7px;
+}
+
+.stat-card p {
+    font-size: 13px;
+    color: #68756d;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
 }
 
 .menu {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 13px;
-}
-
-.menu a {
+    display: block;
     background: white;
-    text-decoration: none;
-    color: #333;
-    padding: 22px 12px;
-    border-radius: 13px;
-    text-align: center;
-    box-shadow: 0 3px 10px #0000000d;
-    font-weight: bold;
-}
-
-.menu a span {
-    display: block;
-    font-size: 30px;
-    margin-bottom: 10px;
-}
-
-.tombol-keluar {
-    display: block;
-    width: 100%;
-    margin-top: 22px;
-    padding: 14px;
-    border: none;
+    padding: 21px 16px;
     border-radius: 10px;
-    background: #d9534f;
-    color: white;
+    text-decoration: none;
+    color: #26352d;
+    box-shadow: 0 2px 8px #00000010;
+    transition: 0.2s;
+}
+
+.menu:hover {
+    transform: translateY(-3px);
+    background: #eaf5ee;
+}
+
+.menu .ikon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.menu h3 {
     font-size: 15px;
-    font-weight: bold;
+    color: #145c3b;
+    margin-bottom: 7px;
 }
 
-#status {
+.menu p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #68756d;
+}
+
+.status {
+    margin-top: 25px;
+    background: #eaf5ee;
+    padding: 15px;
+    border-radius: 8px;
+    color: #145c3b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+footer {
+    background: #10482f;
+    color: white;
     text-align: center;
-    padding: 30px;
-    color: #168344;
+    padding: 20px 10px;
+    margin-top: 40px;
+    font-size: 12px;
+    line-height: 1.8;
 }
 
-</style>
-</head>
+#loading {
+    text-align: center;
+    padding: 60px 15px;
+    color: #145c3b;
+}
 
-<body>
+#dashboard {
+    display: none;
+}
 
-<div id="status">Memeriksa akses admin...</div>
+@media(max-width:480px) {
+    .identitas h1 {
+        font-size: 15px;
+    }
 
-<div id="dashboard" hidden>
+    .keluar {
+        padding: 10px;
+        font-size: 12px;
+    }
 
-<header>
-    <h2>Dashboard Admin</h2>
-    <p>Pengelolaan Silsilah Keluarga Bani Yasroji</p>
-</header>
+    .welcome h2 {
+        font-size: 19px;
+    }
+}
+</style></head><body><div id="loading">
+    Memeriksa akses admin...
+</div><div id="dashboard"><header>
+    <div class="header-inner">    <div class="logo">BY</div>
 
-<div class="container">
-
-    <div class="sambutan">
-        <h3>Selamat Datang, Admin!</h3>
-        <p>
-            Silakan pilih menu untuk mengelola
-            data dan informasi keluarga.
-        </p>
+    <div class="identitas">
+        <h1>DASHBOARD ADMIN</h1>
+        <p>KELUARGA BESAR BANI YASROJI</p>
     </div>
 
-    <div class="menu">
-
-        <a href="anggota.html">
-            <span>👨‍👩‍👧‍👦</span>
-            Data Anggota
-        </a>
-
-        <a href="usulan.html">
-            <span>📋</span>
-            Usulan Anggota
-        </a>
-
-        <a href="silsilah.html">
-            <span>🌳</span>
-            Pohon Silsilah
-        </a>
-
-        <a href="galeri.html">
-            <span>🖼️</span>
-            Galeri Keluarga
-        </a>
-
-        <a href="sejarah.html">
-            <span>📖</span>
-            Sejarah Keluarga
-        </a>
-
-        <a href="index.html">
-            <span>🏠</span>
-            Halaman Utama
-        </a>
-
-    </div>
-
-    <button class="tombol-keluar" id="keluar">
-        Keluar dari Dashboard
+    <button class="keluar" id="btnKeluar">
+        Keluar
     </button>
 
 </div>
 
+</header><main class="container"><section class="welcome">
+    <h2>Selamat Datang, Admin</h2>
+    <p>
+        Selamat datang di halaman pengelolaan website
+        keluarga besar Bani Yasroji.
+        Silakan pilih menu untuk mengelola informasi keluarga.
+    </p>
+</section>
+
+<h2 class="judul">Ringkasan Data</h2>
+
+<section class="statistik">
+
+    <div class="stat-card">
+        <div class="angka" id="jumlahAnggota">-</div>
+        <p>Jumlah Anggota Keluarga</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="angka">Aktif</div>
+        <p>Status Dashboard Admin</p>
+    </div>
+
+</section>
+
+<h2 class="judul">Menu Pengelolaan</h2>
+
+<section class="menu-grid">
+
+    <a href="kelola-anggota.html" class="menu">
+        <div class="ikon">👨‍👩‍👧‍👦</div>
+        <h3>Kelola Anggota</h3>
+        <p>Tambah, edit, dan hapus data anggota keluarga.</p>
+    </a>
+
+    <a href="kelola-galeri.html" class="menu">
+        <div class="ikon">🖼️</div>
+        <h3>Kelola Galeri</h3>
+        <p>Tambah, edit, dan hapus foto keluarga.</p>
+    </a>
+
+    <a href="silsilah.html" class="menu">
+        <div class="ikon">🌳</div>
+        <h3>Lihat Pohon Silsilah</h3>
+        <p>Periksa susunan dan hubungan keluarga.</p>
+    </a>
+
+    <a href="anggota.html" class="menu">
+        <div class="ikon">📋</div>
+        <h3>Lihat Anggota</h3>
+        <p>Lihat daftar anggota keluarga seperti pengunjung.</p>
+    </a>
+
+    <a href="galeri.html" class="menu">
+        <div class="ikon">📸</div>
+        <h3>Lihat Galeri</h3>
+        <p>Lihat dokumentasi foto keluarga.</p>
+    </a>
+
+    <a href="index.html" class="menu">
+        <div class="ikon">🏠</div>
+        <h3>Halaman Utama</h3>
+        <p>Kembali ke halaman depan website keluarga.</p>
+    </a>
+
+</section>
+
+<div class="status">
+    <strong>Informasi:</strong><br>
+    Halaman ini hanya dapat digunakan oleh admin
+    yang sudah terdaftar dan memiliki hak akses di Firebase.
 </div>
 
-<script type="module">
-
+</main><footer>
+    <strong>KELUARGA BESAR BANI YASROJI</strong><br>
+    Halaman Pengelolaan Admin<br>
+    &copy; 2026 Bani Yasroji
+</footer></div><script type="module">
 import { auth, db } from "./js/firebase.js";
 
 import {
@@ -170,58 +311,87 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-const status = document.getElementById("status");
+const loading = document.getElementById("loading");
 const dashboard = document.getElementById("dashboard");
+const jumlahAnggota = document.getElementById("jumlahAnggota");
+const btnKeluar = document.getElementById("btnKeluar");
+
+let sedangMemeriksa = false;
+
+function tampilkanPesan(pesan) {
+    loading.textContent = pesan;
+    loading.style.display = "block";
+    dashboard.style.display = "none";
+}
 
 onAuthStateChanged(auth, async (user) => {
 
+    if (sedangMemeriksa) return;
+    sedangMemeriksa = true;
+
     if (!user) {
-        window.location.href = "login.html";
+        window.location.replace("login.html");
         return;
     }
 
     try {
 
         const adminRef = doc(db, "admins", user.uid);
-        const adminDoc = await getDoc(adminRef);
+        const adminSnap = await getDoc(adminRef);
 
-        if (!adminDoc.exists() || adminDoc.data().role !== "admin") {
-
-            status.textContent = "Akun ini tidak memiliki hak akses admin.";
+        if (!adminSnap.exists() ||
+            adminSnap.data().role !== "admin") {
 
             await signOut(auth);
-
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 2000);
-
+            window.location.replace("login.html");
             return;
         }
 
-        status.hidden = true;
-        dashboard.hidden = false;
+        loading.style.display = "none";
+        dashboard.style.display = "block";
+
+        try {
+            const snapshot = await getDocs(
+                collection(db, "anggota")
+            );
+
+            jumlahAnggota.textContent = snapshot.size;
+
+        } catch (error) {
+            console.error("Gagal memuat jumlah anggota:", error);
+            jumlahAnggota.textContent = "-";
+        }
 
     } catch (error) {
 
-        status.textContent = "Gagal memeriksa akses. Periksa koneksi dan aturan Firestore.";
+        console.error("Pemeriksaan admin gagal:", error);
 
-        console.error(error);
+        tampilkanPesan(
+            "Tidak dapat memeriksa akses admin. Periksa koneksi dan aturan Firebase, lalu muat ulang halaman."
+        );
 
+        sedangMemeriksa = false;
     }
-
 });
 
-document.getElementById("keluar").addEventListener("click", async () => {
+btnKeluar.addEventListener("click", async () => {
 
-    await signOut(auth);
-    window.location.href = "login.html";
+    const yakin = confirm("Apakah Anda yakin ingin keluar dari dashboard admin?");
 
+    if (!yakin) return;
+
+    try {
+        await signOut(auth);
+        window.location.replace("login.html");
+
+    } catch (error) {
+        alert("Gagal keluar: " + error.message);
+    }
 });
-
-</script>
-
-</body>
+</script></body>
 </html>
