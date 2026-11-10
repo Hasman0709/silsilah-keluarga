@@ -3,39 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Anggota Keluarga Bani Yasroji</title>
+<title>Data Anggota Bani Yasroji</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#edf7e9;color:#24452e}
-header{background:#08652d;color:white;text-align:center;padding:22px}
-header h2{margin:0}
-.container{max-width:850px;margin:auto;padding:15px}
-.card{background:white;padding:18px;border-radius:15px;margin-bottom:18px;box-shadow:0 3px 12px #0001}
-input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:8px;font-size:16px}
-button{border:0;padding:12px 17px;border-radius:8px;background:#087b35;color:white;font-weight:bold;margin:5px 3px}
-.hapus{background:#c62828}
-.batal{background:#777}
-.item{display:flex;gap:12px;align-items:center;border-bottom:1px solid #ddd;padding:12px 0}
-.item img{width:65px;height:65px;object-fit:cover;border-radius:50%;background:#e8f5e9}
-.item-info{flex:1;min-width:0}
-small{color:#666}
-#status{color:#087b35;font-weight:bold}
+body{margin:0;font-family:Arial;background:#edf6e9;color:#24452e}
+header{background:#08712f;color:white;text-align:center;padding:20px}
+.container{max-width:850px;margin:auto;padding:14px}
+.card{background:white;padding:17px;border-radius:14px;margin-bottom:16px;box-shadow:0 3px 12px #0001}
+input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #cbd8cb;border-radius:8px;font-size:16px}
+button{border:0;border-radius:8px;padding:11px 15px;background:#087b35;color:white;font-weight:bold;margin:4px}
+.secondary{background:#68756b}
+.delete{background:#c62828}
+.member{display:flex;gap:12px;align-items:center;border-bottom:1px solid #ddd;padding:12px 0}
+.member img{width:62px;height:62px;border-radius:50%;object-fit:cover;background:#eee}
+.member-info{flex:1;min-width:0}
+.member-info p{font-size:13px;margin:5px 0}
+.actions{margin-top:5px}
+small{color:#667568}
+#status{font-weight:bold;color:#08712f}
 </style>
 </head>
+
 <body>
 
 <header>
 <h2>🌳 Data Anggota Keluarga</h2>
-<p>Bani Yasroji</p>
-<a href="admin.html" style="color:white">← Kembali ke Dashboard</a>
+<b>Bani Yasroji</b>
+<p><a href="admin.html" style="color:white">← Kembali ke Dashboard</a></p>
 </header>
 
 <div class="container">
 
 <section class="card">
-<h3 id="judul">Tambah Anggota Baru</h3>
+<h3 id="judulForm">Tambah Anggota Baru</h3>
 
-<form id="form">
+<form id="formAnggota">
+
 <input id="nama" placeholder="Nama lengkap" required>
 
 <select id="jenisKelamin" required>
@@ -45,22 +49,89 @@ small{color:#666}
 </select>
 
 <select id="statusHidup">
-<option value="Hidup">Hidup</option>
-<option value="Meninggal">Meninggal</option>
+<option>Hidup</option>
+<option>Meninggal</option>
 </select>
 
 <input id="ayah" placeholder="Nama ayah">
 <input id="ibu" placeholder="Nama ibu">
 <input id="pasangan" placeholder="Nama pasangan">
 
-<label>Foto profil:</label>
+<label><b>Keterangan urutan keluarga</b></label>
+
+<select id="urutan">
+<option value="">Pilih keterangan (opsional)</option>
+
+<optgroup label="Anak dan menantu">
+<option>Anak pertama</option>
+<option>Menantu pertama</option>
+<option>Anak kedua</option>
+<option>Menantu kedua</option>
+<option>Anak ketiga</option>
+<option>Menantu ketiga</option>
+<option>Anak keempat</option>
+<option>Menantu keempat</option>
+<option>Anak kelima</option>
+<option>Menantu kelima</option>
+<option>Anak keenam</option>
+<option>Menantu keenam</option>
+<option>Anak ketujuh</option>
+<option>Menantu ketujuh</option>
+<option>Anak kedelapan</option>
+<option>Menantu kedelapan</option>
+<option>Anak kesembilan</option>
+<option>Menantu kesembilan</option>
+<option>Anak kesepuluh</option>
+<option>Menantu kesepuluh</option>
+</optgroup>
+
+<optgroup label="Cucu dan menantu cucu">
+<option>Cucu pertama</option>
+<option>Menantu cucu pertama</option>
+<option>Cucu kedua</option>
+<option>Menantu cucu kedua</option>
+<option>Cucu ketiga</option>
+<option>Menantu cucu ketiga</option>
+<option>Cucu keempat</option>
+<option>Menantu cucu keempat</option>
+<option>Cucu kelima</option>
+<option>Menantu cucu kelima</option>
+<option>Cucu keenam</option>
+<option>Menantu cucu keenam</option>
+<option>Cucu ketujuh</option>
+<option>Menantu cucu ketujuh</option>
+<option>Cucu kedelapan</option>
+<option>Menantu cucu kedelapan</option>
+<option>Cucu kesembilan</option>
+<option>Menantu cucu kesembilan</option>
+<option>Cucu kesepuluh</option>
+<option>Menantu cucu kesepuluh</option>
+</optgroup>
+
+<optgroup label="Cicit">
+<option>Cicit pertama</option>
+<option>Cicit kedua</option>
+<option>Cicit ketiga</option>
+<option>Cicit keempat</option>
+<option>Cicit kelima</option>
+</optgroup>
+
+</select>
+
+<label><b>Foto profil (opsional)</b></label>
 <input id="foto" type="file" accept="image/*">
-<div id="preview"></div>
+
+<small>Foto diperkecil otomatis sebelum disimpan.</small>
+<div id="pratinjau"></div>
 
 <textarea id="catatan" placeholder="Catatan tambahan"></textarea>
 
-<button id="simpan" type="submit">Simpan Anggota</button>
-<button id="batal" type="button" class="batal" hidden>Batal Edit</button>
+<button type="submit" id="tombolSimpan">Simpan Anggota</button>
+
+<button type="button" class="secondary" id="batalEdit" hidden>
+Batal Edit
+</button>
+
 </form>
 
 <p id="status"></p>
@@ -75,253 +146,385 @@ small{color:#666}
 </div>
 
 <script type="module">
+
 import {db} from "./js/firebase.js";
 
 import {
-collection,addDoc,getDocs,deleteDoc,
-doc,updateDoc,serverTimestamp
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc,
+updateDoc,
+serverTimestamp
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
 const $=id=>document.getElementById(id);
+
+const form=$("formAnggota");
 
 let semua=[];
 let idEdit=null;
 let fotoLama="";
 let fotoBaru=null;
 
-const form=$("form");
-
-function kompresFoto(file){
-return new Promise((resolve,reject)=>{
-const reader=new FileReader();
-
-reader.onerror=reject;
-
-reader.onload=()=>{
-const img=new Image();
-
-img.onload=()=>{
-const canvas=document.createElement("canvas");
-const max=400;
-
-let w=img.width;
-let h=img.height;
-
-if(w>h && w>max){
-h=h*max/w;
-w=max;
-}else if(h>max){
-w=w*max/h;
-h=max;
-}
-
-canvas.width=w;
-canvas.height=h;
-
-canvas.getContext("2d").drawImage(img,0,0,w,h);
-
-resolve(canvas.toDataURL("image/jpeg",0.65));
-};
-
-img.onerror=reject;
-img.src=reader.result;
-};
-
-reader.readAsDataURL(file);
-});
-}
-
-$("foto").onchange=e=>{
-fotoBaru=e.target.files[0]||null;
-$("preview").innerHTML="";
-
-if(!fotoBaru)return;
-
-if(!fotoBaru.type.startsWith("image/")){
-alert("Pilih file gambar.");
-fotoBaru=null;
-return;
-}
-
-const im=document.createElement("img");
-im.src=URL.createObjectURL(fotoBaru);
-im.style="width:100px;height:100px;object-fit:cover;border-radius:50%";
-$("preview").append(im);
-};
-
-async function muat(){
-$("daftar").textContent="Memuat data...";
-
-try{
-const hasil=await getDocs(collection(db,"anggota"));
-
-semua=hasil.docs.map(d=>({
-id:d.id,...d.data()
-}));
-
-render(semua);
-
-}catch(e){
-console.error(e);
-$("daftar").textContent="Gagal memuat data anggota.";
-}
-}
-
-function render(data){
-$("daftar").innerHTML="";
-
-if(!data.length){
-$("daftar").textContent="Belum ada anggota.";
-return;
-}
-
-data.forEach(a=>{
-const box=document.createElement("div");
-box.className="item";
-
-const im=document.createElement("img");
-im.src=a.fotoUrl||"";
-im.alt="Foto anggota";
-
-if(!a.fotoUrl){
-im.style.display="none";
-}
-
-const info=document.createElement("div");
-info.className="item-info";
-
-const nama=document.createElement("b");
-nama.textContent=a.nama||"Tanpa nama";
-
-const detail=document.createElement("small");
-detail.style.display="block";
-detail.textContent=
-(a.jenisKelamin||"")+" • "+(a.statusHidup||"");
-
-info.append(nama,detail);
-
-const edit=document.createElement("button");
-edit.textContent="Edit";
-edit.onclick=()=>mulaiEdit(a);
-
-const hapus=document.createElement("button");
-hapus.textContent="Hapus";
-hapus.className="hapus";
-hapus.onclick=()=>hapusAnggota(a);
-
-box.append(im,info,edit, hapus);
-$("daftar").append(box);
-});
-}
-
-function mulaiEdit(a){
-idEdit=a.id;
-fotoLama=a.fotoUrl||"";
-fotoBaru=null;
-
-["nama","jenisKelamin","statusHidup",
-"ayah","ibu","pasangan","catatan"].forEach(k=>{
-$(k).value=a[k]||"";
-});
-
-$("preview").innerHTML="";
-
-if(fotoLama){
-const im=document.createElement("img");
-im.src=fotoLama;
-im.style="width:100px;height:100px;object-fit:cover;border-radius:50%";
-$("preview").append(im);
-}
-
-$("judul").textContent="Edit Anggota";
-$("simpan").textContent="Simpan Perubahan";
-$("batal").hidden=false;
-
-window.scrollTo({top:0,behavior:"smooth"});
-}
-
 function resetForm(){
+
 form.reset();
+
 idEdit=null;
 fotoLama="";
 fotoBaru=null;
 
-$("preview").innerHTML="";
-$("judul").textContent="Tambah Anggota Baru";
-$("simpan").textContent="Simpan Anggota";
-$("batal").hidden=true;
+$("judulForm").textContent="Tambah Anggota Baru";
+$("tombolSimpan").textContent="Simpan Anggota";
+$("batalEdit").hidden=true;
+$("pratinjau").innerHTML="";
+
 }
 
-$("batal").onclick=resetForm;
+function kompresFoto(file){
 
-async function hapusAnggota(a){
+return new Promise((resolve,reject)=>{
+
+let r=new FileReader();
+
+r.onerror=reject;
+
+r.onload=()=>{
+
+let im=new Image();
+
+im.onerror=reject;
+
+im.onload=()=>{
+
+let s=Math.min(1,600/Math.max(im.width,im.height));
+
+let c=document.createElement("canvas");
+
+c.width=Math.round(im.width*s);
+c.height=Math.round(im.height*s);
+
+c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+
+let q=.7;
+
+let v=c.toDataURL("image/jpeg",q);
+
+while(v.length>600000&&q>.35){
+
+q-=.07;
+
+v=c.toDataURL("image/jpeg",q);
+
+}
+
+v.length>750000
+?reject(Error("Foto terlalu besar"))
+:resolve(v);
+
+};
+
+im.src=r.result;
+
+};
+
+r.readAsDataURL(file);
+
+});
+
+}
+
+$("foto").onchange=e=>{
+
+fotoBaru=e.target.files[0]||null;
+
+$("pratinjau").innerHTML="";
+
+if(!fotoBaru)return;
+
+if(!fotoBaru.type.startsWith("image/")){
+
+alert("Pilih gambar.");
+
+fotoBaru=null;
+
+return;
+
+}
+
+let im=document.createElement("img");
+
+im.src=URL.createObjectURL(fotoBaru);
+
+im.style="width:100px;height:100px;object-fit:cover;border-radius:50%";
+
+$("pratinjau").append(im);
+
+};
+
+async function muat(){
+
+let d=$("daftar");
+
+d.textContent="Memuat data...";
+
+try{
+
+let r=await getDocs(collection(db,"anggota"));
+
+semua=r.docs.map(x=>({id:x.id,...x.data()}));
+
+render(semua);
+
+}catch(e){
+
+console.error(e);
+
+d.textContent="Gagal memuat data. Periksa koneksi dan aturan Firestore.";
+
+}
+
+}
+
+function render(rows){
+
+let d=$("daftar");
+
+d.innerHTML="";
+
+if(!rows.length){
+
+d.textContent="Belum ada data anggota.";
+
+return;
+
+}
+
+rows.forEach(a=>{
+
+let b=document.createElement("div");
+
+b.className="member";
+
+let im=document.createElement("img");
+
+im.alt="Foto";
+
+if(a.fotoUrl){
+
+im.src=a.fotoUrl;
+
+}else{
+
+im.style.visibility="hidden";
+
+}
+
+let info=document.createElement("div");
+
+info.className="member-info";
+
+let h=document.createElement("b");
+
+h.textContent=a.nama||"-";
+
+let p=document.createElement("p");
+
+p.textContent=[a.jenisKelamin,a.statusHidup].filter(Boolean).join(" • ");
+
+let u=document.createElement("p");
+
+u.textContent=a.urutan||"Urutan belum diisi";
+
+let rel=document.createElement("p");
+
+rel.textContent=`Ayah: ${a.ayah||"-"} | Ibu: ${a.ibu||"-"} | Pasangan: ${a.pasangan||"-"}`;
+
+let act=document.createElement("div");
+
+act.className="actions";
+
+let ed=document.createElement("button");
+
+ed.textContent="Edit";
+
+ed.onclick=()=>edit(a);
+
+let del=document.createElement("button");
+
+del.textContent="Hapus";
+
+del.className="delete";
+
+del.onclick=()=>hapus(a);
+
+act.append(ed,del);
+
+info.append(h,p,u,rel,act);
+
+b.append(im,info);
+
+d.append(b);
+
+});
+
+}
+
+function edit(a){
+
+idEdit=a.id;
+
+fotoLama=a.fotoUrl||"";
+
+fotoBaru=null;
+
+["nama","jenisKelamin","statusHidup","ayah","ibu","pasangan","urutan","catatan"].forEach(k=>{
+
+$(k).value=a[k]||"";
+
+});
+
+$("foto").value="";
+
+$("pratinjau").innerHTML="";
+
+if(fotoLama){
+
+let im=document.createElement("img");
+
+im.src=fotoLama;
+
+im.style="width:100px;height:100px;border-radius:50%";
+
+$("pratinjau").append(im);
+
+}
+
+$("judulForm").textContent="Edit Data Anggota";
+
+$("tombolSimpan").textContent="Simpan Perubahan";
+
+$("batalEdit").hidden=false;
+
+window.scrollTo({top:0,behavior:"smooth"});
+
+}
+
+$("batalEdit").onclick=resetForm;
+
+async function hapus(a){
+
 if(!confirm("Hapus data "+a.nama+"?"))return;
 
 try{
+
 await deleteDoc(doc(db,"anggota",a.id));
-$("status").textContent="Data berhasil dihapus.";
+
+$("status").textContent="Data dihapus.";
+
 await muat();
+
 }catch(e){
+
 console.error(e);
-alert("Gagal menghapus data.");
+
+$("status").textContent="Gagal menghapus data.";
+
 }
+
 }
 
 form.onsubmit=async e=>{
+
 e.preventDefault();
 
-const btn=$("simpan");
+let btn=$("tombolSimpan");
+
 btn.disabled=true;
+
 btn.textContent="Menyimpan...";
 
 try{
+
 let fotoUrl=fotoLama;
 
 if(fotoBaru){
+
 fotoUrl=await kompresFoto(fotoBaru);
+
 }
 
-const data={
+let data={
+
 nama:$("nama").value.trim(),
+
 jenisKelamin:$("jenisKelamin").value,
+
 statusHidup:$("statusHidup").value,
+
 ayah:$("ayah").value.trim(),
+
 ibu:$("ibu").value.trim(),
+
 pasangan:$("pasangan").value.trim(),
+
+urutan:$("urutan").value,
+
 catatan:$("catatan").value.trim(),
+
 fotoUrl,
+
 diperbaruiPada:serverTimestamp()
+
 };
 
 if(idEdit){
+
 await updateDoc(doc(db,"anggota",idEdit),data);
-$("status").textContent="Data berhasil diperbarui.";
+
 }else{
+
 data.dibuatPada=serverTimestamp();
+
 await addDoc(collection(db,"anggota"),data);
-$("status").textContent="Anggota berhasil ditambahkan.";
+
 }
 
+$("status").textContent="Data berhasil disimpan.";
+
 resetForm();
+
 await muat();
 
 }catch(e){
+
 console.error(e);
-$("status").textContent="Gagal menyimpan. Periksa koneksi dan ukuran foto.";
+
+$("status").textContent="Gagal menyimpan. Periksa koneksi, aturan Firestore, atau ukuran foto.";
+
 }finally{
+
 btn.disabled=false;
+
+btn.textContent=idEdit?"Simpan Perubahan":"Simpan Anggota";
+
 }
+
 };
 
 $("cari").oninput=()=>{
-const q=$("cari").value.toLowerCase();
 
-render(semua.filter(a=>
-(a.nama||"").toLowerCase().includes(q)
-));
+let q=$("cari").value.toLowerCase();
+
+render(semua.filter(a=>(a.nama||"").toLowerCase().includes(q)));
+
 };
 
 muat();
+
 </script>
+
 </body>
 </html>
