@@ -15,77 +15,82 @@ body {
     color: #263b32;
 }
 
-/* HEADER BARU */
+/* HEADER DAN JUDUL */
 header {
-    background: linear-gradient(135deg, #064d39, #087653, #0b684d);
+    background: linear-gradient(135deg, #064d39, #087653);
     color: white;
     text-align: center;
-    padding: 25px 12px 0;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 14px rgba(0,0,0,.16);
+    padding: 22px 12px 20px;
 }
 
 .header-logo {
-    width: 65px;
-    height: 65px;
-    margin: 0 auto 12px;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 10px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #fff9e8, #f0d58b);
-    color: #075e45;
+    background: #fff;
+    color: #087653;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 27px;
-    font-weight: 900;
-    border: 3px solid #e6c66d;
+    font-size: 25px;
+    font-weight: bold;
+    border: 3px solid #d6b65c;
     box-shadow: 0 3px 10px rgba(0,0,0,.2);
 }
 
 .judul-utama {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
-    letter-spacing: 3px;
-    color: #e7f3eb;
+    letter-spacing: 2px;
 }
 
 .nama-keluarga {
     display: block;
-    margin-top: 7px;
-    font-size: 30px;
+    margin-top: 6px;
+    font-size: 29px;
     font-weight: 900;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     color: #f5d77e;
-    text-shadow: 2px 3px 5px rgba(0,0,0,.3);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.25);
 }
 
-/* NAVIGASI BARU */
+/* NAVIGASI TERPISAH DARI JUDUL */
+.nav-area {
+    background: #e8f1eb;
+    padding: 12px 8px;
+    border-bottom: 1px solid #d5e3d9;
+    box-shadow: 0 3px 8px rgba(0,0,0,.06);
+}
+
 nav {
+    max-width: 650px;
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 9px;
-    padding: 17px 5px 19px;
-    margin-top: 15px;
 }
 
 nav a {
-    color: white;
+    display: inline-block;
+    background: white;
+    color: #075e45;
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 11px 17px;
     font-size: 13px;
     font-weight: bold;
-    border: 1px solid rgba(255,255,255,.35);
+    border: 1px solid #cbded1;
     border-radius: 25px;
-    background: rgba(255,255,255,.09);
+    box-shadow: 0 2px 5px rgba(0,0,0,.05);
     transition: .2s;
 }
 
 nav a:hover {
-    background: #f5d77e;
-    color: #075e45;
-    border-color: #f5d77e;
+    background: #075e45;
+    color: white;
+    border-color: #075e45;
     transform: translateY(-2px);
 }
 
@@ -281,34 +286,21 @@ footer strong {
 
 /* TAMPILAN HP */
 @media (max-width: 600px) {
-    header {
-        padding-top: 22px;
-    }
-
-    .header-logo {
-        width: 59px;
-        height: 59px;
-        font-size: 24px;
-    }
-
-    .judul-utama {
-        font-size: 12px;
-        letter-spacing: 2px;
-    }
-
     .nama-keluarga {
         font-size: 25px;
-        letter-spacing: 2px;
+    }
+
+    .nav-area {
+        padding: 11px 5px;
     }
 
     nav {
-        gap: 6px;
-        padding: 15px 2px 17px;
+        gap: 7px;
     }
 
     nav a {
-        font-size: 11px;
-        padding: 9px 11px;
+        font-size: 12px;
+        padding: 10px 13px;
     }
 
     .hero {
@@ -339,14 +331,13 @@ footer strong {
     <div class="header-logo">BY</div><div class="judul-utama">SILSILAH KELUARGA BESAR</div>
 <span class="nama-keluarga">BANI YASROJI</span>
 
-<nav>
-    <a href="index.html">⌂ Beranda</a>
-    <a href="silsilah.html">🌳 Pohon Silsilah</a>
-    <a href="anggota.html">👨‍👩‍👧 Anggota Keluarga</a>
-    <a href="galeri.html">▧ Galeri Foto</a>
-</nav>
-
-</header><main class="container"><section class="hero">
+</header><div class="nav-area">
+    <nav>
+        <a href="index.html">⌂ Beranda</a>
+        <a href="silsilah.html">🌳 Pohon Silsilah</a>
+        <a href="anggota.html">👨‍👩‍👧 Anggota Keluarga</a>
+    </nav>
+</div><main class="container"><section class="hero">
     <div class="hero-label">WEBSITE KELUARGA</div>
 
     <h1>Selamat Datang di Keluarga Besar Bani Yasroji</h1>
