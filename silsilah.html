@@ -38,53 +38,55 @@ header h2 {
   width: 100%;
   height: 75vh;
   overflow: auto;
-  padding: 25px;
+  padding: 15px;
   touch-action: pan-x pan-y;
 }
 
 .pohon {
-  display: flex;
-  align-items: flex-start;
-  gap: 45px;
-  width: max-content;
   min-width: 100%;
-  padding: 20px;
+  width: max-content;
+  padding: 15px;
+}
+
+.generasi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 35px;
+  position: relative;
+}
+
+.judul-generasi {
+  background: #176b45;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 18px;
+}
+
+.daftar-keluarga {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 22px;
 }
 
 .keluarga {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  position: relative;
-}
-
-.orangtua {
-  display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 35px;
-}
-
-.cabang {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 25px;
-  position: relative;
-}
-
-.anak-cabang {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 145px;
-  position: relative;
+  gap: 8px;
+  padding: 8px;
+  background: #e4f1e8;
+  border: 1px solid #b5d5bf;
+  border-radius: 12px;
 }
 
 .kartu {
-  width: 145px;
-  min-height: 110px;
+  width: 135px;
+  min-height: 105px;
   background: white;
   border: 2px solid #258457;
   border-radius: 12px;
@@ -114,24 +116,22 @@ header h2 {
   margin-top: 5px;
 }
 
-.hubungan {
-  font-size: 24px;
+.love {
+  font-size: 23px;
   color: #e53965;
-  line-height: 30px;
-  margin: 4px 0;
 }
 
-.turunan {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid #80b99a;
+.penghubung {
+  width: 3px;
+  height: 25px;
+  background: #80b99a;
+  margin: 0 auto;
 }
 
-.keterangan {
-  text-align: center;
-  font-size: 12px;
-  color: #666;
-  margin: 10px;
+.daftar-belum {
+  padding: 15px;
+  font-size: 13px;
+  color: #9b3333;
 }
 
 button {
@@ -143,25 +143,22 @@ button {
   margin: 5px;
 }
 
-.daftar {
-  padding: 15px;
-  font-size: 13px;
-  color: #9b3333;
-}
-
 @media(max-width:600px) {
   .area {
     height: 75vh;
-    padding: 10px;
+    padding: 8px;
   }
 
-  .pohon {
-    gap: 25px;
-    padding: 10px;
+  .daftar-keluarga {
+    gap: 12px;
   }
 
-  .cabang {
-    gap: 15px;
+  .kartu {
+    width: 120px;
+  }
+
+  .keluarga {
+    gap: 5px;
   }
 }
 </style>
@@ -180,13 +177,14 @@ button {
   <button onclick="location.reload()">Muat ulang</button>
 </div>
 
-<div class="area" id="area">
+<div class="area">
   <div class="pohon" id="pohon"></div>
 </div>
 
-<div class="daftar" id="daftarBelum"></div>
+<div class="daftar-belum" id="daftarBelum"></div>
 
 <script type="module">
+
 import { db } from "./js/firebase.js";
 
 import {
@@ -199,22 +197,21 @@ const pohon = document.getElementById("pohon");
 const daftarBelum = document.getElementById("daftarBelum");
 
 let anggota = [];
-let sudahTampil = new Set();
 
 function normal(teks) {
   return (teks || "").trim().toLowerCase();
 }
 
-function cariNama(nama) {
-  return anggota.find(a => normal(a.nama) === normal(nama));
-}
+function cariPasangan(orang) {
+  if (!orang.pasangan) return null;
 
-function pasanganOrang(orang) {
-  if (!orang || !orang.pasangan) return null;
-  return cariNama(orang.pasangan);
+  return anggota.find(a =>
+    normal(a.nama) === normal(orang.pasangan)
+  ) || null;
 }
 
 function buatKartu(orang, label) {
+
   const kartu = document.createElement("div");
   kartu.className = "kartu";
 
@@ -228,51 +225,46 @@ function buatKartu(orang, label) {
   const nama = document.createElement("div");
   nama.className = "nama";
   nama.textContent = orang.nama || "Tanpa nama";
-  kartu.appendChild(nama);
 
   const keterangan = document.createElement("div");
   keterangan.className = "label";
   keterangan.textContent = label || "";
-  kartu.appendChild(keterangan);
+
+  kartu.append(nama, keterangan);
 
   return kartu;
 }
 
-function pasanganSalingTerhubung(a, b) {
-  if (!a || !b) return false;
+function angkaUrutan(teks) {
 
-  return normal(a.pasangan) === normal(b.nama) ||
-         normal(b.pasangan) === normal(a.nama);
-}
+  const urutan = [
+    "pertama",
+    "kedua",
+    "ketiga",
+    "keempat",
+    "kelima",
+    "keenam",
+    "ketujuh",
+    "kedelapan",
+    "kesembilan",
+    "kesepuluh"
+  ];
 
-function anakDari(ayah, ibu) {
-  const namaAyah = normal(ayah?.nama);
-  const namaIbu = normal(ibu?.nama);
+  const nilai = normal(teks);
 
-  return anggota.filter(a => {
-    const aAyah = normal(a.ayah);
-    const aIbu = normal(a.ibu);
+  for (let i = 0; i < urutan.length; i++) {
+    if (nilai.includes(urutan[i])) return i + 1;
+  }
 
-    if (!namaAyah && !namaIbu) return false;
-
-    if (namaAyah && namaIbu) {
-      return (
-        (aAyah === namaAyah && aIbu === namaIbu) ||
-        (aAyah === namaIbu && aIbu === namaAyah)
-      );
-    }
-
-    const namaOrangtua = namaAyah || namaIbu;
-
-    return aAyah === namaOrangtua ||
-           aIbu === namaOrangtua;
-  });
+  return 999;
 }
 
 function urutkan(data) {
+
   return [...data].sort((a, b) => {
-    const ua = parseInt(a.urutan) || 9999;
-    const ub = parseInt(b.urutan) || 9999;
+
+    const ua = angkaUrutan(a.urutan);
+    const ub = angkaUrutan(b.urutan);
 
     if (ua !== ub) return ua - ub;
 
@@ -280,131 +272,76 @@ function urutkan(data) {
   });
 }
 
-function buatCabang(orang, pasangan, level = 0) {
-  if (!orang) return null;
+function namaLabel(generasi) {
 
-  const kunci = normal(orang.nama);
+  const label = {
+    1: "Generasi 1 - Kakek/Nenek",
+    2: "Generasi 2 - Anak",
+    3: "Generasi 3 - Cucu",
+    4: "Generasi 4 - Cicit",
+    5: "Generasi 5 - Canggah",
+    6: "Generasi 6 - Wareng"
+  };
 
-  if (sudahTampil.has(kunci)) return null;
-
-  sudahTampil.add(kunci);
-
-  const cabang = document.createElement("div");
-  cabang.className = "anak-cabang";
-
-  const labelAnak =
-    level === 0 ? "Anak" :
-    level === 1 ? "Cucu" :
-    level === 2 ? "Cicit" : "Keturunan";
-
-  cabang.appendChild(buatKartu(orang, labelAnak));
-
-  if (pasangan) {
-    const love = document.createElement("div");
-    love.className = "hubungan";
-    love.textContent = "❤️";
-    cabang.appendChild(love);
-
-    const kunciPasangan = normal(pasangan.nama);
-
-    if (!sudahTampil.has(kunciPasangan)) {
-      sudahTampil.add(kunciPasangan);
-      cabang.appendChild(
-        buatKartu(pasangan, "Menantu")
-      );
-    }
-  }
-
-  const anakBerikutnya = urutkan(
-    anakDari(orang, pasangan)
-  );
-
-  const turunan = document.createElement("div");
-  turunan.className = "turunan";
-
-  const cabangBerikutnya = document.createElement("div");
-  cabangBerikutnya.className = "cabang";
-
-  let adaTurunan = false;
-
-  for (const anak of anakBerikutnya) {
-    if (sudahTampil.has(normal(anak.nama))) continue;
-
-    const pasanganAnak = pasanganOrang(anak);
-
-    const hasil = buatCabang(
-      anak,
-      pasanganAnak,
-      level + 1
-    );
-
-    if (hasil) {
-      cabangBerikutnya.appendChild(hasil);
-      adaTurunan = true;
-    }
-  }
-
-  if (adaTurunan) {
-    turunan.appendChild(cabangBerikutnya);
-    cabang.appendChild(turunan);
-  }
-
-  return cabang;
+  return label[generasi] || "Generasi " + generasi;
 }
 
-function buatKeluarga(orang) {
-  const pasangan = pasanganOrang(orang);
+function labelAnggota(orang, generasi) {
+
+  if (orang.urutan) return orang.urutan;
+
+  const label = {
+    1: "Kakek / Nenek",
+    2: "Anak / Menantu",
+    3: "Cucu / Menantu",
+    4: "Cicit / Menantu",
+    5: "Canggah",
+    6: "Wareng"
+  };
+
+  return label[generasi] || "";
+}
+
+function buatKeluarga(orang, generasi, sudahTampil) {
 
   const keluarga = document.createElement("div");
   keluarga.className = "keluarga";
 
-  const orangtua = document.createElement("div");
-  orangtua.className = "orangtua";
+  keluarga.appendChild(
+    buatKartu(orang, labelAnggota(orang, generasi))
+  );
 
-  if (!sudahTampil.has(normal(orang.nama))) {
-    sudahTampil.add(normal(orang.nama));
-    orangtua.appendChild(buatKartu(orang, "Kakek / Nenek"));
-  }
+  sudahTampil.add(normal(orang.nama));
 
-  if (pasangan &&
-      !sudahTampil.has(normal(pasangan.nama))) {
-    sudahTampil.add(normal(pasangan.nama));
-    orangtua.appendChild(buatKartu(pasangan, "Pasangan"));
-  }
+  const pasangan = cariPasangan(orang);
 
-  keluarga.appendChild(orangtua);
+  if (
+    pasangan &&
+    normal(pasangan.nama) !== normal(orang.nama) &&
+    Number(pasangan.generasi) === generasi &&
+    !sudahTampil.has(normal(pasangan.nama))
+  ) {
 
-  const anak = urutkan(anakDari(orang, pasangan));
+    const love = document.createElement("div");
+    love.className = "love";
+    love.textContent = "❤️";
 
-  const cabang = document.createElement("div");
-  cabang.className = "cabang";
+    keluarga.appendChild(love);
 
-  let adaAnak = false;
-
-  for (const a of anak) {
-    if (sudahTampil.has(normal(a.nama))) continue;
-
-    const hasil = buatCabang(
-      a,
-      pasanganOrang(a),
-      0
+    keluarga.appendChild(
+      buatKartu(pasangan, labelAnggota(pasangan, generasi))
     );
 
-    if (hasil) {
-      cabang.appendChild(hasil);
-      adaAnak = true;
-    }
-  }
-
-  if (adaAnak) {
-    keluarga.appendChild(cabang);
+    sudahTampil.add(normal(pasangan.nama));
   }
 
   return keluarga;
 }
 
 async function tampilkanSilsilah() {
+
   try {
+
     const hasil = await getDocs(collection(db, "anggota"));
 
     anggota = hasil.docs.map(d => ({
@@ -413,75 +350,95 @@ async function tampilkanSilsilah() {
     }));
 
     pohon.innerHTML = "";
-    sudahTampil.clear();
+    daftarBelum.innerHTML = "";
 
     if (anggota.length === 0) {
       status.textContent = "Belum ada data anggota keluarga.";
       return;
     }
 
-    // Nama yang sudah tercatat sebagai anak.
-    const namaAnak = new Set();
+    const sudahTampil = new Set();
 
-    anggota.forEach(a => {
-      if (a.ayah) namaAnak.add(normal(a.ayah));
-      if (a.ibu) namaAnak.add(normal(a.ibu));
-    });
+    let jumlahGenerasi = 0;
 
-    // Nama yang tercatat sebagai pasangan tidak dijadikan akar.
-    const namaPasangan = new Set();
+    for (let g = 1; g <= 6; g++) {
 
-    anggota.forEach(a => {
-      if (a.pasangan) {
-        namaPasangan.add(normal(a.pasangan));
+      const dataGenerasi = urutkan(
+        anggota.filter(a => Number(a.generasi) === g)
+      );
+
+      if (dataGenerasi.length === 0) continue;
+
+      jumlahGenerasi++;
+
+      const bagian = document.createElement("section");
+      bagian.className = "generasi";
+
+      const judul = document.createElement("div");
+      judul.className = "judul-generasi";
+      judul.textContent = namaLabel(g);
+
+      const daftar = document.createElement("div");
+      daftar.className = "daftar-keluarga";
+
+      for (const orang of dataGenerasi) {
+
+        if (sudahTampil.has(normal(orang.nama))) continue;
+
+        daftar.appendChild(
+          buatKeluarga(orang, g, sudahTampil)
+        );
       }
-    });
 
-    // Akar adalah anggota tanpa ayah/ibu dan bukan menantu
-    // yang hanya tercatat sebagai pasangan.
-    const akar = anggota.filter(a => {
-      return !a.ayah &&
-             !a.ibu &&
-             !namaPasangan.has(normal(a.nama));
-    });
+      bagian.append(judul, daftar);
 
-    if (akar.length === 0) {
-      status.textContent =
-        "Belum ditemukan anggota keluarga paling atas. Periksa data ayah dan ibu.";
-      return;
-    }
+      if (jumlahGenerasi > 1) {
 
-    // Tampilkan akar yang belum pernah ditampilkan.
-    for (const orang of akar) {
-      if (sudahTampil.has(normal(orang.nama))) continue;
+        const penghubung = document.createElement("div");
+        penghubung.className = "penghubung";
 
-      pohon.appendChild(buatKeluarga(orang));
+        pohon.appendChild(penghubung);
+      }
+
+      pohon.appendChild(bagian);
     }
 
     const belum = anggota.filter(a =>
-      !sudahTampil.has(normal(a.nama))
+      !a.generasi || Number(a.generasi) < 1 ||
+      Number(a.generasi) > 6
     );
 
     status.textContent =
       "Jumlah anggota: " + anggota.length +
-      " | Berhasil ditampilkan: " +
-      (anggota.length - belum.length);
+      " | Generasi ditampilkan: " + jumlahGenerasi;
 
     if (belum.length > 0) {
-      daftarBelum.innerHTML =
-        "<b>Belum terhubung dalam pohon:</b><br>" +
-        belum.map(a => a.nama).join(", ") +
-        "<br><small>Periksa isian nama ayah dan ibu anggota tersebut.</small>";
+
+      const judul = document.createElement("b");
+      judul.textContent = "Anggota yang belum diberi generasi:";
+
+      daftarBelum.appendChild(judul);
+      daftarBelum.appendChild(document.createElement("br"));
+
+      belum.forEach(a => {
+        const baris = document.createElement("div");
+        baris.textContent = a.nama;
+        daftarBelum.appendChild(baris);
+      });
     }
 
   } catch (error) {
+
     console.error(error);
+
     status.textContent =
-      "Gagal memuat data. Periksa koneksi dan pengaturan Firebase.";
+      "Gagal memuat data. Periksa koneksi dan Firebase.";
+
   }
 }
 
 tampilkanSilsilah();
+
 </script>
 
 </body>
