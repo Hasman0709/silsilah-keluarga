@@ -1,0 +1,492 @@
+<!DOCTYPE html><html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kelola Galeri Keluarga</title><style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f1f5f9;
+  color:#1e293b;
+}
+header{
+  background:#14532d;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+.container{
+  max-width:1000px;
+  margin:20px auto;
+  padding:15px;
+}
+.card{
+  background:white;
+  padding:18px;
+  border-radius:12px;
+  margin-bottom:18px;
+  box-shadow:0 2px 8px #0001;
+}
+h2{color:#14532d;margin-top:0}
+label{font-weight:bold;font-size:14px}
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin:7px 0 14px;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  font-size:15px;
+}
+button{
+  border:0;
+  padding:11px 15px;
+  border-radius:7px;
+  cursor:pointer;
+  margin:3px;
+  font-size:14px;
+}
+.simpan{background:#15803d;color:white}
+.edit{background:#2563eb;color:white}
+.hapus{background:#dc2626;color:white}
+.batal{background:#64748b;color:white}
+.kembali{background:#e2e8f0;color:#1e293b}
+#pesan{font-weight:bold;margin-top:10px}
+#preview{
+  display:none;
+  width:150px;
+  max-height:150px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-bottom:12px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:14px;
+}
+.foto-card{
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+  overflow:hidden;
+}
+.foto-card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  background:#e2e8f0;
+}
+.foto-info{padding:12px}
+.foto-info strong{display:block;margin-bottom:6px}
+.keterangan{font-size:13px;color:#64748b;overflow-wrap:anywhere}
+.kategori{
+  display:inline-block;
+  background:#dcfce7;
+  color:#166534;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:12px;
+  margin-bottom:8px;
+}
+@media(max-width:480px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .foto-card img{height:130px}
+  .foto-info{padding:9px}
+}
+</style></head><body><header>
+  <h2 style="color:white;margin:0">KELOLA GALERI</h2>
+  <p>Silsilah Keluarga Bani Yasroji</p>
+</header><div class="container"><div class="card">
+  <button class="kembali" onclick="location.href='admin.html'">
+    ← Kembali ke Dashboard
+  </button>  <h2 id="judulForm">Tambah Foto Galeri</h2>  <form id="formGaleri"><label>Judul Foto</label>
+<input id="judul" required placeholder="Contoh: Kumpul Keluarga">
+
+<label>Kategori Galeri</label>
+<select id="kategori" required>
+  <option value="Galeri Foto">Galeri Foto</option>
+  <option value="Galeri Keluarga">Galeri Keluarga</option>
+</select>
+
+<label>Keterangan Foto</label>
+<textarea id="keterangan" rows="3"
+  placeholder="Tuliskan keterangan foto..."></textarea>
+
+<label>Pilih Foto</label>
+<input id="fileFoto" type="file" accept="image/*">
+
+<img id="preview" alt="Pratinjau foto">
+
+<button class="simpan" type="submit" id="tombolSimpan">
+  Simpan Foto
+</button>
+
+<button class="batal" type="button" id="tombolBatal"
+  style="display:none">
+  Batal Edit
+</button>
+
+  </form>  <div id="pesan"></div>
+</div><div class="card">
+  <h2>Daftar Foto Galeri</h2><label>Filter Kategori</label>
+<select id="filterKategori">
+<option value="">Semua Galeri</option>
+<option value="Galeri Foto">Galeri Foto</option>
+<option value="Galeri Keluarga">Galeri Keluarga</option>
+</select>
+
+  <input id="pencarian" placeholder="Cari judul foto...">  <div id="daftar">Memuat galeri...</div>
+</div></div><script type="module">
+import { auth, db, storage } from "./js/firebase.js";
+
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-storage.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+
+const koleksi = collection(db,"galeri");
+
+let daftarFoto = [];
+let idEdit = null;
+let fotoLama = "";
+let pathLama = "";
+
+const $ = id => document.getElementById(id);
+
+function tampilPesan(teks,warna="green"){
+  $("pesan").textContent = teks;
+  $("pesan").style.color = warna;
+}
+
+// Periksa akses admin
+onAuthStateChanged(auth,async user=>{
+  if(!user){
+    location.href="login.html";
+    return;
+  }
+
+  try{
+    const adminSnap = await getDoc(doc(db,"admins",user.uid));
+
+    if(!adminSnap.exists() || adminSnap.data().role !== "admin"){
+      await signOut(auth);
+      location.href="login.html";
+      return;
+    }
+
+    muatGaleri();
+
+  }catch(error){
+    tampilPesan("Gagal memeriksa admin: "+error.message,"red");
+  }
+});
+
+// Kompres foto
+async function kompresFoto(file){
+  if(!file.type.startsWith("image/")){
+    throw new Error("File harus berupa gambar.");
+  }
+
+  const url = URL.createObjectURL(file);
+  const gambar = new Image();
+
+  try{
+    await new Promise((resolve,reject)=>{
+      gambar.onload=resolve;
+      gambar.onerror=reject;
+      gambar.src=url;
+    });
+
+    const batas=1200;
+    const skala=Math.min(1,batas/Math.max(gambar.width,gambar.height));
+
+    const canvas=document.createElement("canvas");
+    canvas.width=Math.round(gambar.width*skala);
+    canvas.height=Math.round(gambar.height*skala);
+
+    canvas.getContext("2d").drawImage(
+      gambar,0,0,canvas.width,canvas.height
+    );
+
+    return await new Promise((resolve,reject)=>{
+      canvas.toBlob(blob=>{
+        if(blob) resolve(blob);
+        else reject(new Error("Gagal memproses foto."));
+      },"image/jpeg",0.78);
+    });
+
+  }finally{
+    URL.revokeObjectURL(url);
+  }
+}
+
+// Upload foto ke Firebase Storage
+async function uploadFoto(file){
+  const blob=await kompresFoto(file);
+
+  const namaFile="galeri/"+Date.now()+"_"+Math.random()
+    .toString(36).slice(2)+".jpg";
+
+  const lokasi=ref(storage,namaFile);
+
+  await uploadBytes(lokasi,blob,{
+    contentType:"image/jpeg"
+  });
+
+  const url=await getDownloadURL(lokasi);
+
+  return {
+    fotoUrl:url,
+    fotoPath:namaFile
+  };
+}
+
+// Muat data galeri
+async function muatGaleri(){
+  $("daftar").textContent="Memuat galeri...";
+
+  try{
+    const snapshot=await getDocs(koleksi);
+
+    daftarFoto=snapshot.docs.map(item=>({
+      id:item.id,
+      ...item.data()
+    }));
+
+    tampilkanGaleri();
+
+  }catch(error){
+    $("daftar").textContent="Gagal memuat galeri: "+error.message;
+  }
+}
+
+// Tampilkan foto
+function tampilkanGaleri(){
+  const kata=$("pencarian").value.toLowerCase();
+  const kategori=$("filterKategori").value;
+
+  const hasil=daftarFoto.filter(f=>{
+    const cocokNama=(f.judul||"").toLowerCase().includes(kata);
+    const cocokKategori=!kategori || f.kategori===kategori;
+    return cocokNama && cocokKategori;
+  });
+
+  $("daftar").innerHTML="";
+
+  if(hasil.length===0){
+    $("daftar").textContent="Belum ada foto pada kategori ini.";
+    return;
+  }
+
+  const grid=document.createElement("div");
+  grid.className="grid";
+
+  hasil.forEach(f=>{
+    const kartu=document.createElement("div");
+    kartu.className="foto-card";
+
+    const img=document.createElement("img");
+    img.src=f.fotoUrl||"";
+    img.alt=f.judul||"Foto galeri";
+    img.onerror=()=>img.style.display="none";
+
+    const isi=document.createElement("div");
+    isi.className="foto-info";
+
+    const label=document.createElement("span");
+    label.className="kategori";
+    label.textContent=f.kategori||"Galeri Foto";
+
+    const judul=document.createElement("strong");
+    judul.textContent=f.judul||"Tanpa judul";
+
+    const ket=document.createElement("p");
+    ket.className="keterangan";
+    ket.textContent=f.keterangan||"Tidak ada keterangan.";
+
+    const edit=document.createElement("button");
+    edit.className="edit";
+    edit.textContent="Edit";
+    edit.onclick=()=>mulaiEdit(f.id);
+
+    const hapus=document.createElement("button");
+    hapus.className="hapus";
+    hapus.textContent="Hapus";
+    hapus.onclick=()=>hapusFoto(f.id,f.judul);
+
+    isi.append(label,judul,ket,edit,hapus);
+    kartu.append(img,isi);
+    grid.appendChild(kartu);
+  });
+
+  $("daftar").appendChild(grid);
+}
+
+$("pencarian").addEventListener("input",tampilkanGaleri);
+$("filterKategori").addEventListener("change",tampilkanGaleri);
+
+// Simpan foto baru atau perubahan
+$("formGaleri").addEventListener("submit",async event=>{
+  event.preventDefault();
+
+  const tombol=$("tombolSimpan");
+  tombol.disabled=true;
+
+  try{
+    const file=$("fileFoto").files[0];
+
+    const data={
+      judul:$("judul").value.trim(),
+      kategori:$("kategori").value,
+      keterangan:$("keterangan").value.trim()
+    };
+
+    if(!data.judul){
+      throw new Error("Judul foto wajib diisi.");
+    }
+
+    if(!idEdit && !file){
+      throw new Error("Silakan pilih foto terlebih dahulu.");
+    }
+
+    tampilPesan("Sedang menyimpan foto...");
+
+    if(file){
+      const hasil=await uploadFoto(file);
+
+      data.fotoUrl=hasil.fotoUrl;
+      data.fotoPath=hasil.fotoPath;
+    }
+
+    if(idEdit){
+      await updateDoc(doc(db,"galeri",idEdit),{
+        ...data,
+        diperbarui:serverTimestamp()
+      });
+
+      // Hapus file foto lama setelah data berhasil diperbarui
+      if(file && pathLama){
+        try{
+          await deleteObject(ref(storage,pathLama));
+        }catch(error){
+          console.warn("Foto lama tidak dapat dihapus:",error);
+        }
+      }
+
+      tampilPesan("Foto berhasil diperbarui.");
+
+    }else{
+      await addDoc(koleksi,{
+        ...data,
+        dibuat:serverTimestamp()
+      });
+
+      tampilPesan("Foto berhasil ditambahkan.");
+    }
+
+    resetForm();
+    await muatGaleri();
+
+  }catch(error){
+    tampilPesan("Gagal menyimpan: "+error.message,"red");
+  }finally{
+    tombol.disabled=false;
+  }
+});
+
+// Edit data
+function mulaiEdit(id){
+  const f=daftarFoto.find(item=>item.id===id);
+  if(!f)return;
+
+  idEdit=id;
+  fotoLama=f.fotoUrl||"";
+  pathLama=f.fotoPath||"";
+
+  $("judul").value=f.judul||"";
+  $("kategori").value=f.kategori||"Galeri Foto";
+  $("keterangan").value=f.keterangan||"";
+
+  $("preview").src=fotoLama;
+  $("preview").style.display=fotoLama?"block":"none";
+
+  $("judulForm").textContent="Edit Foto Galeri";
+  $("tombolSimpan").textContent="Simpan Perubahan";
+  $("tombolBatal").style.display="inline-block";
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// Hapus foto dan datanya
+async function hapusFoto(id,nama){
+  if(!confirm("Yakin ingin menghapus foto "+nama+"?"))return;
+
+  try{
+    const f=daftarFoto.find(item=>item.id===id);
+
+    await deleteDoc(doc(db,"galeri",id));
+
+    if(f && f.fotoPath){
+      try{
+        await deleteObject(ref(storage,f.fotoPath));
+      }catch(error){
+        console.warn("File foto tidak dapat dihapus:",error);
+      }
+    }
+
+    tampilPesan("Foto berhasil dihapus.");
+    await muatGaleri();
+
+  }catch(error){
+    tampilPesan("Gagal menghapus: "+error.message,"red");
+  }
+}
+
+// Pratinjau foto
+$("fileFoto").addEventListener("change",()=>{
+  const file=$("fileFoto").files[0];
+
+  if(!file)return;
+
+  $("preview").src=URL.createObjectURL(file);
+  $("preview").style.display="block";
+});
+
+// Reset form
+function resetForm(){
+  $("formGaleri").reset();
+
+  idEdit=null;
+  fotoLama="";
+  pathLama="";
+
+  $("preview").src="";
+  $("preview").style.display="none";
+
+  $("judulForm").textContent="Tambah Foto Galeri";
+  $("tombolSimpan").textContent="Simpan Foto";
+  $("tombolBatal").style.display="none";
+}
+
+$("tombolBatal").addEventListener("click",resetForm);
+
+</script></body>
+</html>
