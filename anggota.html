@@ -42,6 +42,16 @@ small{color:#667568}
 
 <input id="nama" placeholder="Nama lengkap" required>
 
+<select id="generasi" required>
+<option value="">Pilih generasi</option>
+<option value="1">Generasi 1 - Kakek/Nenek</option>
+<option value="2">Generasi 2 - Anak</option>
+<option value="3">Generasi 3 - Cucu</option>
+<option value="4">Generasi 4 - Cicit</option>
+<option value="5">Generasi 5 - Canggah</option>
+<option value="6">Generasi 6 - Wareng</option>
+</select>
+
 <select id="jenisKelamin" required>
 <option value="">Pilih jenis kelamin</option>
 <option value="Laki-laki">Laki-laki</option>
@@ -332,7 +342,11 @@ h.textContent=a.nama||"-";
 
 let p=document.createElement("p");
 
-p.textContent=[a.jenisKelamin,a.statusHidup].filter(Boolean).join(" • ");
+p.textContent=[
+"Generasi "+(a.generasi||"belum diisi"),
+a.jenisKelamin,
+a.statusHidup
+].filter(Boolean).join(" • ");
 
 let u=document.createElement("p");
 
@@ -380,9 +394,19 @@ fotoLama=a.fotoUrl||"";
 
 fotoBaru=null;
 
-["nama","jenisKelamin","statusHidup","ayah","ibu","pasangan","urutan","catatan"].forEach(k=>{
+[
+"nama",
+"generasi",
+"jenisKelamin",
+"statusHidup",
+"ayah",
+"ibu",
+"pasangan",
+"urutan",
+"catatan"
+].forEach(k=>{
 
-$(k).value=a[k]||"";
+$(k).value=a[k]??"";
 
 });
 
@@ -459,6 +483,8 @@ fotoUrl=await kompresFoto(fotoBaru);
 let data={
 
 nama:$("nama").value.trim(),
+
+generasi:Number($("generasi").value),
 
 jenisKelamin:$("jenisKelamin").value,
 
