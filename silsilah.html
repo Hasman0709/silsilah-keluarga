@@ -1,469 +1,515 @@
 <!DOCTYPE html><html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Silsilah Keluarga Besar Bani Yasroji</title><style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pohon Silsilah Keluarga Besar Bani Yasroji</title><style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eaf5e5;
+    color:#174b27;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f3f7f4;
-    color: #263b32;
+/* HEADER BARU */
+header{
+    background:linear-gradient(135deg,#064d39,#087653);
+    color:white;
+    text-align:center;
+    padding:25px 12px 23px;
 }
 
-/* HEADER DAN JUDUL */
-header {
-    background: linear-gradient(135deg, #064d39, #087653);
-    color: white;
-    text-align: center;
-    padding: 22px 12px 20px;
+.header-logo{
+    width:55px;
+    height:55px;
+    margin:0 auto 12px;
+    border-radius:50%;
+    background:white;
+    color:#087653;
+    border:3px solid #d6b65c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:23px;
+    font-weight:bold;
+    box-shadow:0 3px 9px #0003;
 }
 
-.header-logo {
-    width: 58px;
-    height: 58px;
-    margin: 0 auto 10px;
-    border-radius: 50%;
-    background: #fff;
-    color: #087653;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    font-weight: bold;
-    border: 3px solid #d6b65c;
-    box-shadow: 0 3px 10px rgba(0,0,0,.2);
+header h1{
+    margin:0;
+    font-size:25px;
+    font-weight:900;
+    letter-spacing:2px;
+    color:#f5d77e;
+    text-shadow:2px 2px 4px #0005;
 }
 
-.judul-utama {
-    font-size: 15px;
-    font-weight: bold;
-    letter-spacing: 2px;
+header p{
+    margin:8px 0 15px;
+    font-size:17px;
+    font-weight:bold;
+    letter-spacing:1px;
+    color:white;
 }
 
-.nama-keluarga {
-    display: block;
-    margin-top: 6px;
-    font-size: 29px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    color: #f5d77e;
-    text-shadow: 2px 2px 4px rgba(0,0,0,.25);
+header a{
+    display:inline-block;
+    color:#075e45;
+    background:#f5d77e;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:25px;
+    font-size:13px;
+    font-weight:bold;
+    box-shadow:0 2px 6px #0002;
 }
 
-/* NAVIGASI TERPISAH DARI JUDUL */
-.nav-area {
-    background: #e8f1eb;
-    padding: 12px 8px;
-    border-bottom: 1px solid #d5e3d9;
-    box-shadow: 0 3px 8px rgba(0,0,0,.06);
+header a:hover{
+    background:white;
 }
 
-nav {
-    max-width: 650px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 9px;
+/* BAGIAN LAIN TETAP */
+.legend{
+    text-align:center;
+    background:white;
+    border-radius:10px;
+    margin:12px auto;
+    padding:12px;
+    max-width:700px;
+    font-size:13px;
 }
 
-nav a {
-    display: inline-block;
-    background: white;
-    color: #075e45;
-    text-decoration: none;
-    padding: 11px 17px;
-    font-size: 13px;
-    font-weight: bold;
-    border: 1px solid #cbded1;
-    border-radius: 25px;
-    box-shadow: 0 2px 5px rgba(0,0,0,.05);
-    transition: .2s;
+.toolbar{
+    text-align:center;
+    padding:8px;
 }
 
-nav a:hover {
-    background: #075e45;
-    color: white;
-    border-color: #075e45;
-    transform: translateY(-2px);
+.toolbar button{
+    border:0;
+    border-radius:8px;
+    padding:10px 15px;
+    background:#087b35;
+    color:white;
+    font-weight:bold;
 }
 
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px 15px;
+.hint{
+    text-align:center;
+    font-size:12px;
+    color:#536b57;
+    padding:8px;
 }
 
-/* BAGIAN SAMBUTAN */
-.hero {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #075a40, #10845d);
-    color: white;
-    padding: 32px 23px;
-    border-radius: 18px;
-    margin-bottom: 23px;
-    box-shadow: 0 6px 18px rgba(0,70,45,.15);
+.area{
+    overflow:auto;
+    padding:20px 12px 50px;
 }
 
-.hero::after {
-    content: "🌿";
-    position: absolute;
-    right: 15px;
-    bottom: 5px;
-    font-size: 85px;
-    opacity: .13;
+.tree{
+    width:max-content;
+    min-width:100%;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    margin:auto;
 }
 
-.hero-label {
-    display: inline-block;
-    background: rgba(255,255,255,.15);
-    color: #f5d77e;
-    padding: 7px 13px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 15px;
+.branch,.childBranch,.grandBranch{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
 }
 
-.hero h1 {
-    font-size: 27px;
-    line-height: 1.3;
-    margin-bottom: 12px;
-    max-width: 600px;
+.couple{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    position:relative;
+    z-index:2;
 }
 
-.hero p {
-    font-size: 14px;
-    line-height: 1.8;
-    max-width: 650px;
-    color: #e6f3ec;
+.card{
+    width:145px;
+    min-height:140px;
+    background:white;
+    border:3px solid #178044;
+    border-radius:15px;
+    padding:9px 7px;
+    text-align:center;
+    box-shadow:0 3px 9px #0002;
+    overflow-wrap:anywhere;
 }
 
-.hero-button {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 19px;
-    background: #f3d47c;
-    color: #174b35;
-    text-decoration: none;
-    border-radius: 25px;
-    font-size: 13px;
-    font-weight: bold;
+.card.female{
+    border-color:#cc6b9d;
 }
 
-/* JUDUL BAGIAN */
-.section-title {
-    margin: 25px 0 14px;
+.card img,.avatar{
+    width:68px;
+    height:68px;
+    object-fit:cover;
+    border-radius:50%;
+    display:block;
+    margin:0 auto 7px;
+    background:#e5f1e5;
 }
 
-.section-title h2 {
-    color: #075e45;
-    font-size: 20px;
+.avatar{
+    display:grid;
+    place-items:center;
+    font-size:32px;
 }
 
-.section-title p {
-    color: #718078;
-    font-size: 13px;
-    margin-top: 5px;
-    line-height: 1.5;
+.name{
+    font-weight:bold;
+    font-size:14px;
 }
 
-/* MENU */
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 13px;
+.rank{
+    font-size:12px;
+    color:#a16a13;
+    font-weight:bold;
+    margin-top:5px;
+    min-height:14px;
 }
 
-.menu-card {
-    background: white;
-    padding: 19px 12px;
-    border-radius: 15px;
-    text-decoration: none;
-    color: #263b32;
-    box-shadow: 0 3px 12px rgba(0,0,0,.055);
-    border: 1px solid #e9f0eb;
-    transition: .2s;
+.status{
+    font-size:11px;
+    color:#69756a;
+    margin-top:5px;
 }
 
-.menu-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0,0,0,.09);
+.heart{
+    font-size:23px;
+    color:#d52b42;
 }
 
-.menu-icon {
-    width: 47px;
-    height: 47px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #e8f5ed;
-    border-radius: 13px;
-    font-size: 25px;
-    margin-bottom: 12px;
+.line{
+    width:2px;
+    height:23px;
+    background:#54735a;
 }
 
-.menu-card h3 {
-    color: #075e45;
-    font-size: 15px;
-    margin-bottom: 5px;
+.children,.grandchildren{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:18px;
+    border-top:2px solid #54735a;
+    padding-top:22px;
 }
 
-.menu-card p {
-    color: #7b8981;
-    font-size: 12px;
-    line-height: 1.5;
+.childBranch:before,.grandBranch:before{
+    content:"";
+    position:absolute;
+    top:-24px;
+    height:24px;
+    width:2px;
+    background:#54735a;
 }
 
-/* GALERI */
-.galeri-section {
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    margin-top: 25px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.055);
-    border: 1px solid #e9f0eb;
+.grandchildren{
+    gap:12px;
+    padding-top:19px;
 }
 
-.galeri-section h2 {
-    color: #075e45;
-    font-size: 19px;
-    margin-bottom: 9px;
+.grandBranch:before{
+    top:-21px;
+    height:21px;
 }
 
-.galeri-section p {
-    font-size: 13px;
-    line-height: 1.7;
-    color: #68776e;
-    margin-bottom: 15px;
+.grandBranch .card{
+    width:132px;
+    min-height:130px;
 }
 
-.thumbnail-grid {
-    width: 56.25%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    pointer-events: none;
-    user-select: none;
+.grandBranch .card img,.grandBranch .avatar{
+    width:60px;
+    height:60px;
 }
 
-.thumbnail-grid img {
-    width: 100%;
-    height: 51px;
-    object-fit: cover;
-    border-radius: 6px;
-    display: block;
-    pointer-events: none;
-    -webkit-user-drag: none;
+.message{
+    background:white;
+    border-radius:10px;
+    padding:12px;
+    margin:12px auto;
+    text-align:center;
+    max-width:650px;
 }
 
-.pesan-kosong {
-    color: #87928b;
-    font-size: 13px;
-}
-
-/* FOOTER */
-footer {
-    margin-top: 30px;
-    padding: 24px 12px;
-    background: #064d39;
-    color: white;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.8;
-}
-
-footer strong {
-    color: #f5d77e;
-}
-
-/* TAMPILAN HP */
-@media (max-width: 600px) {
-    .nama-keluarga {
-        font-size: 25px;
+@media(max-width:600px){
+    header h1{
+        font-size:21px;
     }
 
-    .nav-area {
-        padding: 11px 5px;
+    header p{
+        font-size:15px;
     }
 
-    nav {
-        gap: 7px;
+    .card{
+        width:132px;
     }
 
-    nav a {
-        font-size: 12px;
-        padding: 10px 13px;
-    }
-
-    .hero {
-        padding: 27px 19px;
-    }
-
-    .hero h1 {
-        font-size: 23px;
-    }
-
-    .menu-card {
-        padding: 16px 11px;
-    }
-
-    .menu-card h3 {
-        font-size: 14px;
-    }
-
-    .thumbnail-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .thumbnail-grid img {
-        height: 48px;
+    .children{
+        gap:12px;
     }
 }
 </style></head><body><header>
-    <div class="header-logo">BY</div><div class="judul-utama">SILSILAH KELUARGA BESAR</div>
-<span class="nama-keluarga">BANI YASROJI</span>
+    <div class="header-logo">BY</div><h1>POHON SILSILAH</h1>
 
-</header><div class="nav-area">
-    <nav>
-        <a href="index.html">⌂ Beranda</a>
-        <a href="silsilah.html">🌳 Pohon Silsilah</a>
-        <a href="anggota.html">👨‍👩‍👧 Anggota Keluarga</a>
-    </nav>
-</div><main class="container"><section class="hero">
-    <div class="hero-label">WEBSITE KELUARGA</div>
+<p>KELUARGA BESAR BANI YASROJI</p>
 
-    <h1>Selamat Datang di Keluarga Besar Bani Yasroji</h1>
+<a href="index.html">← Kembali ke Beranda</a>
 
-    <p>
-        Satu keluarga, satu ikatan, dan banyak kenangan.
-        Mari mengenal asal-usul keluarga, melihat silsilah,
-        serta menjaga tali persaudaraan untuk generasi mendatang.
-    </p>
-
-    <a href="silsilah.html" class="hero-button">
-        Lihat Pohon Silsilah →
-    </a>
-</section>
-
-<div class="section-title">
-    <h2>Jelajahi Keluarga</h2>
-    <p>Pilih halaman yang ingin Anda kunjungi.</p>
-</div>
-
-<section class="menu-grid">
-
-    <a href="silsilah.html" class="menu-card">
-        <div class="menu-icon">🌳</div>
-        <h3>Pohon Silsilah</h3>
-        <p>Lihat hubungan keluarga dari generasi ke generasi.</p>
-    </a>
-
-    <a href="anggota.html" class="menu-card">
-        <div class="menu-icon">👨‍👩‍👧‍👦</div>
-        <h3>Anggota Keluarga</h3>
-        <p>Kenali anggota keluarga besar Bani Yasroji.</p>
-    </a>
-
-    <a href="galeri.html" class="menu-card">
-        <div class="menu-icon">📷</div>
-        <h3>Galeri Foto</h3>
-        <p>Lihat dokumentasi dan kenangan keluarga.</p>
-    </a>
-
-    <a href="login.html" class="menu-card">
-        <div class="menu-icon">🔐</div>
-        <h3>Admin</h3>
-        <p>Halaman pengelolaan website keluarga.</p>
-    </a>
-
-</section>
-
-<section class="galeri-section">
-    <h2>Thumbnail Galeri Keluarga</h2>
-
-    <p>
-        Kumpulan foto kegiatan, pertemuan, dan kenangan keluarga besar
-        Bani Yasroji dapat dilihat melalui halaman galeri foto.
-    </p>
-
-    <div class="thumbnail-grid" id="thumbnailGaleri">
-        <span class="pesan-kosong">Memuat foto...</span>
-    </div>
-</section>
-
-</main><footer>
-    <strong>KELUARGA BESAR BANI YASROJI</strong>
+</header><div class="legend">
+    ❤️ Suami dan istri &nbsp; | &nbsp; Garis menghubungkan orang tua dengan anak
     <br>
-    Menjaga silaturahmi, merawat sejarah, menyatukan keluarga.
-    <br>
-    &copy; 2026 Bani Yasroji
-</footer><script type="module">
-import { db } from "./js/firebase.js";
+    <small>
+        Anak pertama, Menantu pertama, Cucu pertama, dan keterangan urutan lainnya tampil di bawah nama.
+    </small>
+</div><div class="toolbar">
+    <button id="reload">↻ Muat ulang</button>
+</div><div class="hint">
+    Geser ke kiri atau kanan untuk melihat seluruh pohon keluarga.
+</div><div id="message" class="message">
+    Memuat data keluarga...
+</div><div class="area">
+    <div id="tree" class="tree"></div>
+</div><script type="module">
+import {db} from "./js/firebase.js";
 
 import {
     collection,
-    getDocs,
-    query,
-    orderBy
+    getDocs
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-const thumbnailGaleri = document.getElementById("thumbnailGaleri");
+const tree=document.getElementById("tree");
+const message=document.getElementById("message");
 
-async function tampilkanThumbnail() {
-    try {
-        const galeriRef = collection(db, "galeri");
+const norm=v=>(v||"").trim().toLocaleLowerCase("id");
 
-        const galeriQuery = query(
-            galeriRef,
-            orderBy("dibuatPada", "desc")
-        );
+function byName(data,n){
+    return data.find(x=>norm(x.nama)===norm(n));
+}
 
-        const snapshot = await getDocs(galeriQuery);
+function card(p){
+    const c=document.createElement("div");
+    c.className="card "+(norm(p.jenisKelamin)==="perempuan"?"female":"");
 
-        thumbnailGaleri.innerHTML = "";
+    if(p.fotoUrl){
+        const i=document.createElement("img");
+        i.src=p.fotoUrl;
+        i.alt="Foto "+(p.nama||"anggota");
+        i.onerror=()=>i.replaceWith(avatar(p));
+        c.append(i);
+    }else{
+        c.append(avatar(p));
+    }
 
-        if (snapshot.empty) {
-            thumbnailGaleri.innerHTML =
-                '<span class="pesan-kosong">Belum ada foto galeri.</span>';
-            return;
+    const n=document.createElement("div");
+    n.className="name";
+    n.textContent=p.nama||"Tanpa nama";
+
+    const r=document.createElement("div");
+    r.className="rank";
+    r.textContent=p.urutan||"";
+
+    const s=document.createElement("div");
+    s.className="status";
+    s.textContent=p.statusHidup||"";
+
+    c.append(n,r,s);
+    return c;
+}
+
+function avatar(p){
+    const a=document.createElement("div");
+    a.className="avatar";
+    a.textContent=norm(p.jenisKelamin)==="perempuan"?"👩":"👨";
+    return a;
+}
+
+function couple(p,data,used){
+    const row=document.createElement("div");
+    row.className="couple";
+
+    row.append(card(p));
+
+    const mate=byName(data,p.pasangan);
+
+    if(mate&&mate.id!==p.id&&!used.has(mate.id)){
+        const h=document.createElement("span");
+        h.className="heart";
+        h.textContent="❤️";
+
+        row.append(h,card(mate));
+        used.add(mate.id);
+    }
+
+    return row;
+}
+
+function kids(p,data){
+    return data.filter(x=>
+        norm(x.ayah)===norm(p.nama)||
+        norm(x.ibu)===norm(p.nama)
+    );
+}
+
+function render(data){
+    tree.innerHTML="";
+
+    if(!data.length){
+        message.textContent="Belum ada data anggota.";
+        return;
+    }
+
+    const roots=data.filter(x=>!x.ayah&&!x.ibu);
+
+    if(!roots.length){
+        message.textContent="Belum ditemukan generasi paling atas. Kosongkan kolom ayah dan ibu pada data Kakek/Nenek tertua.";
+        return;
+    }
+
+    message.textContent="Data keluarga berhasil dimuat.";
+
+    const used=new Set();
+    const rootRow=document.createElement("div");
+
+    rootRow.style="display:flex;gap:28px;align-items:flex-start";
+
+    roots.forEach(root=>{
+        if(used.has(root.id))return;
+
+        const b=document.createElement("div");
+        b.className="branch";
+
+        b.append(couple(root,data,used));
+
+        const childList=kids(root,data);
+
+        if(childList.length){
+            const line=document.createElement("div");
+            line.className="line";
+            b.append(line);
+
+            const wrap=document.createElement("div");
+            wrap.className="children";
+
+            childList.forEach(ch=>{
+                if(used.has(ch.id))return;
+
+                const cb=document.createElement("div");
+                cb.className="childBranch";
+
+                cb.append(couple(ch,data,used));
+                used.add(ch.id);
+
+                const grandList=kids(ch,data);
+
+                if(grandList.length){
+                    const ln=document.createElement("div");
+                    ln.className="line";
+                    cb.append(ln);
+
+                    const gw=document.createElement("div");
+                    gw.className="grandchildren";
+
+                    grandList.forEach(gc=>{
+                        if(used.has(gc.id))return;
+
+                        const gb=document.createElement("div");
+                        gb.className="grandBranch";
+
+                        gb.append(couple(gc,data,used));
+                        used.add(gc.id);
+
+                        const greatList=kids(gc,data);
+
+                        if(greatList.length){
+                            const gl=document.createElement("div");
+                            gl.className="line";
+                            gb.append(gl);
+
+                            const greatWrap=document.createElement("div");
+                            greatWrap.className="grandchildren";
+
+                            greatList.forEach(great=>{
+                                if(used.has(great.id))return;
+
+                                const item=document.createElement("div");
+                                item.className="grandBranch";
+
+                                item.append(couple(great,data,used));
+                                used.add(great.id);
+
+                                greatWrap.append(item);
+                            });
+
+                            gb.append(greatWrap);
+                        }
+
+                        gw.append(gb);
+                    });
+
+                    cb.append(gw);
+                }
+
+                wrap.append(cb);
+            });
+
+            b.append(wrap);
         }
 
-        snapshot.forEach((dokumen) => {
-            const data = dokumen.data();
+        rootRow.append(b);
+        used.add(root.id);
+    });
 
-            if (data.fotoUrl) {
-                const gambar = document.createElement("img");
+    tree.append(rootRow);
 
-                gambar.src = data.fotoUrl;
-                gambar.alt = data.judul || "Foto keluarga";
-                gambar.loading = "lazy";
-                gambar.draggable = false;
+    const unplaced=data.filter(x=>!used.has(x.id));
 
-                thumbnailGaleri.appendChild(gambar);
-            }
-        });
+    if(unplaced.length){
+        const box=document.createElement("div");
+        box.className="message";
 
-        if (thumbnailGaleri.children.length === 0) {
-            thumbnailGaleri.innerHTML =
-                '<span class="pesan-kosong">Belum ada foto galeri.</span>';
-        }
+        box.textContent="Anggota belum tersambung. Periksa apakah nama ayah dan ibu ditulis sama persis dengan nama anggota.";
 
-    } catch (error) {
-        console.error("Gagal memuat galeri:", error);
+        const row=document.createElement("div");
+        row.style="display:flex;gap:10px";
 
-        thumbnailGaleri.innerHTML =
-            '<span class="pesan-kosong">Foto galeri belum dapat dimuat.</span>';
+        unplaced.forEach(x=>row.append(card(x)));
+
+        box.append(row);
+        tree.append(box);
     }
 }
 
-tampilkanThumbnail();
+async function load(){
+    message.textContent="Memuat data keluarga...";
+
+    try{
+        const snap=await getDocs(collection(db,"anggota"));
+
+        render(
+            snap.docs.map(d=>({
+                id:d.id,
+                ...d.data()
+            }))
+        );
+
+    }catch(e){
+        console.error(e);
+
+        message.textContent="Gagal memuat data. Periksa koneksi dan aturan Firestore.";
+    }
+}
+
+document.getElementById("reload").onclick=load;
+
+load();
 </script></body>
 </html>
