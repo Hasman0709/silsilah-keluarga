@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Anggota Keluarga</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f7f3;
+    color: #26352b;
+}
+
+header {
+    background: #176b45;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+header h2 {
+    margin: 5px;
+}
+
+.kembali {
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.container {
+    max-width: 550px;
+    margin: auto;
+    padding: 18px;
+}
+
+.profil {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 3px 12px #0001;
+}
+
+.foto {
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    background: #dcefe3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.nama {
+    color: #176b45;
+    margin-bottom: 5px;
+}
+
+.status {
+    display: inline-block;
+    background: #dff4e5;
+    color: #176b45;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.biodata {
+    background: white;
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px #0001;
+}
+
+.biodata h3 {
+    color: #176b45;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.baris {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.label {
+    color: #777;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.nilai {
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>👤 Profil Anggota</h2>
+    <p>Informasi lengkap anggota keluarga</p>
+    <a href="anggota.html" class="kembali">
+        ← Kembali ke Anggota
+    </a>
+</header>
+
+<div class="container">
+
+    <div class="profil">
+
+        <div class="foto">👨</div>
+
+        <h2 class="nama">Bapak Hasan</h2>
+
+        <span class="status">Hidup</span>
+
+        <p>Generasi Kedua</p>
+
+    </div>
+
+    <div class="biodata">
+
+        <h3>📋 Biodata Pribadi</h3>
+
+        <div class="baris">
+            <span class="label">Nama Lengkap</span>
+            <span class="nilai">Bapak Hasan</span>
+        </div>
+
+        <div class="baris">
+            <span class="label">Jenis Kelamin</span>
+            <span class="nilai">Laki-laki</span>
+        </div>
+
+        <div class="baris">
+            <span class="label">Tanggal Meninggal</span>
+            <span class="nilai">-</span>
+        </div>
+
+    </div>
+
+    <div class="biodata">
+
+        <h3>👨‍👩‍👧 Hubungan Keluarga</h3>
+
+        <div class="baris">
+            <span class="label">Ayah</span>
+            <span class="nilai">Bapak Ahmad</span>
+        </div>
+
+        <div class="baris">
+            <span class="label">Ibu</span>
+            <span class="nilai">Ibu Aminah</span>
+        </div>
+
+        <div class="baris">
+            <span class="label">Pasangan</span>
+            <span class="nilai">Ibu Siti</span>
+        </div>
+
+        <div class="baris">
+            <span class="label">Anak</span>
+            <span class="nilai">Ali dan Aisyah</span>
+        </div>
+
+    </div>
+
+    <div class="biodata">
+
+        <h3>📝 Keterangan</h3>
+
+        <p>
+            Ini merupakan contoh profil anggota keluarga.
+            Informasi sebenarnya akan diisi melalui database.
+        </p>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Silsilah Keluarga
+</footer>
+
+</body>
+</html>

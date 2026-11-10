@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sejarah Keluarga</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f7f3;
+    color: #26352b;
+    line-height: 1.6;
+}
+
+header {
+    background: #176b45;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+header h2 {
+    margin: 5px;
+}
+
+.kembali {
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    padding: 18px;
+}
+
+.kartu {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px #0001;
+}
+
+h3 {
+    color: #176b45;
+    margin-top: 0;
+}
+
+.garis {
+    border-left: 4px solid #176b45;
+    padding-left: 15px;
+    margin: 20px 0;
+}
+
+.tahun {
+    color: #176b45;
+    font-weight: bold;
+}
+
+textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 9px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    resize: vertical;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 9px;
+    background: #176b45;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.catatan {
+    background: #fff5d9;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>📜 Sejarah Keluarga</h2>
+    <p>Mengenal asal-usul dan perjalanan keluarga</p>
+
+    <a href="index.html" class="kembali">
+        ← Kembali ke Beranda
+    </a>
+</header>
+
+<div class="container">
+
+    <div class="kartu">
+        <h3>🌳 Asal-Usul Keluarga</h3>
+
+        <p>
+            Selamat datang di halaman sejarah keluarga.
+            Halaman ini menjadi tempat untuk menyimpan
+            cerita, kenangan, dan asal-usul keluarga
+            agar dapat diketahui oleh generasi berikutnya.
+        </p>
+
+        <p>
+            Cerita mengenai leluhur, tempat asal,
+            perjuangan, dan perjalanan keluarga
+            dapat dituliskan di sini.
+        </p>
+    </div>
+
+    <div class="kartu">
+        <h3>👴 Sejarah Para Leluhur</h3>
+
+        <div class="garis">
+            <div class="tahun">Generasi Pertama</div>
+            <p>
+                Bapak Ahmad dan Ibu Aminah.
+                Mereka merupakan contoh tokoh awal
+                dalam pohon silsilah keluarga ini.
+            </p>
+        </div>
+
+        <div class="garis">
+            <div class="tahun">Generasi Kedua</div>
+            <p>
+                Anak-anak dari Bapak Ahmad dan Ibu Aminah
+                melanjutkan perjalanan keluarga
+                dan membentuk keluarga masing-masing.
+            </p>
+        </div>
+
+        <div class="garis">
+            <div class="tahun">Generasi Ketiga</div>
+            <p>
+                Generasi cucu melanjutkan hubungan
+                kekeluargaan dan menjaga tali persaudaraan.
+            </p>
+        </div>
+    </div>
+
+    <div class="kartu">
+        <h3>📖 Cerita dan Kenangan Keluarga</h3>
+
+        <p>
+            Setiap keluarga memiliki cerita dan kenangan
+            yang berharga. Tuliskan kisah penting agar
+            tidak hilang ditelan waktu.
+        </p>
+
+        <p>
+            Contoh cerita:
+        </p>
+
+        <ul>
+            <li>Asal-usul keluarga.</li>
+            <li>Tempat tinggal leluhur.</li>
+            <li>Perjuangan orang tua dan kakek nenek.</li>
+            <li>Tradisi dan kebiasaan keluarga.</li>
+            <li>Acara pertemuan keluarga.</li>
+        </ul>
+    </div>
+
+    <div class="kartu">
+        <h3>✍️ Tambahkan Cerita Keluarga</h3>
+
+        <form id="formCerita">
+
+            <label>Judul Cerita</label>
+            <input type="text" id="judul"
+            placeholder="Contoh: Asal-usul keluarga">
+
+            <label>Nama Penulis</label>
+            <input type="text" id="penulis"
+            placeholder="Nama yang menuliskan cerita">
+
+            <label>Isi Cerita</label>
+            <textarea id="isi"
+            placeholder="Tuliskan sejarah atau kenangan keluarga..."
+            required></textarea>
+
+            <p class="catatan">
+                Cerita yang ditulis di sini masih berupa
+                simulasi dan belum tersimpan permanen.
+                Nanti akan kita hubungkan ke database.
+            </p>
+
+            <button type="submit">
+                Simpan Cerita
+            </button>
+
+        </form>
+
+        <div id="hasil"></div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Silsilah Keluarga
+</footer>
+
+<script>
+
+document.getElementById("formCerita")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const judul = document.getElementById("judul").value;
+    const penulis = document.getElementById("penulis").value;
+    const isi = document.getElementById("isi").value;
+
+    const kartu = document.createElement("div");
+    kartu.className = "kartu";
+
+    const h3 = document.createElement("h3");
+    h3.textContent = judul || "Cerita Keluarga";
+
+    const nama = document.createElement("p");
+    nama.textContent = "Ditulis oleh: " + (penulis || "Keluarga");
+
+    const cerita = document.createElement("p");
+    cerita.textContent = isi;
+
+    kartu.appendChild(h3);
+    kartu.appendChild(nama);
+    kartu.appendChild(cerita);
+
+    document.getElementById("hasil")
+    .appendChild(kartu);
+
+    alert("Cerita berhasil ditampilkan sementara.");
+
+    this.reset();
+
+});
+
+</script>
+
+</body>
+</html>file:///data/user/0/com.foxdebug.acodefree/files/public/SILSILAH-KELUARGA-BARU/Sejarah.html

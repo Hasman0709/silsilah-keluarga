@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Usulan Anggota Keluarga</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f7f3;
+    color: #26352b;
+}
+
+header {
+    background: #176b45;
+    color: white;
+    text-align: center;
+    padding: 22px 15px;
+}
+
+header h2 {
+    margin: 5px;
+}
+
+.kembali {
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 15px;
+}
+
+.formulir {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px #0001;
+}
+
+h3 {
+    color: #176b45;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+}
+
+textarea {
+    min-height: 90px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background: #176b45;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#tanggalMeninggal {
+    display: none;
+}
+
+#preview {
+    display: none;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+.catatan {
+    background: #fff5d9;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>📝 Usulan Anggota Keluarga</h2>
+    <p>Formulir penambahan data keluarga</p>
+
+    <a href="index.html" class="kembali">
+        ← Kembali ke Beranda
+    </a>
+</header>
+
+<div class="container">
+
+<div class="formulir">
+
+<form id="formUsulan">
+
+<h3>👤 Data Pribadi</h3>
+
+<label>Nama Lengkap *</label>
+<input type="text" id="nama" required>
+
+<label>Jenis Kelamin *</label>
+<select id="jenisKelamin" required>
+    <option value="">Pilih jenis kelamin</option>
+    <option>Laki-laki</option>
+    <option>Perempuan</option>
+</select>
+
+<label>Status *</label>
+<select id="status" required>
+    <option value="">Pilih status</option>
+    <option value="Hidup">Hidup</option>
+    <option value="Meninggal">Meninggal</option>
+</select>
+
+<div id="tanggalMeninggal">
+    <label>Tanggal Meninggal</label>
+    <input type="text" id="tglMeninggal"
+    placeholder="Contoh: 01-01-2020">
+</div>
+
+<h3>👨‍👩‍👧 Hubungan Keluarga</h3>
+
+<label>Nama Ayah</label>
+<input type="text" id="ayah">
+
+<label>Nama Ibu</label>
+<input type="text" id="ibu">
+
+<label>Nama Pasangan</label>
+<input type="text" id="pasangan">
+
+<h3>📷 Foto Anggota</h3>
+
+<label>Unggah Foto</label>
+<input type="file" id="foto"
+accept="image/*">
+
+<img id="preview" alt="Preview foto">
+
+<h3>📝 Keterangan Tambahan</h3>
+
+<label>Keterangan</label>
+<textarea id="keterangan"
+placeholder="Tuliskan keterangan tambahan..."></textarea>
+
+<p class="catatan">
+    ⚠️ Usulan ini nantinya akan diperiksa oleh admin
+    sebelum dimasukkan ke dalam pohon silsilah keluarga.
+</p>
+
+<label>
+<input type="checkbox" id="persetujuan"
+style="width:auto" required>
+Saya menyatakan data yang diberikan benar dan
+telah mendapat izin untuk membagikannya.
+</label>
+
+<button type="submit">
+Kirim Usulan
+</button>
+
+</form>
+
+</div>
+</div>
+
+<footer>
+© 2026 Silsilah Keluarga
+</footer>
+
+<script>
+
+const status = document.getElementById("status");
+const tanggalMeninggal =
+document.getElementById("tanggalMeninggal");
+
+status.addEventListener("change", function() {
+    if (this.value === "Meninggal") {
+        tanggalMeninggal.style.display = "block";
+    } else {
+        tanggalMeninggal.style.display = "none";
+    }
+});
+
+const foto = document.getElementById("foto");
+const preview = document.getElementById("preview");
+
+foto.addEventListener("change", function() {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+        alert("Ukuran foto maksimal 2 MB.");
+        this.value = "";
+        preview.style.display = "none";
+        return;
+    }
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+
+});
+
+document.getElementById("formUsulan")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    alert(
+        "Formulir berhasil diperiksa! " +
+        "Database belum terhubung, sehingga data " +
+        "belum tersimpan. Nanti kita hubungkan ke Firebase."
+    );
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Anggota - Bani Yasroji</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f0f7f3;
+  color:#333;
+}
+header{
+  background:#18794e;
+  color:white;
+  padding:22px;
+}
+header h2{margin:0 0 8px}
+.container{
+  max-width:800px;
+  margin:auto;
+  padding:18px;
+}
+.card{
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:18px;
+  box-shadow:0 3px 12px #00000010;
+}
+h3{color:#18794e;margin-top:0}
+input,select,textarea,button{
+  width:100%;
+  padding:13px;
+  margin:7px 0;
+  border:1px solid #ddd;
+  border-radius:9px;
+  font-size:15px;
+}
+button{
+  background:#18794e;
+  color:white;
+  border:0;
+  font-weight:bold;
+  cursor:pointer;
+}
+.back{
+  display:inline-block;
+  color:white;
+  margin-top:12px;
+  text-decoration:none;
+}
+.member{
+  border:1px solid #e3eae5;
+  border-radius:12px;
+  padding:14px;
+  margin:12px 0;
+}
+.member h3{margin-bottom:6px}
+.delete{
+  background:#d9534f;
+}
+#status{
+  color:#18794e;
+  font-weight:bold;
+}
+small{color:#777}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Data Anggota Keluarga</h2>
+  <div>Bani Yasroji</div>
+  <a class="back" href="admin.html">← Kembali ke Dashboard</a>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h3>Tambah Anggota Baru</h3>
+
+    <form id="formAnggota">
+      <input id="nama" placeholder="Nama lengkap" required>
+
+      <select id="jenisKelamin" required>
+        <option value="">Pilih jenis kelamin</option>
+        <option value="Laki-laki">Laki-laki</option>
+        <option value="Perempuan">Perempuan</option>
+      </select>
+
+      <select id="statusHidup">
+        <option value="Hidup">Hidup</option>
+        <option value="Meninggal">Meninggal</option>
+      </select>
+
+      <input id="ayah" placeholder="Nama ayah">
+      <input id="ibu" placeholder="Nama ibu">
+      <input id="pasangan" placeholder="Nama pasangan">
+
+      <textarea id="catatan" placeholder="Catatan tambahan"></textarea>
+
+      <button type="submit" id="tombolSimpan">
+        Simpan Anggota
+      </button>
+    </form>
+
+    <p id="status"></p>
+  </div>
+
+  <div class="card">
+    <h3>Daftar Anggota Keluarga</h3>
+    <input id="cari" placeholder="Cari nama anggota...">
+    <div id="daftar">Memuat data...</div>
+  </div>
+
+</div>
+
+<script type="module">
+import { db } from "./js/firebase.js";
+
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+const form = document.getElementById("formAnggota");
+const daftar = document.getElementById("daftar");
+const status = document.getElementById("status");
+const cari = document.getElementById("cari");
+
+let semuaAnggota = [];
+
+async function tampilkanAnggota(){
+  daftar.innerHTML = "Memuat data...";
+
+  try {
+    const hasil = await getDocs(collection(db, "anggota"));
+
+    semuaAnggota = hasil.docs.map(item => ({
+      id: item.id,
+      ...item.data()
+    }));
+
+    renderAnggota(semuaAnggota);
+
+  } catch(error) {
+    daftar.innerHTML = "Gagal memuat data. Periksa koneksi dan hak akses Firebase.";
+    console.error(error);
+  }
+}
+
+function renderAnggota(data){
+  daftar.innerHTML = "";
+
+  if(data.length === 0){
+    daftar.innerHTML = "<p>Belum ada data anggota.</p>";
+    return;
+  }
+
+  data.forEach(a => {
+    const kotak = document.createElement("div");
+    kotak.className = "member";
+
+    const judul = document.createElement("h3");
+    judul.textContent = a.nama || "-";
+
+    const detail = document.createElement("p");
+    detail.textContent =
+      (a.jenisKelamin || "-") +
+      " | " + (a.statusHidup || "-");
+
+    const tombol = document.createElement("button");
+    tombol.className = "delete";
+    tombol.textContent = "Hapus Anggota";
+
+    tombol.onclick = async () => {
+      if(!confirm("Yakin ingin menghapus anggota ini?")) return;
+
+      try {
+        await deleteDoc(doc(db, "anggota", a.id));
+        await tampilkanAnggota();
+        status.textContent = "Data anggota berhasil dihapus.";
+      } catch(error) {
+        alert("Gagal menghapus data.");
+        console.error(error);
+      }
+    };
+
+    kotak.append(judul, detail, tombol);
+    daftar.appendChild(kotak);
+  });
+}
+
+form.addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  const tombol = document.getElementById("tombolSimpan");
+  tombol.disabled = true;
+  tombol.textContent = "Menyimpan...";
+
+  const data = {
+    nama: document.getElementById("nama").value.trim(),
+    jenisKelamin: document.getElementById("jenisKelamin").value,
+    statusHidup: document.getElementById("statusHidup").value,
+    ayah: document.getElementById("ayah").value.trim(),
+    ibu: document.getElementById("ibu").value.trim(),
+    pasangan: document.getElementById("pasangan").value.trim(),
+    catatan: document.getElementById("catatan").value.trim(),
+    dibuatPada: serverTimestamp()
+  };
+
+  try {
+    await addDoc(collection(db, "anggota"), data);
+
+    status.textContent = "Anggota berhasil disimpan!";
+    form.reset();
+    await tampilkanAnggota();
+
+  } catch(error) {
+    status.textContent = "Gagal menyimpan. Periksa koneksi Firebase.";
+    console.error(error);
+  }
+
+  tombol.disabled = false;
+  tombol.textContent = "Simpan Anggota";
+});
+
+cari.addEventListener("input", function(){
+  const kata = cari.value.toLowerCase();
+
+  const hasil = semuaAnggota.filter(a =>
+    (a.nama || "").toLowerCase().includes(kata)
+  );
+
+  renderAnggota(hasil);
+});
+
+tampilkanAnggota();
+</script>
+
+</body>
+</html>
