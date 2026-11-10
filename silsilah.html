@@ -38,9 +38,32 @@ header p {
   color: #555;
 }
 
+#cariNama {
+  width: 65%;
+  max-width: 300px;
+  padding: 11px;
+  border: 1px solid #aaa;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+.info button {
+  padding: 11px 16px;
+  border: none;
+  border-radius: 7px;
+  background: #176b45;
+  color: white;
+  font-weight: bold;
+}
+
+#hasilCari {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
 .area {
   width: 100%;
-  height: calc(100vh - 115px);
+  height: calc(100vh - 165px);
   overflow: auto;
   background: #fff;
   touch-action: pan-x pan-y;
@@ -162,6 +185,11 @@ header p {
   padding: 0 2px;
 }
 
+.kartu.ditemukan {
+  background: #fff2a8;
+  border: 3px solid #e59b00;
+}
+
 .pesan {
   padding: 20px;
   text-align: center;
@@ -171,7 +199,12 @@ header p {
   <h2>POHON SILSILAH KELUARGA</h2>
   <p>Keluarga Bani Yasroji</p>
 </header><div class="info">
-  Jepit dua jari untuk memperbesar atau memperkecil pohon silsilah.
+  <input
+    type="search"
+    id="cariNama"
+    placeholder="Cari nama anggota keluarga..."
+  >
+  <button id="tombolCari">Cari</button>  <div id="hasilCari"></div>  <p>Jepit dua jari untuk memperbesar atau memperkecil pohon silsilah.</p>
 </div><div class="area" id="area">
   <div class="pohon" id="pohon">
     <div class="pesan">Memuat data silsilah...</div>
@@ -194,12 +227,6 @@ let zoomAwal = 1;
 
 function teks(nilai) {
   return String(nilai || "").trim();
-}
-
-function cariAnggota(nama) {
-  return semuaAnggota.find(a =>
-    teks(a.nama).toLowerCase() === teks(nama).toLowerCase()
-  );
 }
 
 function cariPasangan(orang) {
@@ -271,15 +298,15 @@ function buatKartu(orang, label) {
       ? "perempuan"
       : "laki");
 
-  const foto = teks(orang.fotoUrl);
-
   const gambar = document.createElement("img");
-  gambar.src = foto || "data:image/svg+xml," +
+
+  gambar.src = teks(orang.fotoUrl) || "data:image/svg+xml," +
     encodeURIComponent(
       '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="100%" height="100%" fill="#eeeeee"/><circle cx="40" cy="29" r="14" fill="#aaaaaa"/><path d="M12 78 Q15 48 40 48 Q65 48 68 78" fill="#aaaaaa"/></svg>'
     );
 
   gambar.alt = "Foto anggota";
+
   gambar.onerror = () => {
     gambar.style.display = "none";
   };
@@ -311,17 +338,18 @@ function buatKeluarga(ayah, ibu, generasi, sudahTampil) {
   const kotakOrangtua = document.createElement("div");
   kotakOrangtua.className = "orangtua";
 
-  const labelAyah = generasi === 1 ? "Kakek" : "Ayah";
-  const labelIbu = generasi === 1 ? "Nenek" : "Ibu";
-
-  kotakOrangtua.appendChild(buatKartu(ayah, labelAyah));
+  kotakOrangtua.appendChild(
+    buatKartu(ayah, generasi === 1 ? "Kakek" : "Ayah")
+  );
 
   const hati = document.createElement("span");
   hati.className = "jantung";
   hati.textContent = "♥";
   kotakOrangtua.appendChild(hati);
 
-  kotakOrangtua.appendChild(buatKartu(ibu, labelIbu));
+  kotakOrangtua.appendChild(
+    buatKartu(ibu, generasi === 1 ? "Nenek" : "Ibu")
+  );
 
   keluarga.appendChild(kotakOrangtua);
 
@@ -368,7 +396,10 @@ function buatKeluarga(ayah, ibu, generasi, sudahTampil) {
     kotak.className = "orangtua";
 
     kotak.appendChild(
-      buatKartu(orang, teks(orang.urutan) || `Anak ke-${index + 1}`)
+      buatKartu(
+        orang,
+        teks(orang.urutan) || `Anak ke-${index + 1}`
+      )
     );
 
     if (pasanganValid) {
@@ -439,10 +470,7 @@ async function tampilkanSilsilah() {
 
       const pasangan = cariPasangan(orang);
 
-      if (!pasangan || !pasanganSama(orang, pasangan)) {
-        return;
-      }
-
+      if (!pasangan || !pasanganSama(orang, pasangan)) return;
       if (sudahTampil.has(pasangan.id)) return;
 
       sudahTampil.add(orang.id);
@@ -471,7 +499,55 @@ async function tampilkanSilsilah() {
   }
 }
 
-tampilkanSilsilah();
+/* FITUR PENCARIAN */
+
+function cariAnggotaKeluarga() {
+  const input = document.getElementById("cariNama");
+  const hasil = document.getElementById("hasilCari");
+  const kata = input.value.trim().toLowerCase();
+
+  document.querySelectorAll(".kartu").forEach(kartu => {
+    kartu.classList.remove("ditemukan");
+  });
+
+  if (!kata) {
+    hasil.textContent = "Masukkan nama anggota keluarga.";
+    return;
+  }
+
+  const kartuDitemukan = [...document.querySelectorAll(".kartu")]
+    .find(kartu => {
+      const nama = kartu.querySelector(".nama");
+
+      return nama &&
+        nama.textContent.toLowerCase().includes(kata);
+    });
+
+  if (!kartuDitemukan) {
+    hasil.textContent = "Nama tidak ditemukan dalam pohon silsilah.";
+    return;
+  }
+
+  kartuDitemukan.classList.add("ditemukan");
+
+  hasil.textContent = "Anggota keluarga ditemukan.";
+
+  kartuDitemukan.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "center"
+  });
+}
+
+document.getElementById("tombolCari")
+  .addEventListener("click", cariAnggotaKeluarga);
+
+document.getElementById("cariNama")
+  .addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      cariAnggotaKeluarga();
+    }
+  });
 
 /* ZOOM DENGAN JEPIT DUA JARI */
 
@@ -509,6 +585,8 @@ area.addEventListener("touchend", function(e) {
     jarakAwal = 0;
   }
 });
+
+tampilkanSilsilah();
 
 </script></body>
 </html>
