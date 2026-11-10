@@ -149,16 +149,18 @@ nav a:hover {
     margin-bottom: 15px;
 }
 
+/* Thumbnail galeri halaman utama */
 .thumbnail-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
-    margin: 15px 0 20px;
+    width: 75%;
+    margin: 15px auto 0;
 }
 
 .thumbnail-grid img {
     width: 100%;
-    height: 90px;
+    height: 68px;
     object-fit: cover;
     border-radius: 6px;
     pointer-events: none;
@@ -171,20 +173,6 @@ nav a:hover {
     color: #68756d;
     font-size: 13px;
     padding: 12px;
-}
-
-.tombol {
-    display: inline-block;
-    background: #145c3b;
-    color: white;
-    text-decoration: none;
-    padding: 12px 22px;
-    border-radius: 7px;
-    font-size: 14px;
-}
-
-.tombol:hover {
-    background: #0e432b;
 }
 
 footer {
@@ -209,10 +197,11 @@ footer {
 
     .thumbnail-grid {
         grid-template-columns: repeat(3, 1fr);
+        width: 75%;
     }
 
     .thumbnail-grid img {
-        height: 85px;
+        height: 64px;
     }
 }
 </style></head><body><header>
@@ -271,8 +260,6 @@ footer {
     </p><div class="thumbnail-grid" id="thumbnailGaleri">
     <div class="tidak-ada-foto">Memuat foto...</div>
 </div>
-
-<a href="galeri.html" class="tombol">Buka Galeri Foto</a>
 
 </section></main><footer>
     <strong>KELUARGA BESAR BANI YASROJI</strong><br>
